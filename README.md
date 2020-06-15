@@ -1,1 +1,2 @@
-# techish
+# Techish
+STEP 2020 Capstone Project
