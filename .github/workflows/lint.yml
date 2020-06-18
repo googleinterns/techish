@@ -17,7 +17,7 @@ jobs:
         node-version: 12
     - name: yarn install
       run: yarn install
-    - name: eslint
-      uses: icrawl/action-eslint@v1
+    - name: ESLint (JS/TS) Action 
+      uses: iCrawl/action-eslint@v1
       with:
         custom-glob: apps # only if a different glob is needed, default: src
