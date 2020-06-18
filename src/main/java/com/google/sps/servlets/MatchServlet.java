@@ -26,9 +26,4 @@ public class MatchServlet extends HttpServlet {
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(matches));
   }
-
-  //   private List<Match> getMatches() {
-  //       //TODO
-  //   }
-
 }
