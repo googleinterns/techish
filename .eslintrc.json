@@ -1,0 +1,18 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+    ],
+
+    "plugins": [
+        "@typescript-eslint",
+    ],
+    "rules": {
+        "perttier/prettier": "error",
+        "no-unusued-vars": "warn",
+        "no-console": "off",
+        "func-names" :"off",
+        "no-process-exit": "off"
+    }
+}
