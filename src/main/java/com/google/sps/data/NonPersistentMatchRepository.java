@@ -3,18 +3,17 @@ package com.google.sps.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
-* Match repository that stores matches in a ConcurrentHashMap so that we don't need to 
-* access datastore for testing. All operations are thread-safe for the ConcurrentHashMap,
-* but retrieval operations do not entail locking.
-*/
+ * Match repository that stores matches in a ConcurrentHashMap so that we don't need to access
+ * datastore for testing. All operations are thread-safe for the ConcurrentHashMap, but retrieval
+ * operations do not entail locking.
+ */
 public class NonPersistentMatchRepository implements MatchRepository {
   private Map<User, List<Match>> userMatches;
-
 
   public NonPersistentMatchRepository() {
     userMatches = new ConcurrentHashMap();
