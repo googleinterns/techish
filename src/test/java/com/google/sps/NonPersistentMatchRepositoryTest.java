@@ -39,6 +39,7 @@ public final class NonPersistentMatchRepositoryTest {
       String expected = "{User A=[]}";
       Assert.assertEquals(expected, EMPTY_REPO.toString());
       } catch (Exception e) {
+        Assert.fail("Exception should not be thrown in removeMatchThatExists");
       }
   }
 
@@ -48,6 +49,7 @@ public final class NonPersistentMatchRepositoryTest {
       EMPTY_REPO.removeMatch(USER_A, MATCH_A);
       Assert.fail("Expected exception in removeMatchThatDoesNotExist()");
       } catch (Exception e) {
+          //don't need to do anything here because test should pass
       }
   }
 }
