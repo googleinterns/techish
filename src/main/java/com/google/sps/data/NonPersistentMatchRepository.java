@@ -3,18 +3,24 @@ package com.google.sps.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MockData implements EditMatch {
+/**
+* Match repository that stores matches in a ConcurrentHashMap so that we don't need to 
+* access datastore for testing. All operations are thread-safe for the ConcurrentHashMap,
+* but retrieval operations do not entail locking.
+*/
+public class NonPersistentMatchRepository implements MatchRepository {
   private Map<User, List<Match>> userMatches;
 
-  public MockData() {
-    userMatches = new HashMap();
+
+  public NonPersistentMatchRepository() {
+    userMatches = new ConcurrentHashMap();
   }
 
-  public void addMockData(User user) {
+  public void addTestData(User user) {
     Match matchA = new Match("John");
     Match matchB = new Match("Sarah");
     Match matchC = new Match("David");

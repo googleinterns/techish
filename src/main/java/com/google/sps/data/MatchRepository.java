@@ -3,7 +3,7 @@ package com.google.sps.data;
 import java.util.Collection;
 
 /** interface for reading/writing match data that is abstracted from the database used. */
-public interface EditMatch {
+public interface MatchRepository {
 
   public void addMatch(User user, Match match);
 
