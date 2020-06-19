@@ -1,12 +1,9 @@
 package com.google.sps.data;
 
-import com.google.sps.data.EditMatch;
-import java.lang.Exception;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +11,7 @@ public class MockData implements EditMatch {
   private Map<User, List<Match>> userMatches;
 
   public MockData() {
-      userMatches = new HashMap();
+    userMatches = new HashMap();
   }
 
   public void addMockData(User user) {
@@ -27,38 +24,37 @@ public class MockData implements EditMatch {
   }
 
   public void addMatch(User user, Match match) {
-      if(userMatches.containsKey(user)) {
-          List<Match> currentMatches = userMatches.get(user);
-          currentMatches.add(match);
-          userMatches.replace(user, currentMatches);
-      } else {
-          List<Match> newMatch = new ArrayList<Match>(Arrays.asList(match));
-          userMatches.put(user, newMatch);
-      }
+    if (userMatches.containsKey(user)) {
+      List<Match> currentMatches = userMatches.get(user);
+      currentMatches.add(match);
+      userMatches.replace(user, currentMatches);
+    } else {
+      List<Match> newMatch = new ArrayList<Match>(Arrays.asList(match));
+      userMatches.put(user, newMatch);
+    }
   }
 
   public void removeMatch(User user, Match match) throws Exception {
-      if(userMatches.containsKey(user)) {
-          List<Match> currentMatches = userMatches.get(user);
-          currentMatches.remove(match);
-          userMatches.replace(user, currentMatches);
-      } else {
-          throw new Exception("User does not exist");
-      }
+    if (userMatches.containsKey(user)) {
+      List<Match> currentMatches = userMatches.get(user);
+      currentMatches.remove(match);
+      userMatches.replace(user, currentMatches);
+    } else {
+      throw new Exception("User does not exist");
+    }
   }
 
   public Collection<Match> getMatchesForUser(User user) {
-      if(userMatches.containsKey(user)) {
-          return userMatches.get(user);
-      } else {
-          List<Match> emptyMatch = new ArrayList<Match>();
-          userMatches.put(user, emptyMatch);
-          return emptyMatch;
-      }
+    if (userMatches.containsKey(user)) {
+      return userMatches.get(user);
+    } else {
+      List<Match> emptyMatch = new ArrayList<Match>();
+      userMatches.put(user, emptyMatch);
+      return emptyMatch;
+    }
   }
 
   public String toString() {
-      return userMatches.toString();
+    return userMatches.toString();
   }
-
 }

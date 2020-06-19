@@ -9,10 +9,10 @@ public final class Match {
   }
 
   public String toString() {
-      return name;
+    return name;
   }
 
   public boolean equals(Match match) {
-      return this.name == match.name;
+    return this.name == match.name;
   }
 }
