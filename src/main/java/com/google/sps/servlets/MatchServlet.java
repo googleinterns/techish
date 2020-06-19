@@ -1,8 +1,11 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-import com.google.sps.data.StaticNameData;
+import com.google.sps.data.MockData;
+import com.google.sps.data.Match;
+import com.google.sps.data.User;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,14 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
-  // TODO: wrapper class for datastore
-  // hardcoded data
-  StaticNameData myData = new StaticNameData();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    List<String> matches = myData.getFromDatabase();
+    // hardcoded data
+    MockData myData = new MockData();
+    User mockUser = new User("Mock User");
+    myData.addMockData(mockUser);
+
+    Collection<Match> matches = myData.getMatchesForUser(mockUser);
 
     Gson gson = new Gson();
     response.setContentType("application/json;");
