@@ -19,13 +19,16 @@ public class NonPersistentMatchRepository implements MatchRepository {
     userMatches = new ConcurrentHashMap();
   }
 
-  public void addTestData(User user) {
+  //returns the User that data was added for
+  public User addTestData() {
     Match matchA = new Match("John");
     Match matchB = new Match("Sarah");
     Match matchC = new Match("David");
     Match matchD = new Match("Kate");
+    User testUser = new User("Test User");
     List<Match> allMatches = new ArrayList<Match>(Arrays.asList(matchA, matchB, matchC, matchD));
-    userMatches.put(user, allMatches);
+    userMatches.put(testUser, allMatches);
+    return testUser;
   }
 
   public void addMatch(User user, Match match) {

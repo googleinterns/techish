@@ -2,6 +2,7 @@ package com.google.sps.servlets;
 
 import com.google.gson.Gson;
 import com.google.sps.data.Match;
+import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
@@ -15,14 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
+  private static MatchRepository testRepository = new NonPersistentMatchRepository();
+  User testUser = testRepository.addTestData();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    // hardcoded data
-    NonPersistentMatchRepository testRepository = new NonPersistentMatchRepository();
-    User testUser = new User("Test User");
-    testRepository.addTestData(testUser);
-
+      
     Collection<Match> matches = testRepository.getMatchesForUser(testUser);
 
     Gson gson = new Gson();
