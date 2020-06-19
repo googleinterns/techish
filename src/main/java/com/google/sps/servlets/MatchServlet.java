@@ -17,11 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 public class MatchServlet extends HttpServlet {
 
   private static MatchRepository testRepository = new NonPersistentMatchRepository();
-  User testUser = testRepository.addTestData();
+  private static User testUser = testRepository.addTestData();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      
+
     Collection<Match> matches = testRepository.getMatchesForUser(testUser);
 
     Gson gson = new Gson();
