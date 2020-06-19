@@ -21,7 +21,7 @@ public class MatchServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      
+
     Collection<Match> matches = testRepository.getMatchesForUser(testUser);
 
     Gson gson = new Gson();
