@@ -1,7 +1,6 @@
 package com.google.sps;
 
 import com.google.sps.data.Match;
-import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,5 +30,5 @@ public final class MatchTest {
     Match matchB = new Match("Not John");
 
     Assert.assertFalse(matchA.equals(matchB));
-  }  
+  }
 }
