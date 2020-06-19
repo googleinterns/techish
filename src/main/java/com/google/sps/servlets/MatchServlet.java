@@ -16,8 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
-  private static MatchRepository testRepository = new NonPersistentMatchRepository();
-  private static User testUser = testRepository.addTestData();
+  private static MatchRepository testRepository;
+  private static User testUser;
+
+  @Override
+  public void init() {
+    NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
+    testUser = repository.addTestData();
+    testRepository = repository;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
