@@ -1,1 +1,16 @@
 @charset "UTF-8";
+
+.login-text {
+    margin-top: 5px;    
+    border: 0;
+    color: #fff;	
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.25rem;
+    line-height: inherit;
+    margin-right: 1rem;
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    white-space: nowrap;
+  }
