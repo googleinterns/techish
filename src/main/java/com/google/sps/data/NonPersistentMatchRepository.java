@@ -19,7 +19,7 @@ public class NonPersistentMatchRepository implements MatchRepository {
     userMatches = new ConcurrentHashMap();
   }
 
-  //returns the User that data was added for
+  // returns the User that data was added for
   public User addTestData() {
     Match matchA = new Match("John");
     Match matchB = new Match("Sarah");

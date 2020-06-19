@@ -12,5 +12,5 @@ public final class NonPersistentMatchRepositoryTest {
   @Test
   public void emptyTest() {
     Assert.assertFalse(1 == 2);
-  }  
+  }
 }
