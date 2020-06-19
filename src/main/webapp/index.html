@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="STEP Capstone: Techish">
-  <meta name="author" content="Samuel Sandoval and Hadley Shapland">
-  <title>Techish</title>
-  <link href="css/styles.css" rel="stylesheet">
-</head>
-<body >
-  <h1>Project</h1>
-  <button type="button">Request a Match</button>
-  <h3>Match History:</h3>
-  <ul id="match-history"></ul>
-  <script src="ts/app.ts"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="STEP Capstone: Techish" />
+    <meta name="author" content="Samuel Sandoval and Hadley Shapland" />
+    <title>Techish</title>
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body onload="onLoad();">
+    <!-- navigation bar -->
+    <nav class="navbar navbar-expand-md">
+      <a class="navbar-brand" href="#">techish</a>
+      <button
+        class="navbar-toggler navbar-dark"
+        type="button"
+        data-toggle="collapse"
+        data-target="#main-navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="main-navigation">
+        <ul class="navbar-nav">
+          <li class="nav-item" id="logging">
+            <a class="login-text" id="login-link" href="#"></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <h1>Project</h1>
+    <button type="button">Request a Match</button>
+    <h3>Match History:</h3>
+    <ul id="match-history"></ul>
+    <script src="ts/app.ts"></script>
+  </body>
 </html>
