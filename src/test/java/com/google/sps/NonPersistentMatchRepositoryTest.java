@@ -12,32 +12,33 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class NonPersistentMatchRepositoryTest {
 
-  private static final NonPersistentMatchRepository TEST_DATA_REPO =
-      new NonPersistentMatchRepository();
-  private static final NonPersistentMatchRepository EMPTY_REPO = new NonPersistentMatchRepository();
-  private static final User TEST_USER = TEST_DATA_REPO.addTestData();
   private static final User USER_A = new User("User A");
   private static final Match MATCH_A = new Match("Match A");
 
   @Test
   public void addTestDataTest() {
+    NonPersistentMatchRepository testDataRepo = new NonPersistentMatchRepository();
+    User testUser = testDataRepo.addTestData();
     String expected = "{Test User=[John, Sarah, David, Kate]}";
-    Assert.assertEquals(expected, TEST_DATA_REPO.toString());
+    Assert.assertEquals(expected, testDataRepo.toString());
   }
 
   @Test
   public void addMatchTest() {
-    EMPTY_REPO.addMatch(USER_A, MATCH_A);
+    NonPersistentMatchRepository emptyRepo = new NonPersistentMatchRepository();
+    emptyRepo.addMatch(USER_A, MATCH_A);
     String expected = "{User A=[Match A]}";
-    Assert.assertEquals(expected, EMPTY_REPO.toString());
+    Assert.assertEquals(expected, emptyRepo.toString());
   }
 
   @Test
   public void removeMatchThatExists() {
+    NonPersistentMatchRepository emptyRepo = new NonPersistentMatchRepository();
+    emptyRepo.addMatch(USER_A, MATCH_A);
     try {
-      EMPTY_REPO.removeMatch(USER_A, MATCH_A);
+      emptyRepo.removeMatch(USER_A, MATCH_A);
       String expected = "{User A=[]}";
-      Assert.assertEquals(expected, EMPTY_REPO.toString());
+      Assert.assertEquals(expected, emptyRepo.toString());
     } catch (Exception e) {
       Assert.fail("Exception should not be thrown in removeMatchThatExists");
     }
@@ -45,11 +46,12 @@ public final class NonPersistentMatchRepositoryTest {
 
   @Test
   public void removeMatchThatDoesNotExist() {
+    NonPersistentMatchRepository emptyRepo = new NonPersistentMatchRepository();
     try {
-      EMPTY_REPO.removeMatch(USER_A, MATCH_A);
+      emptyRepo.removeMatch(USER_A, MATCH_A);
       Assert.fail("Expected exception in removeMatchThatDoesNotExist()");
     } catch (Exception e) {
-      // don't need to do anything here because test should pass
+      // don't need to do anything here because test should catch exception
     }
   }
 }
