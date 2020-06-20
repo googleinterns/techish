@@ -1,10 +1,10 @@
 package com.google.sps.data;
 
-public final class Match {
+public final class User {
 
   private final String name;
 
-  public Match(String name) {
+  public User(String name) {
     this.name = name;
   }
 
@@ -12,7 +12,7 @@ public final class Match {
     return name;
   }
 
-  public boolean equals(Match match) {
-    return this.name == match.name;
+  public boolean equals(User user) {
+    return this.name == user.name;
   }
 }
