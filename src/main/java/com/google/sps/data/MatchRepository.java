@@ -7,8 +7,6 @@ public interface MatchRepository {
 
   public void addMatch(User user, Match match);
 
-  public User addTestData();
-
   public void removeMatch(User user, Match match) throws Exception;
 
   public Collection<Match> getMatchesForUser(User user);
