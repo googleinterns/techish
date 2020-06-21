@@ -1,6 +1,5 @@
 package com.google.sps.servlets;
 
-import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import com.google.sps.data.Match;
 import com.google.sps.data.MatchRepository;
@@ -39,7 +38,7 @@ public class MatchServlet extends HttpServlet {
 
   @Override
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
-          throws IOException {
+      throws IOException {
 
     String name = getParameter(request, "name", "Anonymous");
 
