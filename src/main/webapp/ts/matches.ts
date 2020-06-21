@@ -3,18 +3,16 @@ interface Match {
 }
 
 function loadMatches() {
-  fetch('/matches')
-  .then(response => response.json())
-  .then((matches) =>
-  {
-    const matchListElement = document.getElementById('match-history')!;
-    matchListElement.innerHTML = "";
+    fetch('/matches')
+        .then(response => response.json())
+        .then((matches) => {
+            const matchListElement = document.getElementById('match-history')!;
+            matchListElement.innerHTML = "";
 
-    matches.forEach((match: Match) =>
-    {
-      matchListElement.appendChild(createMatchElement(match));
-    })
-  });
+            matches.forEach((match: Match) => {
+                matchListElement.appendChild(createMatchElement(match));
+            })
+        });
 }
 
 function createMatchElement(match: Match) {
