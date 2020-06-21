@@ -11,6 +11,6 @@
       "strict": true,             // Strict types, eg. prohibits `var x=0; x=null`
       "alwaysStrict": true        // Enable JavaScript's "use strict" mode
     },
-    "include": ["**/*.ts", "**/*.tsx"],
+    "include": ["src/main/webapp/ts"],
     "exclude": ["node_modules"]
   }
