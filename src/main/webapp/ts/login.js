@@ -54,12 +54,12 @@ function loadHome() {
                     if (link && logging) {
                         if (logStatus.Bool === 'true') {
                             link.setAttribute('href', logStatus.Url);
-                            link.innerHTML = "Logout";
+                            link.innerHTML = 'Logout';
                             logging.style.display = 'block';
                         }
                         else {
                             link.setAttribute('href', logStatus.Url);
-                            link.innerHTML = "Login";
+                            link.innerHTML = 'Login';
                             logging.style.display = 'block';
                         }
                     }
