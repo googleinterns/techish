@@ -27,3 +27,11 @@ function createMatchElement(match: Match) {
 
     return matchElement;
 }
+
+function openForm() {
+    document.getElementById("matchForm")!.style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("matchForm")!.style.display = "none";
+} 

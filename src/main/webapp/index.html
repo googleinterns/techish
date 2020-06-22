@@ -41,6 +41,20 @@
 
 <h3>Match History:</h3>
 <ul id="match-history"></ul>
+
+<button class="open-button" onclick="openForm()">Open New Match Form</button>
+<div class="form-popup" id="matchForm">
+  <form action="/new-matches-query" method="GET" class="form-container">
+    <h1>Get New Matches</h1>
+
+    <label for="product_area"><b>Product Area</b></label>
+    <input type="text" placeholder="Enter Product Area" name="product_area" required>
+
+    <button type="submit" class="btn">Get Matches</button>
+    <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
 <script src="ts/matches.js"></script>
 </body>
 </html>

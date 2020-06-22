@@ -1,4 +1,3 @@
-"use strict";
 function loadMatches() {
     fetch('/matches')
         .then(function (response) { return response.json(); })
@@ -18,4 +17,9 @@ function createMatchElement(match) {
     matchElement.appendChild(nameElement);
     return matchElement;
 }
-//# sourceMappingURL=matches.js.map
+function openForm() {
+    document.getElementById("matchForm").style.display = "block";
+}
+function closeForm() {
+    document.getElementById("matchForm").style.display = "none";
+}
