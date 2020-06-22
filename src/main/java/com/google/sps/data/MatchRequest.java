@@ -5,5 +5,18 @@ import java.util.Collections;
 import java.util.ArrayList;
 
 public final class MatchRequest {
-    private final Collection<String> matchCriteria = new ArrayList();
+    //in the future, this will become a data structure but for MVP, we are just matching based on one criteria
+    private final String matchCriteria;
+
+    public MatchRequest(String parameter) {
+        matchCriteria = parameter;
+    }
+
+    public String getCriteria() {
+        return matchCriteria;
+    }
+
+    public void changeCriteria(String newParameter) {
+        matchCriteria = newParameter;
+    }
 }
