@@ -8,7 +8,6 @@ async function loadHome() {
   const link = document.getElementById('login-link');
 
   const logStatus = await getLogStatus();
-  console.log(logStatus.Bool);
 
   if (link && logging) {
     link.setAttribute('href', logStatus.Url);
