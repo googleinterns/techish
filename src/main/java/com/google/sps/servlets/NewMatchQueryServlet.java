@@ -1,15 +1,15 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+import com.google.sps.algorithms.FindMatchQuery;
 import com.google.sps.data.MatchRequest;
 import com.google.sps.data.User;
-import com.google.sps.algorithms.FindMatchQuery;
 import java.io.IOException;
+import java.util.Collection;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
 /** Servlet responsible for displaying new mentor matches after user fills out match form. */
 @WebServlet("/new-matches-query")
@@ -27,8 +27,7 @@ public class NewMatchQueryServlet extends HttpServlet {
 
     // Find the possible matches.
     FindMatchQuery findMatchQuery = new FindMatchQuery();
-    Collection<User> answer =
-        findMatchQuery.query(matchRequest);
+    Collection<User> answer = findMatchQuery.query(matchRequest);
 
     // Convert the times to JSON
     String jsonResponse = gson.toJson(answer);
