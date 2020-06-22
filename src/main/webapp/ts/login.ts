@@ -1,11 +1,8 @@
-// function onLoad() {
-//   loadHome();
-// }
 window.onload = () => {
   loadHome();
 };
 
-async function loadHome() {
+async function loadHome = () => {
   const logging = document.getElementById('logging');
   const link = document.getElementById('login-link');
 
@@ -13,7 +10,7 @@ async function loadHome() {
   console.log(logStatus.Bool);
 
   if (link && logging) {
-    if (logStatus.Bool === 'true') {
+    if (logStatus.Bool) {
       link.setAttribute('href', logStatus.Url);
       link.innerHTML = 'Logout';
       logging.style.display = 'block';

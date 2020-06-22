@@ -52,7 +52,7 @@ function loadHome() {
                 case 1:
                     logStatus = _a.sent();
                     if (link && logging) {
-                        if (logStatus.Bool === 'true') {
+                        if (logStatus.Bool) {
                             link.setAttribute('href', logStatus.Url);
                             link.innerHTML = 'Logout';
                             logging.style.display = 'block';
