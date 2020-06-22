@@ -23,7 +23,7 @@ public class userApi extends HttpServlet {
     JsonObject loginInfo = new JsonObject();
     UserService userService = UserServiceFactory.getUserService();
     Boolean isLoggedIn = userService.isUserLoggedIn();
-    
+
     String url =
         isLoggedIn
             ? userService.createLogoutURL("/index.html")
