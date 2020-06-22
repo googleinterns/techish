@@ -1,6 +1,5 @@
 package com.google.sps.data;
 
-import com.google.sps.data.Match;
 
 public final class User {
 
@@ -19,7 +18,7 @@ public final class User {
   }
 
   public Match toMatch() {
-      Match newMatch = new Match(name);
-      return newMatch;
+    Match newMatch = new Match(name);
+    return newMatch;
   }
 }
