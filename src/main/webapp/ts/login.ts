@@ -2,7 +2,7 @@ window.onload = () => {
   loadHome();
 };
 
-async function loadHome = () => {
+async function loadHome() {
   const logging = document.getElementById('logging');
   const link = document.getElementById('login-link');
 
