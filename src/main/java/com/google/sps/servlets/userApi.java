@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
     name = "UserAPI",
     description = "UserAPI: Login / Logout with UserService",
     urlPatterns = "/userapi")
-public class userLogin extends HttpServlet {
+public class userApi extends HttpServlet {
 
   /*This method uses the UsersAPI to send a Get Request and see if the user is logged in,
   and is expected to return a string with the url and boolean value all in a Json string */
