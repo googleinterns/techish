@@ -35,4 +35,26 @@ public class MatchServlet extends HttpServlet {
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(matches));
   }
+
+  @Override
+  public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+
+    String name = getParameter(request, "name", "Anonymous");
+
+    Match newMatch = new Match(name);
+
+    testRepository.addMatch(testUser, newMatch);
+
+    response.sendRedirect("/index.html");
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+
+    if (value == null || value.equals("")) {
+      return defaultValue;
+    }
+    return value;
+  }
 }
