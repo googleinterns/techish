@@ -1,3 +1,4 @@
+// interface Value {}
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -33,10 +34,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
-};
-// interface Value {}
-window.onload = function () {
-    loadHome();
 };
 function loadHome() {
     return __awaiter(this, void 0, void 0, function () {
@@ -80,3 +77,6 @@ function getLogStatus() {
         });
     });
 }
+window.onload = function () {
+    loadHome();
+};
