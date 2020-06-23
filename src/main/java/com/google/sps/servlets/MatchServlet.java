@@ -7,8 +7,6 @@ import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,13 +42,11 @@ public class MatchServlet extends HttpServlet {
 
     String[] matchesToSave = request.getParameterValues("new-matches");
 
-    for(String matchName : matchesToSave) {
-        Match newMatch = new Match(matchName);
-        testRepository.addMatch(testUser, newMatch);
+    for (String matchName : matchesToSave) {
+      Match newMatch = new Match(matchName);
+      testRepository.addMatch(testUser, newMatch);
     }
 
     response.sendRedirect("/index.html");
   }
-
-  
 }
