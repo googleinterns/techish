@@ -30,16 +30,15 @@ public class UserLoginServlet extends HttpServlet {
       The same goes with being logged out, we make the url shown be the log in
       url so a user can log in to their account and use the platform.
     */
-    if(isLoggedIn) {
-        String loggedOutUrl = userService.createLogoutURL("/index.html");
-        loginInfo.addProperty("LogOutUrl", loggedOutUrl);
-        loginInfo.addProperty("LogInUrl", "");
+    if (isLoggedIn) {
+      String loggedOutUrl = userService.createLogoutURL("/index.html");
+      loginInfo.addProperty("LogOutUrl", loggedOutUrl);
+      loginInfo.addProperty("LogInUrl", "");
 
-    }
-    else{
-        String loggedInUrl = userService.createLoginURL("/index.html");
-        loginInfo.addProperty("LogInUrl", loggedInUrl);
-        loginInfo.addProperty("LogOutUrl", "");
+    } else {
+      String loggedInUrl = userService.createLoginURL("/index.html");
+      loginInfo.addProperty("LogInUrl", loggedInUrl);
+      loginInfo.addProperty("LogOutUrl", "");
     }
 
     response.setContentType("application/json");
