@@ -38,29 +38,48 @@ function closeForm() {
 
 function sendMatchRequest() {
     closeForm();
+
     const productArea = (<HTMLInputElement>document.getElementById('product_area')).value;
 
   // Create the request to send to the server using the data we collected from
   // the web form.
   const matchRequest = new MatchRequest(productArea);
 
-  queryServer(matchRequest)
+  queryServer(matchRequest).then((matches) => {
+      displayNewMatchPopup(matches);
+  });
+}
+
+function displayNewMatchPopup(matches : Array<Match>) {
+    const newMatchContainer = document.getElementById('new-matches')!;
+
+  // clear out any old results
+  newMatchContainer.innerHTML = '';
+
+  // add results to the page
+  for (const match of matches) {
+    newMatchContainer.innerHTML += '<li>' + matchToString(match) + '</li>';
+  }
+}
+
+function matchToString(match : Match) {
+    return match.name;
 }
 
 /**
  * Sends the meeting request to the server and get back the matches.
  */
-function queryServer(matchRequest: MatchRequest) {
+async function queryServer(matchRequest: MatchRequest) {
   const json = JSON.stringify(matchRequest);
   return fetch('/new-matches-query', {method: 'POST', body: json})
       .then((response) => {
         return response.json();
       })
       .then((users) => {
-        // Convert the range from a json representation to our User class.
-        const out : Array<User> = [];
+        // Convert the range from a json representation to our Match class.
+        const out : Array<Match> = [];
         users.forEach((range: User) => {
-          out.push(new User(range.name));
+          out.push(new Match(range.name));
         });
         return out;
       });
@@ -70,15 +89,27 @@ function queryServer(matchRequest: MatchRequest) {
 }
 
 class MatchRequest {
-    productArea: String;
-    constructor(productArea: String) {
+    productArea: string;
+    constructor(productArea: string) {
         this.productArea = productArea;
     }
 }
 
 class User {
-    name: String;
-    constructor(name: String) {
+    name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    toMatch() {
+        let newMatch : Match = new Match(this.name);
+        return newMatch;
+    }
+}
+
+class Match {
+    name: string;
+    constructor(name: string) {
         this.name = name;
     }
 }
