@@ -1,7 +1,7 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-import com.google.sps.algorithms.FindMatchQuery;
+import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRequest;
 import com.google.sps.data.User;
 import java.io.IOException;
@@ -26,8 +26,8 @@ public class NewMatchQueryServlet extends HttpServlet {
     MatchRequest matchRequest = gson.fromJson(request.getReader(), MatchRequest.class);
 
     // Find the possible matches.
-    FindMatchQuery findMatchQuery = new FindMatchQuery();
-    Collection<User> answer = findMatchQuery.query(matchRequest);
+    MatchQuery matchQuery = new MatchQuery();
+    Collection<User> answer = matchQuery.query(matchRequest);
 
     // Convert the times to JSON
     String jsonResponse = gson.toJson(answer);

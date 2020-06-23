@@ -5,7 +5,7 @@ import com.google.sps.data.User;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public final class FindMatchQuery {
+public final class MatchQuery {
 
   public Collection<User> query(MatchRequest request) {
     Collection<User> mock = new ArrayList<User>();
