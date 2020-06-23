@@ -1,7 +1,3 @@
-interface Match {
-    name: string;
-}
-
 function loadMatches() {
     fetch('/matches')
         .then(response => response.json())
@@ -61,7 +57,6 @@ function displayNewMatchPopup(matches : Array<Match>) {
     const matchString : string = matchToString(match);
     let newOption = new Option(matchString, matchString);
     newMatchContainer.add(newOption, undefined);
-    // newMatchContainer.innerHTML += '<option value ="' + matchString + '">' + matchString + '</option>';
   }
 }
 
@@ -71,7 +66,7 @@ function matchToString(match : Match) {
 }
 
 /**
- * Sends the meeting request to the server and get back the matches.
+ * Sends the match request to the server and get back the matches.
  */
 async function queryServer(matchRequest: MatchRequest) {
   const json = JSON.stringify(matchRequest);
@@ -87,9 +82,6 @@ async function queryServer(matchRequest: MatchRequest) {
         });
         return out;
       });
-
-      //TODO!!!!!!!!!!!!!!!!!!
-      //add new matches to /matches post
 }
 
 class MatchRequest {
@@ -117,4 +109,3 @@ class Match {
         this.name = name;
     }
 }
-

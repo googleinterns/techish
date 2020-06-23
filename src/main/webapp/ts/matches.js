@@ -79,14 +79,13 @@ function displayNewMatchPopup(matches) {
         var matchString = matchToString(match);
         var newOption = new Option(matchString, matchString);
         newMatchContainer.add(newOption, undefined);
-        // newMatchContainer.innerHTML += '<option value ="' + matchString + '">' + matchString + '</option>';
     }
 }
 function matchToString(match) {
     return match.name;
 }
 /**
- * Sends the meeting request to the server and get back the matches.
+ * Sends the match request to the server and get back the matches.
  */
 function queryServer(matchRequest) {
     return __awaiter(this, void 0, void 0, function () {
