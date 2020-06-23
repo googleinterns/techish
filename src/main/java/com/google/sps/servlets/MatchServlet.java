@@ -7,6 +7,8 @@ import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,21 +42,15 @@ public class MatchServlet extends HttpServlet {
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
 
-    String name = getParameter(request, "name", "Anonymous");
+    String[] matchesToSave = request.getParameterValues("new-matches");
 
-    Match newMatch = new Match(name);
-
-    testRepository.addMatch(testUser, newMatch);
+    for(String matchName : matchesToSave) {
+        Match newMatch = new Match(matchName);
+        testRepository.addMatch(testUser, newMatch);
+    }
 
     response.sendRedirect("/index.html");
   }
 
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-
-    if (value == null || value.equals("")) {
-      return defaultValue;
-    }
-    return value;
-  }
+  
 }
