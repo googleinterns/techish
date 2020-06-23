@@ -41,6 +41,8 @@
 
 <h3>Match History:</h3>
 <ul id="match-history"></ul>
+<h3>New Matches: (Going to be a popup ideally)</h3>
+<ul id="new-matches"></ul>
 
 <button class="open-button" onclick="openForm()">Open New Match Form</button>
 <div class="form-popup" id="matchForm">
@@ -48,10 +50,11 @@
     <h1>Get New Matches</h1>
 
     <label for="product_area"><b>Product Area</b></label>
-    <input type="text" placeholder="Enter Product Area" name="product_area" required>
+    <input type="text" placeholder="Enter Product Area" id="product_area" required>
 
-    <button type="submit" class="btn">Get Matches</button>
-    <button type="submit" class="btn cancel" onclick="sendMatchRequest()">Close</button>
+    <label for="submit_button"><b>Submit</b></label>
+    <input type="button" class="btn" onclick="sendMatchRequest()">
+    <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
   </form>
 </div>
 
