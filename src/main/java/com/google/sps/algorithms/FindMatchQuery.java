@@ -9,8 +9,12 @@ public final class FindMatchQuery {
 
   public Collection<User> query(MatchRequest request) {
     Collection<User> mock = new ArrayList<User>();
-    User userA = new User(request.getCriteria());
+    User userA = new User("New Match 1");
+    User userB = new User("New Match 2");
+    User userC = new User("New Match 3");
     mock.add(userA);
+    mock.add(userB);
+    mock.add(userC);
     return mock;
   }
 }
