@@ -25,9 +25,9 @@ public class UserLoginServlet extends HttpServlet {
     Boolean isLoggedIn = userService.isUserLoggedIn();
 
     /* This checks to see if user is logged in and then decides whether to store
-      a logged out url or log in url. A log out url is needed when a user is 
+      a logged out url or log in url. A log out url is needed when a user is
       logged in so that they can log out of their user account on the platform.
-      The same goes with being logged out, we make the url shown be the log in 
+      The same goes with being logged out, we make the url shown be the log in
       url so a user can log in to their account and use the platform.
     */
     String url =
