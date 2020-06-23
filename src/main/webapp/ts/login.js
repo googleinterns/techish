@@ -34,9 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-// function onLoad() {
-//   loadHome();
-// }
+// interface Value {}
 window.onload = function () {
     loadHome();
 };
@@ -46,21 +44,19 @@ function loadHome() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logging = document.getElementById('logging');
+                    logging = document.getElementById('log-status-section');
                     link = document.getElementById('login-link');
                     return [4 /*yield*/, getLogStatus()];
                 case 1:
                     logStatus = _a.sent();
                     if (link && logging) {
+                        link.setAttribute('href', logStatus.Url);
+                        logging.style.display = 'block';
                         if (logStatus.Bool) {
-                            link.setAttribute('href', logStatus.Url);
                             link.innerHTML = 'Logout';
-                            logging.style.display = 'block';
                         }
                         else {
-                            link.setAttribute('href', logStatus.Url);
                             link.innerHTML = 'Login';
-                            logging.style.display = 'block';
                         }
                     }
                     return [2 /*return*/];
