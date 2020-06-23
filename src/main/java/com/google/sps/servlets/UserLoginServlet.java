@@ -24,13 +24,24 @@ public class UserLoginServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     Boolean isLoggedIn = userService.isUserLoggedIn();
 
-    String url =
-        isLoggedIn
-            ? userService.createLogoutURL("/index.html")
-            : userService.createLoginURL("/index.html");
+    /* This checks to see if user is logged in and then decides whether to store
+      a logged out url or log in url. A log out url is needed when a user is
+      logged in so that they can log out of their user account on the platform.
+      The same goes with being logged out, we make the url shown be the log in
+      url so a user can log in to their account and use the platform.
+    */
+    if(isLoggedIn) {
+        String loggedOutUrl = userService.createLogoutURL("/index.html");
+        loginInfo.addProperty("LogOutUrl", loggedOutUrl);
+        loginInfo.addProperty("LogInUrl", "");
 
-    loginInfo.addProperty("Url", url);
-    loginInfo.addProperty("Bool", isLoggedIn);
+    }
+    else{
+        String loggedInUrl = userService.createLoginURL("/index.html");
+        loginInfo.addProperty("LogInUrl", loggedInUrl);
+        loginInfo.addProperty("LogOutUrl", "");
+    }
+
     response.setContentType("application/json");
     response.getWriter().println(loginInfo.toString());
   }

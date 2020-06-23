@@ -1,36 +1,37 @@
 
-interface authInfo {
+type authInfo = {
     loginUrl: string;
     logoutUrl: string;
 };
 
 async function loadHome() {
-  const logging = document.getElementById('log-status-section');
-  const link = document.getElementById('login-link');
+    const logging = document.getElementById('log-status-section');
+    const link = document.getElementById('login-link');
 
+    const logStatus = await getLogStatus();
 
     //set up function to set login/logout link based on which string is non empty
-  if (link && logging) {
-  
-    if (logStatus.Bool) {
-      link.innerHTML = 'Logout';
-      logStatus.loggedOutUrl = logStatus.url;
-    } else {
-      link.innerHTML = 'Login';
+    if (link && logging) {
+
+        if (logStatus.loginUrl === "") {
+            link.setAttribute('href', logStatus.logoutUrl);
+            console.log(logStatus.logoutUrl);
+            link.innerHTML = 'Logout';
+        } else {
+            link.setAttribute('href', logStatus.loginUrl);
+            link.innerHTML = 'Login';
+        }
+        logging.style.display = 'block';
     }
-    link.setAttribute('href', logStatus.Url);
-    logging.style.display = 'block';
-  }
 }
 
-async function getLogStatus(currentStatus: authInfo) {
-  const response = await fetch('/userapi');
-  const isLoggedIn = await response.json();
-  return isLoggedIn;
+async function getLogStatus(): Promise<authInfo> {
+    const response = await fetch('/userapi');
+    const currentStatus = await response.json();
+    let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+    return authStatus;
 }
-const currentStatus;
-const logStatus = await getLogStatus(currentStatus);
 
 window.onload = () => {
-  loadHome();
+    loadHome();
 }
