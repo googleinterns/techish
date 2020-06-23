@@ -1,5 +1,5 @@
 
-interface authInfo {
+type authInfo = {
     loginUrl: string;
     logoutUrl: string;
 };
