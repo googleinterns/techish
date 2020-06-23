@@ -76,7 +76,10 @@ function displayNewMatchPopup(matches) {
     // add results to the page
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
-        newMatchContainer.innerHTML += '<li>' + matchToString(match) + '</li>';
+        var matchString = matchToString(match);
+        var newOption = new Option(matchString, matchString);
+        newMatchContainer.add(newOption, undefined);
+        // newMatchContainer.innerHTML += '<option value ="' + matchString + '">' + matchString + '</option>';
     }
 }
 function matchToString(match) {

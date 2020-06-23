@@ -42,7 +42,19 @@
 <h3>Match History:</h3>
 <ul id="match-history"></ul>
 <h3>New Matches: (Going to be a popup ideally)</h3>
-<ul id="new-matches"></ul>
+<!-- <ul id="new-matches"></ul> -->
+<!-- FORM TO SELECT WHICH NEW MATCHES TO SAVE -->
+<form action="/matches" id="new_match_form" method="POST">
+  <label for="new-matches">Select matches to save:</label>
+  <select name="new-matches" id="new-matches" multiple>
+    <!-- populated using JavaScript -->
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+
 
 <button class="open-button" onclick="openForm()">Open New Match Form</button>
 <div class="form-popup" id="matchForm">

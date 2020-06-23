@@ -51,16 +51,20 @@ function sendMatchRequest() {
 }
 
 function displayNewMatchPopup(matches : Array<Match>) {
-    const newMatchContainer = document.getElementById('new-matches')!;
+    const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
 
   // clear out any old results
   newMatchContainer.innerHTML = '';
 
   // add results to the page
   for (const match of matches) {
-    newMatchContainer.innerHTML += '<li>' + matchToString(match) + '</li>';
+    const matchString : string = matchToString(match);
+    let newOption = new Option(matchString, matchString);
+    newMatchContainer.add(newOption, undefined);
+    // newMatchContainer.innerHTML += '<option value ="' + matchString + '">' + matchString + '</option>';
   }
 }
+
 
 function matchToString(match : Match) {
     return match.name;
