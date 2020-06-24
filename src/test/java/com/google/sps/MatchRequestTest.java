@@ -15,4 +15,11 @@ public final class MatchRequestTest {
     String expected = "machine learning";
     Assert.assertEquals(expected, myRequest.getCriteria());
   }
+
+  @Test
+  public void matchRequestEmpty() {
+    MatchRequest myRequest = new MatchRequest();
+    String expected = "";
+    Assert.assertEquals(expected, myRequest.getCriteria());
+  }
 }

@@ -5,6 +5,7 @@ import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRequest;
 import com.google.sps.data.User;
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.util.Collection;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +24,7 @@ public class NewMatchQueryServlet extends HttpServlet {
     Gson gson = new Gson();
 
     // Convert the JSON to an instance of MatchRequest.
-    MatchRequest matchRequest = gson.fromJson(request.getReader(), MatchRequest.class);
+    MatchRequest matchRequest = getMatchRequest(request, gson);
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();
@@ -36,4 +37,15 @@ public class NewMatchQueryServlet extends HttpServlet {
     response.setContentType("application/json");
     response.getWriter().println(jsonResponse);
   }
+
+  private MatchRequest getMatchRequest(HttpServletRequest request, Gson gson) {
+      MatchRequest toReturn = new MatchRequest();
+      try {
+          BufferedReader reader = request.getReader();
+          toReturn = gson.fromJson(reader, MatchRequest.class);          
+      } catch (Exception e) {}
+      
+      return toReturn;
+  }
+
 }
