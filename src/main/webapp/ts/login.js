@@ -34,13 +34,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+//function that loads the home page for logging in and logging out
 function loadHome() {
     return __awaiter(this, void 0, void 0, function () {
         var logging, link, logStatus;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logging = document.getElementById('log-status-section');
+                    logging = document.getElementById('login-status-section');
                     link = document.getElementById('login-link');
                     return [4 /*yield*/, getLogStatus()];
                 case 1:
