@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserLoginServlet extends HttpServlet {
 
   /*This method uses the UsersAPI to send a Get Request and see if the user is logged in,
-  and is expected to return a string with the url and boolean value all in a Json string */
+  and is expected to return a string with a logIn url and a logOut url in a Json string */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -40,7 +40,6 @@ public class UserLoginServlet extends HttpServlet {
         String loggedInUrl = userService.createLoginURL("/index.html");
         loginInfo.addProperty("LogInUrl", loggedInUrl);
         loginInfo.addProperty("LogOutUrl", "");
-    }
 
     response.setContentType("application/json");
     response.getWriter().println(loginInfo.toString());
