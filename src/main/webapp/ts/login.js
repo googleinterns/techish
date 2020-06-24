@@ -57,7 +57,6 @@ function loadHome() {
                             link.setAttribute('href', logStatus.loginUrl);
                             link.innerHTML = 'Login';
                         }
-                        logging.style.display = 'block';
                     }
                     return [2 /*return*/];
             }
