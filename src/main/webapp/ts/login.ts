@@ -3,7 +3,7 @@ type authInfo = {
     loginUrl: string;
     logoutUrl: string;
 };
-
+//function that loads the home page for logging in and logging out
 async function loadHome() {
     const logging = document.getElementById('log-status-section');
     const link = document.getElementById('login-link');
