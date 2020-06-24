@@ -9,6 +9,10 @@ public final class MatchRequest {
     productArea = area;
   }
 
+  public MatchRequest() {
+      productArea = "";
+  }
+
   public String getCriteria() {
     return productArea;
   }
