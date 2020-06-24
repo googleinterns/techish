@@ -1,3 +1,5 @@
 target/
 .idea
 techish.iml
+
+/node_modules
