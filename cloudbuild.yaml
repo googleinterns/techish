@@ -1,5 +1,3 @@
 steps:
   - name: "gcr.io/cloud-builders/mvn"
-    args: ["install"]
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ["app", "deploy", "src/main/webapp/WEB-INF/appengine-web.xml"]
+    args: ["package", "appengine:deploy"]
