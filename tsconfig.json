@@ -3,7 +3,7 @@
     // compiler (tsc) and makes VSCode recognize this folder as a TS project,
     // enabling the VSCode build tasks "tsc: build" and "tsc: watch".
     "compilerOptions": {
-      "lib": ["ES2015", "dom"],
+      "lib": ["es2015", "dom"],
       "target": "es5",            // Compatible with older browsers
       "module": "umd",            // Compatible with both Node.js and browser
       "moduleResolution": "node", // Tell tsc to look in node_modules for modules
