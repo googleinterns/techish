@@ -1,7 +1,6 @@
 package com.google.sps;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
 import com.google.sps.data.Match;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -51,6 +51,6 @@ public class NewMatchQueryServletTest {
         Gson gson = new Gson();
         String expected = gson.toJson(answer);
         String result = sw.getBuffer().toString().trim();
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 }
