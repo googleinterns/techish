@@ -72,6 +72,5 @@ public class MatchServletTest {
         matchServlet.doPost(request, response);
 
         verify(request, atLeast(1)).getParameterValues("new-matches");
-        testMatchDoGet();
     }
 }
