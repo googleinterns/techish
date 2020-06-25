@@ -44,7 +44,7 @@ public class NewMatchQueryServlet extends HttpServlet {
           BufferedReader reader = request.getReader();
           toReturn = gson.fromJson(reader, MatchRequest.class);          
       } catch (Exception e) {
-          System.err.println("Exception thrown in getMatchRequest()");
+          System.err.println("Exception thrown in getMatchRequest");
       }
       
       return toReturn;
