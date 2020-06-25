@@ -1,5 +1,5 @@
- steps:
- - name: maven:3-jdk-8
-   entrypoint: mvn
-   args: ['package', 'app', 'deploy']
-   timeout: '1600s']
+steps:
+  - name: "gcr.io/cloud-builders/mvn"
+    args: ["install"]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ["app", "deploy", "src/main/webapp/WEB-INF/appengine-web.xml"]
