@@ -48,17 +48,17 @@ public class MatchServletTest {
         Collection<Match> matches = testRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        when(response.getWriter()).thenReturn(pw);
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
 
         MatchServlet matchServlet = new MatchServlet();
         matchServlet.init();
         matchServlet.doGet(request, response);
 
-        String result = sw.getBuffer().toString().trim();
+        String result = stringWriter.getBuffer().toString().trim();
 
-        pw.flush();
+        printWriter.flush();
         Assert.assertEquals(expected, result);
     }
 
