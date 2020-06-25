@@ -2,6 +2,7 @@ package com.google.sps;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.google.gson.Gson;
@@ -66,7 +67,7 @@ public class MatchServletTest {
     public void doPostOnce_storesNewMatches() throws IOException, ServletException {
         MatchServlet matchServlet = prepDoPost();
         matchServlet.doPost(request, response);
-        verify(request, atLeast(1)).getParameterValues("new-matches");
+        verify(request, times(1)).getParameterValues("new-matches");
     }
 
     @Test
@@ -74,7 +75,7 @@ public class MatchServletTest {
         MatchServlet matchServlet = prepDoPost();
         matchServlet.doPost(request, response);
         matchServlet.doPost(request, response);
-        verify(request, atLeast(2)).getParameterValues("new-matches");
+        verify(request, times(2)).getParameterValues("new-matches");
     }
 
     private MatchServlet prepDoPost() throws IOException, ServletException {
