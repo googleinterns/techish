@@ -33,7 +33,7 @@ public class NewMatchQueryServletTest {
     }
 
     @Test
-    public void testNewMatchDoPost() throws IOException, ServletException {
+    public void doPost_returnsNewMatches() throws IOException, ServletException {
         MatchQuery matchQuery = new MatchQuery();
         Collection<User> answer = matchQuery.query(new MatchRequest()); 
  

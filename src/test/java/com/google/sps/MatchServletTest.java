@@ -43,7 +43,7 @@ public class MatchServletTest {
     }
 
     @Test
-    public void testMatchDoGet() throws IOException, ServletException {
+    public void doGet_returnsSavedMatches() throws IOException, ServletException {
         Gson gson = new Gson();
         Collection<Match> matches = testRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
@@ -63,7 +63,7 @@ public class MatchServletTest {
     }
 
     @Test
-    public void testMatchDoPost() throws IOException, ServletException {
+    public void doPost_storesNewMatches() throws IOException, ServletException {
         String[] matches = {"matchA", "matchB", "matchC"};
         when(request.getParameterValues("new-matches")).thenReturn(matches);
 
