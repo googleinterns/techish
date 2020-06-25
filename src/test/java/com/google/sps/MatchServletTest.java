@@ -63,14 +63,28 @@ public class MatchServletTest {
     }
 
     @Test
-    public void doPost_storesNewMatches() throws IOException, ServletException {
+    public void doPostOnce_storesNewMatches() throws IOException, ServletException {
+        MatchServlet matchServlet = prepDoPost();
+        matchServlet.doPost(request, response);
+        verify(request, atLeast(1)).getParameterValues("new-matches");
+    }
+
+    @Test
+    public void doPostTwice_storesNewMatches() throws IOException, ServletException {
+        MatchServlet matchServlet = prepDoPost();
+        matchServlet.doPost(request, response);
+        matchServlet.doPost(request, response);
+        verify(request, atLeast(2)).getParameterValues("new-matches");
+    }
+
+    private MatchServlet prepDoPost() throws IOException, ServletException {
         String[] matches = {"matchA", "matchB", "matchC"};
         when(request.getParameterValues("new-matches")).thenReturn(matches);
 
         MatchServlet matchServlet = new MatchServlet();
         matchServlet.init();
-        matchServlet.doPost(request, response);
 
-        verify(request, atLeast(1)).getParameterValues("new-matches");
+        return matchServlet;
     }
+
 }
