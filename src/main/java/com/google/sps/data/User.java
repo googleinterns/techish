@@ -15,4 +15,9 @@ public final class User {
   public boolean equals(User user) {
     return this.name == user.name;
   }
+
+  public Match toMatch() {
+    Match newMatch = new Match(name);
+    return newMatch;
+  }
 }

@@ -34,13 +34,37 @@
 <h1>Techish Logged-In Homepage</h1>
 
 <h2>Matching Section</h2>
-<form action="/matches" id="match_form" method="POST">
-    <input name="name" placeholder="Enter match name..." type="text">
-    <button form="match_form" type="submit" value="Submit">Submit</button>
-</form>
-
 <h3>Match History:</h3>
 <ul id="match-history"></ul>
+<h3>New Matches: (Going to be a popup)</h3>
+<!-- <ul id="new-matches"></ul> -->
+<!-- FORM TO SELECT WHICH NEW MATCHES TO SAVE -->
+<form action="/matches" id="new_match_form" method="POST">
+  <label for="new-matches">Select matches to save:</label>
+  <select name="new-matches" id="new-matches" multiple>
+    <!-- populated using JavaScript -->
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+
+
+<button class="open-button" onclick="openForm()">Open New Match Form</button>
+<div class="form-popup" id="matchForm">
+  <form class="form-container">
+    <h1>Get New Matches</h1>
+
+    <label for="product_area"><b>Product Area</b></label>
+    <input type="text" placeholder="Enter Product Area" id="product_area" required>
+
+    <label for="submit_button"><b>Submit</b></label>
+    <input type="button" class="btn" onclick="sendMatchRequest()">
+    <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
 <script src="ts/matches.js"></script>
 </body>
 </html>
