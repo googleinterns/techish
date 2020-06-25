@@ -1,24 +1,25 @@
 package com.google.sps;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import java.io.*;
-import java.util.Collection;
-import javax.servlet.http.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import com.google.gson.Gson;
 import com.google.sps.data.Match;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import com.google.sps.servlets.MatchServlet;
+import java.io.*;
+import javax.servlet.http.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class MatchServletTest {
     @Mock
@@ -40,7 +41,7 @@ public class MatchServletTest {
     }
 
     @Test
-    public void testDoGet() throws IOException, ServletException {
+    public void testMatchDoGet() throws IOException, ServletException {
         Gson gson = new Gson();
         Collection<Match> matches = testRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
@@ -60,7 +61,7 @@ public class MatchServletTest {
     }
 
     @Test
-    public void testDoPost() throws IOException, ServletException {
+    public void testMatchDoPost() throws IOException, ServletException {
         String[] matches = {"matchA", "matchB", "matchC"};
         when(request.getParameterValues("new-matches")).thenReturn(matches);
 
@@ -69,6 +70,6 @@ public class MatchServletTest {
         matchServlet.doPost(request, response);
 
         verify(request, atLeast(1)).getParameterValues("new-matches");
-        testDoGet();
+        testMatchDoGet();
     }
 }
