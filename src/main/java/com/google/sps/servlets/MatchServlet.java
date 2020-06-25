@@ -40,21 +40,13 @@ public class MatchServlet extends HttpServlet {
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
 
-    String name = getParameter(request, "name", "Anonymous");
+    String[] matchesToSave = request.getParameterValues("new-matches");
 
-    Match newMatch = new Match(name);
-
-    testRepository.addMatch(testUser, newMatch);
+    for (String matchName : matchesToSave) {
+      Match newMatch = new Match(matchName);
+      testRepository.addMatch(testUser, newMatch);
+    }
 
     response.sendRedirect("/index.html");
-  }
-
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-
-    if (value == null || value.equals("")) {
-      return defaultValue;
-    }
-    return value;
   }
 }

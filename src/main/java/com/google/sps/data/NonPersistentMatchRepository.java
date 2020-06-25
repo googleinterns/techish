@@ -21,10 +21,10 @@ public class NonPersistentMatchRepository implements MatchRepository {
 
   // returns the User that data was added for
   public User addTestData() {
-    Match matchA = new Match("John");
-    Match matchB = new Match("Sarah");
-    Match matchC = new Match("David");
-    Match matchD = new Match("Kate");
+    Match matchA = new Match("Hadley");
+    Match matchB = new Match("Sam");
+    Match matchC = new Match("Andre");
+    Match matchD = new Match("Jerry");
     User testUser = new User("Test User");
     List<Match> allMatches = new ArrayList<Match>(Arrays.asList(matchA, matchB, matchC, matchD));
     userMatches.put(testUser, allMatches);
