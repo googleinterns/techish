@@ -44,6 +44,5 @@ public class UserLoginServlet extends HttpServlet {
 
     response.setContentType("application/json");
     response.getWriter().println(loginInfo.toString());
-    }
   }
 }
