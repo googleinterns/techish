@@ -1,7 +1,8 @@
 package com.google.sps;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 
 import com.google.gson.Gson;
 import com.google.sps.data.Match;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -57,7 +59,7 @@ public class MatchServletTest {
         String result = sw.getBuffer().toString().trim();
 
         pw.flush();
-        assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
     @Test
