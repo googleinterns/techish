@@ -37,16 +37,18 @@ public class NewMatchQueryServletTest {
         MatchQuery matchQuery = new MatchQuery();
         Collection<User> answer = matchQuery.query(new MatchRequest()); 
  
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        when(response.getWriter()).thenReturn(pw);
+        StringWriter StringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(StringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
  
         NewMatchQueryServlet myServlet =new NewMatchQueryServlet();
         myServlet.doPost(request, response);
 
         Gson gson = new Gson();
         String expected = gson.toJson(answer);
-        String result = sw.getBuffer().toString().trim();
+        String result = StringWriter.getBuffer().toString().trim();
+
+        printWriter.flush();
         Assert.assertEquals(expected, result);
     }
 }
