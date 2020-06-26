@@ -18,9 +18,6 @@
 
   <dependencies>
 
-
-  <dependencies>
-
      <dependency>
         <groupId>com.google.appengine</groupId>
         <artifactId>appengine-testing</artifactId>
