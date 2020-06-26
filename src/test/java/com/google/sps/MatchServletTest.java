@@ -21,70 +21,78 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class MatchServletTest {
-    @Mock
-    HttpServletRequest request;
-
-    @Mock
-    HttpServletResponse response;
-
-    private static MatchRepository testRepository;
-    private static User testUser;
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
-        testUser = repository.addTestData();
-        testRepository = repository;
-    }
-
     @Test
-    public void doGet_returnsSavedMatches() throws IOException, ServletException {
+    public void doGet_returnMatches() throws IOException, ServletException {
+        //Initialize variables
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        MatchRepository testRepository;
+        NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
+        User testUser = repository.addTestData();
+        testRepository = repository;
         Gson gson = new Gson();
+        
+        MatchServlet matchServlet = new MatchServlet();
+        matchServlet.init();
+
+        //get expected result
         Collection<Match> matches = testRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
 
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        MatchServlet matchServlet = new MatchServlet();
-        matchServlet.init();
-        matchServlet.doGet(request, response);
-
-        String result = stringWriter.getBuffer().toString().trim();
-
-        printWriter.flush();
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
         Assert.assertEquals(expected, result);
     }
 
     @Test
-    public void doPostOnce_storesNewMatches() throws IOException, ServletException {
-        MatchServlet matchServlet = prepDoPost();
-        matchServlet.doPost(request, response);
-        verify(request, times(1)).getParameterValues("new-matches");
-    }
-
-    @Test
-    public void doPostTwice_storesNewMatches() throws IOException, ServletException {
-        MatchServlet matchServlet = prepDoPost();
-        matchServlet.doPost(request, response);
-        matchServlet.doPost(request, response);
-        verify(request, times(2)).getParameterValues("new-matches");
-    }
-
-    private MatchServlet prepDoPost() throws IOException, ServletException {
-        String[] matches = {"matchA", "matchB", "matchC"};
-        when(request.getParameterValues("new-matches")).thenReturn(matches);
-
+    public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
+        //Initialize variables
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+    
         MatchServlet matchServlet = new MatchServlet();
         matchServlet.init();
 
-        return matchServlet;
+        //First doGet Call
+        String result = doGetHelper(request, response, matchServlet);
+        int numMatches = matchesInString(result);
+        Assert.assertEquals(4, numMatches);
+
+        //DoPost to add 3 more matches
+        String[] newMatches = {"John", "Bob", "Cathy"};
+        when(request.getParameterValues("new-matches")).thenReturn(newMatches);
+        matchServlet.doPost(request, response);
+
+        //doGet again to verify there are now 7 matches
+        result = doGetHelper(request, response, matchServlet);
+        numMatches = matchesInString(result);
+        Assert.assertEquals(7, numMatches);
+    }
+
+    
+    private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
+        throws IOException, ServletException
+     {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        matchServlet.doGet(request, response);
+
+        String result = stringWriter.getBuffer().toString().trim();
+        
+        printWriter.flush();
+        return result;
+    }
+
+    //count number of commas in result string, and number of matches will be one more
+    private int matchesInString(String result) {
+        int numMatches = (result.length() - result.replaceAll(",", "").length()) + 1;
+        return numMatches;
     }
 
 }
