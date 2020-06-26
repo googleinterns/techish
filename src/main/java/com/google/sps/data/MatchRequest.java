@@ -1,8 +1,7 @@
 package com.google.sps.data;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public final class MatchRequest {
     //in the future, this will become a data structure but for MVP, we are just matching based on one criteria
@@ -19,4 +18,6 @@ public final class MatchRequest {
     public void changeCriteria(String newParameter) {
         matchCriteria = newParameter;
     }
+}
+  private final Collection<String> matchCriteria = new ArrayList();
 }
