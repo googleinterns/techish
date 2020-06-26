@@ -4,17 +4,14 @@ package com.google.sps.data;
 public final class MatchRequest {
   // in the future, this will become a data structure but for MVP, we are just matching based on one
   // criteria
-  private final String matchCriteria;
+  private final String productArea;
 
-  public MatchRequest(String parameter) {
-    matchCriteria = parameter;
+  public MatchRequest(String area) {
+    productArea = area;
   }
 
   public String getCriteria() {
-    return matchCriteria;
+    return productArea;
   }
 
-  public void changeCriteria(String newParameter) {
-    matchCriteria = newParameter;
-  }
 }

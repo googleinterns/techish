@@ -9,6 +9,7 @@
 	<title>Techish</title>
 	<link href="css/styles.css" rel="stylesheet" />
 </head>
+<<<<<<< HEAD
 
 <body>
 	<!-- navigation bar -->
@@ -45,6 +46,53 @@
 
 		<script src="ts/matches.js"></script>
 		<script src="ts/login.js"></script>
+=======
+<body onload="loadMatches();">
+<!-- navigation bar -->
+<nav class="navbar navbar-expand-md">
+    <a class="navbar-brand" href="#">techish</a>
+    <button
+            class="navbar-toggler navbar-dark"
+            data-target="#main-navigation"
+            data-toggle="collapse"
+            type="button"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="main-navigation">
+        <ul class="navbar-nav">
+            <li class="nav-item" id="logging">
+                <a class="login-text" href="#" id="login-link"></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<h1>Techish Logged-In Homepage</h1>
+
+<h2>Matching Section</h2>
+<form action="/matches" id="match_form" method="POST">
+    <input name="name" placeholder="Enter match name..." type="text">
+    <button form="match_form" type="submit" value="Submit">Submit</button>
+</form>
+
+<h3>Match History:</h3>
+<ul id="match-history"></ul>
+
+<button class="open-button" onclick="openForm()">Open New Match Form</button>
+<div class="form-popup" id="matchForm">
+  <form class="form-container">
+    <h1>Get New Matches</h1>
+
+    <label for="product_area"><b>Product Area</b></label>
+    <input type="text" placeholder="Enter Product Area" name="product_area" required>
+
+    <button type="submit" class="btn">Get Matches</button>
+    <button type="submit" class="btn cancel" onclick="sendMatchRequest()">Close</button>
+  </form>
+</div>
+
+<script src="ts/matches.js"></script>
+>>>>>>> dc2b30f... saving progress
 </body>
 
 </html>
