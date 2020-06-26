@@ -1,70 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8"/>
+  <head>
+    <meta charset="utf-8" />
     <meta
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      name="viewport"
     />
-    <meta content="STEP Capstone: Techish" name="description"/>
-    <meta content="Samuel Sandoval and Hadley Shapland" name="author"/>
+    <meta content="STEP Capstone: Techish" name="description" />
+    <meta content="Samuel Sandoval and Hadley Shapland" name="author" />
     <title>Techish</title>
-    <link href="css/styles.css" rel="stylesheet"/>
-</head>
-<body onload="loadMatches();">
-<!-- navigation bar -->
-<nav class="navbar navbar-expand-md">
-    <a class="navbar-brand" href="#">techish</a>
-    <button
-            class="navbar-toggler navbar-dark"
-            data-target="#main-navigation"
-            data-toggle="collapse"
-            type="button"
-    >
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="main-navigation">
-        <ul class="navbar-nav">
-            <li class="nav-item" id="logging">
-                <a class="login-text" href="#" id="login-link"></a>
-            </li>
-        </ul>
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- navigation bar -->
+    <div class="nav-item" id="login-status-section" style="display: block;">
+      <p>Link:</p>
+      <a class="login-text" id="login-link" href="#"></a>
     </div>
-</nav>
-<h1>Techish Logged-In Homepage</h1>
+    <h1>Techish Logged-In Homepage</h1>
 
-<h2>Matching Section</h2>
-<h3>Match History:</h3>
-<ul id="match-history"></ul>
-<h3>New Matches: (Going to be a popup)</h3>
-<!-- <ul id="new-matches"></ul> -->
-<!-- FORM TO SELECT WHICH NEW MATCHES TO SAVE -->
-<form action="/matches" id="new_match_form" method="POST">
-  <label for="new-matches">Select matches to save:</label>
-  <select name="new-matches" id="new-matches" multiple>
-    <!-- populated using JavaScript -->
-  </select>
-  <br><br>
-  <input type="submit" value="Submit">
-</form>
+    <h2>Matching Section</h2>
+    <h3>Match History:</h3>
+    <ul id="match-history"></ul>
+    <h3>New Matches: (Going to be a popup)</h3>
+    <!-- <ul id="new-matches"></ul> -->
+    <!-- FORM TO SELECT WHICH NEW MATCHES TO SAVE -->
+    <form action="/matches" id="new_match_form" method="POST">
+      <label for="new-matches">Select matches to save:</label>
+      <select name="new-matches" id="new-matches" multiple>
+        <!-- populated using JavaScript -->
+      </select>
+      <br /><br />
+      <input type="submit" value="Submit" />
+    </form>
 
-<p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+    <p>
+      Hold down the Ctrl (windows) or Command (Mac) button to select multiple
+      options.
+    </p>
 
+    <button class="open-button" onclick="openForm()">
+      Open New Match Form
+    </button>
+    <div class="form-popup" id="matchForm">
+      <form class="form-container">
+        <h1>Get New Matches</h1>
 
-<button class="open-button" onclick="openForm()">Open New Match Form</button>
-<div class="form-popup" id="matchForm">
-  <form class="form-container">
-    <h1>Get New Matches</h1>
+        <label for="product_area"><b>Product Area</b></label>
+        <input
+          type="text"
+          placeholder="Enter Product Area"
+          id="product_area"
+          required
+        />
 
-    <label for="product_area"><b>Product Area</b></label>
-    <input type="text" placeholder="Enter Product Area" id="product_area" required>
+        <label for="submit_button"><b>Submit</b></label>
+        <input type="button" class="btn" onclick="sendMatchRequest()" />
+        <button type="submit" class="btn cancel" onclick="closeForm()">
+          Close
+        </button>
+      </form>
+    </div>
 
-    <label for="submit_button"><b>Submit</b></label>
-    <input type="button" class="btn" onclick="sendMatchRequest()">
-    <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
-
-<script src="ts/matches.js"></script>
-</body>
+    <script src="ts/matches.js"></script>
+  </body>
 </html>
