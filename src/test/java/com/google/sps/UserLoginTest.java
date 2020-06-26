@@ -13,7 +13,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.sps.servlets.UserLoginServlet;
-import java.io.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -43,6 +42,14 @@ public class UserLoginTest {
   @Mock
   private UserLoginServlet userServlet;
 
+  private LocalServiceTestHelper helperLoggedIn =
+    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
+        .setEnvIsAdmin(true).setEnvIsLoggedIn(true);
+  
+  private LocalServiceTestHelper helperLoggedOut =
+    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
+        .setEnvIsAdmin(true).setEnvIsLoggedIn(false);
+    
   @Before
   public void setUp() throws Exception  {
     MockitoAnnotations.initMocks(this);
@@ -50,11 +57,8 @@ public class UserLoginTest {
 
   @Test
   public void loggedInUserReturnsLogOutUrl() throws ServletException, IOException  {
-    LocalServiceTestHelper helper =
-    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
-        .setEnvIsAdmin(true).setEnvIsLoggedIn(true);
-    helper.setUp();
-    
+
+    helperLoggedIn.setUp();
     StringWriter stringWriter = new StringWriter();
     PrintWriter printWriter = new PrintWriter(stringWriter);
     when(response.getWriter()).thenReturn(printWriter);
@@ -69,18 +73,36 @@ public class UserLoginTest {
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
     
-    Assert.assertTrue(logInUrl.isEmpty());
     Assert.assertFalse(logOutUrl.isEmpty());
+    helperLoggedIn.tearDown();
+  }
+
+
+  @Test
+  public void LogOutUrlContainsLogOut() throws ServletException, IOException  {
+
+    helperLoggedIn.setUp();
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(printWriter);
+
+    userServlet = new UserLoginServlet();
+    userServlet.doGet(request, response);
+
+    String responseString = stringWriter.getBuffer().toString().trim();
+    JsonElement responseJsonElement = new JsonParser().parse(responseString);
+         
+    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
+    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
+    
     Assert.assertTrue(logOutUrl.contains("logout"));
-    helper.tearDown();
+    helperLoggedIn.tearDown();
   }
 
   @Test
   public void loggedOutUserReturnsLogInUrl() throws ServletException, IOException  {
-    LocalServiceTestHelper helper =
-    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
-        .setEnvIsAdmin(true).setEnvIsLoggedIn(false);
-    helper.setUp();
+    helperLoggedOut.setUp();
 
     StringWriter stringWriter = new StringWriter();
     PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -96,10 +118,31 @@ public class UserLoginTest {
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
     
-    Assert.assertFalse(logInUrl.isEmpty());
-    Assert.assertTrue(logOutUrl.isEmpty());
+    Assert.assertFalse(logInUrl.isEmpty()) ;
+    // Assert.assertTrue(logOutUrl.isEmpty());
+    // Assert.assertTrue(logInUrl.contains("login"));
+    helperLoggedOut.tearDown();
+  }
+   @Test
+  public void logInUrlContainsLogin() throws ServletException, IOException  {
+    helperLoggedOut.setUp();
+
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(printWriter);
+
+    userServlet = new UserLoginServlet();
+    userServlet.doGet(request, response);
+
+    String response = stringWriter.getBuffer().toString().trim();
+    JsonElement responseJsonElement = new JsonParser().parse(response);
+         
+    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
+    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
+    
     Assert.assertTrue(logInUrl.contains("login"));
-    helper.tearDown();
+    helperLoggedOut.tearDown();
   }
 
 }
