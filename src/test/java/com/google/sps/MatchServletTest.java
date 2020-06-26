@@ -1,8 +1,8 @@
 package com.google.sps;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
 import com.google.sps.data.Match;
@@ -11,12 +11,12 @@ import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import com.google.sps.servlets.MatchServlet;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class MatchServletTest {
         User testUser = repository.addTestData();
         testRepository = repository;
         Gson gson = new Gson();
-        
+
         MatchServlet matchServlet = new MatchServlet();
         matchServlet.init();
 
