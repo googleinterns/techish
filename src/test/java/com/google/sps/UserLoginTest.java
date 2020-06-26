@@ -1,47 +1,108 @@
 package com.google.sps;
 
-import com.google.sps.servlets.UserLoginServlet;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+// import com.google.appengine.api.users.dev;
+import com.google.appengine.api.users.dev.LocalUserService;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.sps.servlets.UserLoginServlet;
 import java.io.*;
 import java.io.IOException;
-import javax.servlet.http.*;
-import javax.servlet.http.HttpServlet;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.io.FileUtils;
+import javax.servlet.ServletException;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static org.mockito.Mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 
-
-
-/** */
 @RunWith(JUnit4.class)
-public final class UserLoginTest {
-	
+public class UserLoginTest {
 
-  public void userLoggedIn() {
-    HttpServletRequest request = mock(HttpServletRequest.class);      
-    HttpServletResponse response = mock(HttpServletResponse.class);
-    
-    new MyServlet().doGet(request, response);
-    String expected = "/_ah/logout?continue=%2Findex.html";
-    String expected = "/_ah/logout?continue=%2Findex.html";
+  @Mock
+  private HttpServletRequest request;
 
-    Assert.assertEquals(expected, actual);
+  @Mock
+  private HttpServletResponse response;
+
+  @Mock
+  private UserLoginServlet userServlet;
+
+  @Before
+  public void setUp() throws Exception  {
+    MockitoAnnotations.initMocks(this);
   }
 
-//   @Test
-//   public void userLoggedOut() {
+  @Test
+  public void loggedInUserReturnsLogOutUrl() throws ServletException, IOException  {
+    LocalServiceTestHelper helper =
+    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
+        .setEnvIsAdmin(true).setEnvIsLoggedIn(true);
+    helper.setUp();
+    
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(printWriter);
 
-//     String actual = userService.createLoginURL("/index.html");
-//     String expected = "/_ah/login?continue=%2Findex.html";
-//     Assert.assertEquals(expected, actual);
-//   }
+    userServlet = new UserLoginServlet();
+    userServlet.doGet(request, response);
+
+    String responseString = stringWriter.getBuffer().toString().trim();
+    JsonElement responseJsonElement = new JsonParser().parse(responseString);
+         
+    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
+    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
+    
+    Assert.assertTrue(logInUrl.isEmpty());
+    Assert.assertFalse(logOutUrl.isEmpty());
+    Assert.assertTrue(logOutUrl.contains("logout"));
+    helper.tearDown();
+  }
+
+  @Test
+  public void loggedOutUserReturnsLogInUrl() throws ServletException, IOException  {
+    LocalServiceTestHelper helper =
+    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
+        .setEnvIsAdmin(true).setEnvIsLoggedIn(false);
+    helper.setUp();
+
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(printWriter);
+
+    userServlet = new UserLoginServlet();
+    userServlet.doGet(request, response);
+
+    String response = stringWriter.getBuffer().toString().trim();
+    JsonElement responseJsonElement = new JsonParser().parse(response);
+         
+    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
+    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
+    
+    Assert.assertFalse(logInUrl.isEmpty());
+    Assert.assertTrue(logOutUrl.isEmpty());
+    Assert.assertTrue(logInUrl.contains("login"));
+    helper.tearDown();
+  }
+
+    //check login url has string contains login url
+
 }
