@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-// import com.google.appengine.api.users.dev;
 import com.google.appengine.api.users.dev.LocalUserService;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
