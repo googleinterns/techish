@@ -70,8 +70,7 @@ public class UserLoginTest {
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
    
-    Assert.assertFalse(logOutUrl.isEmpty());
-    Assert.assertTrue(logOutUrl.contains("logout"));
+    Assert.assertTrue(logOutUrl.contains("logout") && !logOutUrl.isEmpty());
     Assert.assertTrue(logInUrl.isEmpty());
     helperLoggedIn.tearDown();
   }
@@ -84,8 +83,8 @@ public class UserLoginTest {
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
 
-    Assert.assertFalse(logInUrl.isEmpty()) ;
-    Assert.assertTrue(logInUrl.contains("login"));
+    // Assert.assertFalse(logInUrl.isEmpty()) ;
+    Assert.assertTrue(logInUrl.contains("login") && !logInUrl.isEmpty());
     Assert.assertTrue(logOutUrl.isEmpty());
     helperLoggedOut.tearDown();
   }
