@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,12 +55,19 @@ public class UserLoginTest {
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
+    localHelper.setUp();
   }
+  
+  @After
+  public void tearDown() throws Exception {
+    localHelper.tearDown();
+  }
+
 
   @Test
   public void userLoggedInReturningLogOut() throws ServletException, IOException  {
     localHelper.setEnvIsLoggedIn(true);
-    localHelper.setUp();
+    // localHelper.setUp();
     
     JsonObject responseJsonObject = getLoginServletResponse();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
@@ -67,13 +75,11 @@ public class UserLoginTest {
    
     Assert.assertTrue(logOutUrl.contains("logout"));
     Assert.assertTrue(logInUrl.isEmpty());
-    localHelper.tearDown();
   }
 
    @Test
   public void userLoggedOutReturningLogIn() throws ServletException, IOException  {
     localHelper.setEnvIsLoggedIn(false);
-    localHelper.setUp();
 
     JsonObject responseJsonObject = getLoginServletResponse();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
@@ -81,6 +87,5 @@ public class UserLoginTest {
 
     Assert.assertTrue(logInUrl.contains("login"));
     Assert.assertTrue(logOutUrl.isEmpty());
-    localHelper.tearDown();
   }
 }
