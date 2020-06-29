@@ -1,7 +1,6 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-import com.google.sps.data.Match;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
@@ -29,7 +28,7 @@ public class MatchServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    Collection<Match> matches = testRepository.getMatchesForUser(testUser);
+    Collection<User> matches = testRepository.getMatchesForUser(testUser);
 
     Gson gson = new Gson();
     response.setContentType("application/json;");
@@ -43,7 +42,7 @@ public class MatchServlet extends HttpServlet {
     String[] matchesToSave = request.getParameterValues("new-matches");
 
     for (String matchName : matchesToSave) {
-      Match newMatch = new Match(matchName);
+      User newMatch = new User(matchName);
       testRepository.addMatch(testUser, newMatch);
     }
 

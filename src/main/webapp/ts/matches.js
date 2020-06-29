@@ -97,10 +97,10 @@ function queryServer(matchRequest) {
                     return response.json();
                 })
                     .then(function (users) {
-                    // Convert the range from a json representation to our Match class.
+                    // Convert the range from a json representation to our User class.
                     var out = [];
                     users.forEach(function (range) {
-                        out.push(new Match(range.name));
+                        out.push(new User(range.name));
                     });
                     return out;
                 })];
@@ -117,15 +117,5 @@ var User = /** @class */ (function () {
     function User(name) {
         this.name = name;
     }
-    User.prototype.toMatch = function () {
-        var newMatch = new Match(this.name);
-        return newMatch;
-    };
     return User;
-}());
-var Match = /** @class */ (function () {
-    function Match(name) {
-        this.name = name;
-    }
-    return Match;
 }());
