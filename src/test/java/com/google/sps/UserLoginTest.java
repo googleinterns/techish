@@ -38,7 +38,22 @@ public class UserLoginTest {
   private LocalServiceTestHelper helperLoggedOut =
     new LocalServiceTestHelper(new LocalUserServiceTestConfig())
         .setEnvIsAdmin(true).setEnvIsLoggedIn(false);
+  
+  private JsonObject jsonSetUp() throws ServletException, IOException {
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    when(response.getWriter()).thenReturn(printWriter);
+
+    userServlet = new UserLoginServlet();
+    userServlet.doGet(request, response);
+
+    String response = stringWriter.getBuffer().toString().trim();
+    JsonElement responseJsonElement = new JsonParser().parse(response);
+    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
     
+    return responseJsonObject;
+  }
+
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
@@ -48,18 +63,8 @@ public class UserLoginTest {
   public void loggedInUserReturnsLogOutUrl() throws ServletException, IOException  {
 
     helperLoggedIn.setUp();
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
-
-    userServlet = new UserLoginServlet();
-    userServlet.doGet(request, response);
-
-    String responseString = stringWriter.getBuffer().toString().trim();
-    JsonElement responseJsonElement = new JsonParser().parse(responseString);
-
-    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
-    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    
+    JsonObject responseJsonObject = jsonSetUp();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
 
     Assert.assertFalse(logOutUrl.isEmpty());
@@ -71,18 +76,8 @@ public class UserLoginTest {
   public void LogOutUrlContainsLogOut() throws ServletException, IOException  {
 
     helperLoggedIn.setUp();
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
-
-    userServlet = new UserLoginServlet();
-    userServlet.doGet(request, response);
-
-    String responseString = stringWriter.getBuffer().toString().trim();
-    JsonElement responseJsonElement = new JsonParser().parse(responseString);
-         
-    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
-    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    
+    JsonObject responseJsonObject = jsonSetUp();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
     
     Assert.assertTrue(logOutUrl.contains("logout"));
@@ -93,19 +88,8 @@ public class UserLoginTest {
   public void loggedOutUserReturnsLogInUrl() throws ServletException, IOException  {
     helperLoggedOut.setUp();
 
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
-
-    userServlet = new UserLoginServlet();
-    userServlet.doGet(request, response);
-
-    String response = stringWriter.getBuffer().toString().trim();
-    JsonElement responseJsonElement = new JsonParser().parse(response);
-         
-    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
+    JsonObject responseJsonObject = jsonSetUp();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
-    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
     
     Assert.assertFalse(logInUrl.isEmpty()) ;
     helperLoggedOut.tearDown();
@@ -114,19 +98,8 @@ public class UserLoginTest {
   public void logInUrlContainsLogin() throws ServletException, IOException  {
     helperLoggedOut.setUp();
 
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter printWriter = new PrintWriter(stringWriter);
-    when(response.getWriter()).thenReturn(printWriter);
-
-    userServlet = new UserLoginServlet();
-    userServlet.doGet(request, response);
-
-    String response = stringWriter.getBuffer().toString().trim();
-    JsonElement responseJsonElement = new JsonParser().parse(response);
-
-    JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
+    JsonObject responseJsonObject = jsonSetUp();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
-    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
 
     Assert.assertTrue(logInUrl.contains("login"));
     helperLoggedOut.tearDown();
