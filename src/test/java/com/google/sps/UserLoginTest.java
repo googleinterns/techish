@@ -39,7 +39,7 @@ public class UserLoginTest {
     new LocalServiceTestHelper(new LocalUserServiceTestConfig())
         .setEnvIsAdmin(true).setEnvIsLoggedIn(false);
   
-  private JsonObject jsonSetUp() throws ServletException, IOException {
+  private JsonObject getLoginServletResponse() throws ServletException, IOException {
     StringWriter stringWriter = new StringWriter();
     PrintWriter printWriter = new PrintWriter(stringWriter);
     when(response.getWriter()).thenReturn(printWriter);
@@ -59,49 +59,34 @@ public class UserLoginTest {
     MockitoAnnotations.initMocks(this);
   }
 
+  
+
   @Test
-  public void loggedInUserReturnsLogOutUrl() throws ServletException, IOException  {
+  public void userLoggedInReturningLogOut() throws ServletException, IOException  {
 
     helperLoggedIn.setUp();
     
-    JsonObject responseJsonObject = jsonSetUp();
+    JsonObject responseJsonObject = getLoginServletResponse();
+    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
     String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
-
+   
     Assert.assertFalse(logOutUrl.isEmpty());
-    helperLoggedIn.tearDown();
-  }
-
-
-  @Test
-  public void LogOutUrlContainsLogOut() throws ServletException, IOException  {
-
-    helperLoggedIn.setUp();
-    
-    JsonObject responseJsonObject = jsonSetUp();
-    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
-    
     Assert.assertTrue(logOutUrl.contains("logout"));
+    Assert.assertTrue(logInUrl.isEmpty());
     helperLoggedIn.tearDown();
   }
 
-  @Test
-  public void loggedOutUserReturnsLogInUrl() throws ServletException, IOException  {
-    helperLoggedOut.setUp();
-
-    JsonObject responseJsonObject = jsonSetUp();
-    String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
-    
-    Assert.assertFalse(logInUrl.isEmpty()) ;
-    helperLoggedOut.tearDown();
-  }
    @Test
-  public void logInUrlContainsLogin() throws ServletException, IOException  {
+  public void userLoggedOutReturningLogIn() throws ServletException, IOException  {
     helperLoggedOut.setUp();
 
-    JsonObject responseJsonObject = jsonSetUp();
+    JsonObject responseJsonObject = getLoginServletResponse();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
+    String logOutUrl = responseJsonObject.get("LogOutUrl").getAsString();
 
+    Assert.assertFalse(logInUrl.isEmpty()) ;
     Assert.assertTrue(logInUrl.contains("login"));
+    Assert.assertTrue(logOutUrl.isEmpty());
     helperLoggedOut.tearDown();
   }
 }
