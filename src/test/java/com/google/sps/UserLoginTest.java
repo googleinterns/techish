@@ -31,13 +31,10 @@ public class UserLoginTest {
 
   @Mock private UserLoginServlet userServlet;
 
-  private LocalServiceTestHelper helperLoggedIn =
+  private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalUserServiceTestConfig())
-        .setEnvIsAdmin(true).setEnvIsLoggedIn(true);
+        .setEnvIsAdmin(true);
   
-  private LocalServiceTestHelper helperLoggedOut =
-    new LocalServiceTestHelper(new LocalUserServiceTestConfig())
-        .setEnvIsAdmin(true).setEnvIsLoggedIn(false);
   
   private JsonObject getLoginServletResponse() throws ServletException, IOException {
     StringWriter stringWriter = new StringWriter();
@@ -59,12 +56,10 @@ public class UserLoginTest {
     MockitoAnnotations.initMocks(this);
   }
 
-  
-
   @Test
   public void userLoggedInReturningLogOut() throws ServletException, IOException  {
-
-    helperLoggedIn.setUp();
+    localHelper.setEnvIsLoggedIn(true);
+    localHelper.setUp();
     
     JsonObject responseJsonObject = getLoginServletResponse();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
@@ -72,12 +67,13 @@ public class UserLoginTest {
    
     Assert.assertTrue(logOutUrl.contains("logout"));
     Assert.assertTrue(logInUrl.isEmpty());
-    helperLoggedIn.tearDown();
+    localHelper.tearDown();
   }
 
    @Test
   public void userLoggedOutReturningLogIn() throws ServletException, IOException  {
-    helperLoggedOut.setUp();
+    localHelper.setEnvIsLoggedIn(false);
+    localHelper.setUp();
 
     JsonObject responseJsonObject = getLoginServletResponse();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
@@ -85,6 +81,6 @@ public class UserLoginTest {
 
     Assert.assertTrue(logInUrl.contains("login"));
     Assert.assertTrue(logOutUrl.isEmpty());
-    helperLoggedOut.tearDown();
+    localHelper.tearDown();
   }
 }
