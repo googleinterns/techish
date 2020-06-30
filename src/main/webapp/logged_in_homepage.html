@@ -71,21 +71,44 @@
           id="product_area"
           required
         />
-        <input type="button" class="btn btn-primary" value="Submit" onclick="sendMatchRequest()" />
+        <input type="button" class="btn btn-primary" value="Submit" onclick="sendMatchRequest()" data-toggle="modal" data-target="#exampleModal"/>
       </form>
     </div>
 
   <hr>
-  <h3>New Matches (Going to be a popup):</h3>
-    <!-- FORM TO SELECT WHICH NEW MATCHES TO SAVE -->
-    <form action="/matches" id="new_match_form" method="POST">
-      <label for="new-matches">Select matches to save:</label>
-      <select class="selectpicker" name="new-matches" id="new-matches" multiple>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select One or More Matches to Save:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+          <form action="/matches" id="new_match_form" method="POST">
+      <select class="selectpicker show-tick" name="new-matches" id="new-matches" multiple>
         <!-- populated using JavaScript -->
       </select>
       <br/><br/>
-      <input type="submit" value="Submit" />
     </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" form="new_match_form" class="btn btn-primary">Save Matches</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+    
 
     </div>
   </section>
