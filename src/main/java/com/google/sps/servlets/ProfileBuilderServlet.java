@@ -10,12 +10,9 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import com.google.sps.data.ProfileRepository;
 import com.google.sps.data.ProfessionalProfile;
 import com.google.sps.data.StudentProfile;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +44,7 @@ public class ProfileBuilderServlet extends HttpServlet {
 
 
  @Override
- public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String profile = request.getParameter("profile-section");
     String fullname = request.getParameter("name-input");
     String userType = request.getParameter("user-Type");
@@ -65,5 +62,5 @@ public class ProfileBuilderServlet extends HttpServlet {
     }
 
     response.sendRedirect("/index.html");
-   }
- }
+  }
+}
