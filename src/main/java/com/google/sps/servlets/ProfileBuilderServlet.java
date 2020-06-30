@@ -65,4 +65,5 @@ public class ProfileBuilderServlet extends HttpServlet {
     }
 
     response.sendRedirect("/index.html");
+   }
  }
