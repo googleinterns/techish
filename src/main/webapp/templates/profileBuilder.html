@@ -9,7 +9,67 @@
   <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
+    <h1>Profile Builder</h1>
+        <form action="/profile" id="profile_form" method="POST" id="makeProfile">
+            <div>
+                <label style= "color: black;"> User Type:
+                <select class="" placeholder={{category}} name="user-Type" onchange="setForm(this.value)">
+                    <option>Choose your User Type</option>
+                    <option name="user-Type" value="professional">Professional</option>
+                    <option name="user-Type"  value="student">Student</option>
+                </select>
+            </label>
+            </div>
+            <!-- Student Input Form -->
+            <div id="student">
+
+            <!-- full name input -->
+                <div>
+                    <label style="color:black;" name="name-input"> Full Name:
+                        <input type="text" name="name-input" class="form-control">
+                    </label>
+                </div>
+                <!-- School input -->
+                <div>
+                    <label style="color:black;" name="school-input"> School:
+                        <input type="text" name="school-input" class="form-control"  placeholder="School">
+                    </label>
+                </div>
+                <!-- Major input -->
+                <div>
+                    <label style="color:black;" name="major-input"> Major:
+                        <input type="text" name="major-input" class="form-control"  placeholder="Major">
+                    </label>
+                </div>
+
+                <input type="submit" value="Submit">
+            </div>
+
+            <div id="professional" style="display: none">
+
+			<!-- full name -->
+                <div>
+                    <label style="color:black;" name="profName-input"> Full Name:
+                        <input type="text" name="profName-input" class="form-control">
+                    </label>
+                </div>
+                <!-- Company input -->
+                <div>
+                    <label style="color:black;" name="company-input"> Company:
+                        <input type="text" name="company-input" class="form-control" placeholder="Company">
+                    </label>
+                </div>
+                <!-- Career Title input -->
+                <div>
+                    <label style="color:black;" name="careerTitle-input"> Career Title:
+                        <input type="text" name="careerTitle-input" class="form-control"  placeholder="Career Title">
+                    </label>
+                </div>
+
+                <input type="submit" value="Submit">
+            </div>
+        </form>
   
-  <script src="ts/app.ts"></script>
+    <script type="text/javascript" src="ts/profileBuild.js"></script>
 </body>
 </html>
