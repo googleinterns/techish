@@ -46,6 +46,6 @@ public class MatchServlet extends HttpServlet {
       testRepository.addMatch(testUser, newMatch);
     }
 
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/logged_in_homepage.html");
   }
 }

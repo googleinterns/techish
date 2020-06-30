@@ -5,7 +5,7 @@ type authInfo = {
 };
 //function that loads the home page for logging in and logging out
 async function loadHome() {
-    const logging = document.getElementById('login-status-section');
+    const logging = document.getElementById('navbarResponsive');
     const link = document.getElementById('login-link');
 
     const logStatus = await getLogStatus();

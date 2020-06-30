@@ -65,13 +65,13 @@ public class MatchServletTest {
         String[] newMatches = {"John", "Bob", "Cathy"};
         when(request.getParameterValues("new-matches")).thenReturn(newMatches);
         matchServlet.doPost(request, response);
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
 
         //doGet again to verify there are now 7 matches
         result = doGetHelper(request, response, matchServlet);
         numMatches = matchesInString(result);
         Assert.assertEquals(7, numMatches);
     }
-
     
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
