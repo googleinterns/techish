@@ -20,6 +20,8 @@
   <!-- Custom styles for this template -->
   <link href="css/one-page-wonder.min.css" rel="stylesheet">
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" />
+
 </head>
 
 <body onload="loadMatches();">
@@ -91,7 +93,7 @@
       <div class="modal-body">
       
           <form action="/matches" id="new_match_form" method="POST">
-      <select class="selectpicker show-tick" name="new-matches" id="new-matches" multiple>
+      <select  name="new-matches" id="new-matches" multiple>
         <!-- populated using JavaScript -->
       </select>
       <br/><br/>
@@ -106,8 +108,6 @@
     </div>
   </div>
 </div>
-  
-
     
 
     </div>
@@ -125,8 +125,6 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
-    <script src="ts/matches.js"></script>
+  <script src="ts/matches.js"></script>
   </body>
 </html>
