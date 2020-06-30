@@ -30,6 +30,9 @@ public class UserLoginTest {
 
   @Mock private HttpServletResponse response;
 
+  private UserLoginServlet userServlet =
+    new UserLoginServlet();  
+
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalUserServiceTestConfig())
         .setEnvIsAdmin(true);
@@ -38,13 +41,16 @@ public class UserLoginTest {
   private JsonObject getLoginServletResponse() throws ServletException, IOException {
     StringWriter stringWriter = new StringWriter();
     PrintWriter printWriter = new PrintWriter(stringWriter);
+    /*
+    Mocking the print writer bc
+    UserLoginServlet writes its reponse in response.getWriter() 
+    */
     when(response.getWriter()).thenReturn(printWriter);
 
-    UserLoginServlet userServlet = new UserLoginServlet();
     userServlet.doGet(request, response);
 
-    String response = stringWriter.getBuffer().toString().trim();
-    JsonElement responseJsonElement = new JsonParser().parse(response);
+    String responseStr = stringWriter.getBuffer().toString().trim();
+    JsonElement responseJsonElement = new JsonParser().parse(responseStr);
     JsonObject responseJsonObject = responseJsonElement.getAsJsonObject();
     
     return responseJsonObject;
