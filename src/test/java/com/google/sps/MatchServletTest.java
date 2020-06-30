@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
-import com.google.sps.data.Match;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
@@ -40,7 +39,7 @@ public class MatchServletTest {
         matchServlet.init();
 
         //get expected result
-        Collection<Match> matches = testRepository.getMatchesForUser(testUser);
+        Collection<User> matches = testRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
 
         //call doGet

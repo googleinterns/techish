@@ -5,13 +5,13 @@ function loadMatches() {
             const matchListElement = document.getElementById('match-history')!;
             matchListElement.innerHTML = "";
 
-            matches.forEach((match: Match) => {
+            matches.forEach((match: User) => {
                 matchListElement.appendChild(createMatchElement(match));
             })
         });
 }
 
-function createMatchElement(match: Match) {
+function createMatchElement(match: User) {
     const matchElement = document.createElement('li');
     matchElement.className = 'match';
 
@@ -46,7 +46,7 @@ function sendMatchRequest() {
   });
 }
 
-function displayNewMatchPopup(matches : Array<Match>) {
+function displayNewMatchPopup(matches : Array<User>) {
     const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
 
   // clear out any old results
@@ -61,7 +61,7 @@ function displayNewMatchPopup(matches : Array<Match>) {
 }
 
 
-function matchToString(match : Match) {
+function matchToString(match : User) {
     return match.name;
 }
 
@@ -75,10 +75,10 @@ async function queryServer(matchRequest: MatchRequest) {
         return response.json();
       })
       .then((users) => {
-        // Convert the range from a json representation to our Match class.
-        const out : Array<Match> = [];
+        // Convert the range from a json representation to our User class.
+        const out : Array<User> = [];
         users.forEach((range: User) => {
-          out.push(new Match(range.name));
+          out.push(new User(range.name));
         });
         return out;
       });
@@ -96,16 +96,5 @@ class User {
     constructor(name: string) {
         this.name = name;
     }
-
-    toMatch() {
-        let newMatch : Match = new Match(this.name);
-        return newMatch;
-    }
 }
 
-class Match {
-    name: string;
-    constructor(name: string) {
-        this.name = name;
-    }
-}
