@@ -16,8 +16,4 @@ public final class User {
     return this.name == user.name;
   }
 
-  public Match toMatch() {
-    Match newMatch = new Match(name);
-    return newMatch;
-  }
 }

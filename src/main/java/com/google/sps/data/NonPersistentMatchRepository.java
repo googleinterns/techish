@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * operations do not entail locking.
  */
 public class NonPersistentMatchRepository implements MatchRepository {
-  private Map<User, List<Match>> userMatches;
+  private Map<User, List<User>> userMatches;
 
   public NonPersistentMatchRepository() {
     userMatches = new ConcurrentHashMap();
@@ -21,30 +21,30 @@ public class NonPersistentMatchRepository implements MatchRepository {
 
   // returns the User that data was added for
   public User addTestData() {
-    Match matchA = new Match("Hadley");
-    Match matchB = new Match("Sam");
-    Match matchC = new Match("Andre");
-    Match matchD = new Match("Jerry");
+    User matchA = new User("Hadley");
+    User matchB = new User("Sam");
+    User matchC = new User("Andre");
+    User matchD = new User("Jerry");
     User testUser = new User("Test User");
-    List<Match> allMatches = new ArrayList<Match>(Arrays.asList(matchA, matchB, matchC, matchD));
+    List<User> allMatches = new ArrayList<User>(Arrays.asList(matchA, matchB, matchC, matchD));
     userMatches.put(testUser, allMatches);
     return testUser;
   }
 
-  public void addMatch(User user, Match match) {
+  public void addMatch(User user, User match) {
     if (userMatches.containsKey(user)) {
-      List<Match> currentMatches = userMatches.get(user);
+      List<User> currentMatches = userMatches.get(user);
       currentMatches.add(match);
       userMatches.replace(user, currentMatches);
     } else {
-      List<Match> newMatch = new ArrayList<Match>(Arrays.asList(match));
+      List<User> newMatch = new ArrayList<User>(Arrays.asList(match));
       userMatches.put(user, newMatch);
     }
   }
 
-  public void removeMatch(User user, Match match) throws Exception {
+  public void removeMatch(User user, User match) throws Exception {
     if (userMatches.containsKey(user)) {
-      List<Match> currentMatches = userMatches.get(user);
+      List<User> currentMatches = userMatches.get(user);
       currentMatches.remove(match);
       userMatches.replace(user, currentMatches);
     } else {
@@ -52,11 +52,11 @@ public class NonPersistentMatchRepository implements MatchRepository {
     }
   }
 
-  public Collection<Match> getMatchesForUser(User user) {
+  public Collection<User> getMatchesForUser(User user) {
     if (userMatches.containsKey(user)) {
       return userMatches.get(user);
     } else {
-      List<Match> emptyMatch = new ArrayList<Match>();
+      List<User> emptyMatch = new ArrayList<User>();
       userMatches.put(user, emptyMatch);
       return emptyMatch;
     }
