@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
-import com.google.sps.data.Match;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
@@ -40,7 +39,7 @@ public class MatchServletTest {
         matchServlet.init();
 
         //get expected result
-        Collection<Match> matches = testRepository.getMatchesForUser(testUser);
+        Collection<User> matches = testRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
 
         //call doGet
@@ -66,13 +65,13 @@ public class MatchServletTest {
         String[] newMatches = {"John", "Bob", "Cathy"};
         when(request.getParameterValues("new-matches")).thenReturn(newMatches);
         matchServlet.doPost(request, response);
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
 
         //doGet again to verify there are now 7 matches
         result = doGetHelper(request, response, matchServlet);
         numMatches = matchesInString(result);
         Assert.assertEquals(7, numMatches);
     }
-
     
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
