@@ -30,8 +30,6 @@ public class UserLoginTest {
 
   @Mock private HttpServletResponse response;
 
-  @Mock private UserLoginServlet userServlet;
-
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalUserServiceTestConfig())
         .setEnvIsAdmin(true);
@@ -42,7 +40,7 @@ public class UserLoginTest {
     PrintWriter printWriter = new PrintWriter(stringWriter);
     when(response.getWriter()).thenReturn(printWriter);
 
-    userServlet = new UserLoginServlet();
+    UserLoginServlet userServlet = new UserLoginServlet();
     userServlet.doGet(request, response);
 
     String response = stringWriter.getBuffer().toString().trim();
@@ -67,7 +65,6 @@ public class UserLoginTest {
   @Test
   public void userLoggedInReturningLogOut() throws ServletException, IOException  {
     localHelper.setEnvIsLoggedIn(true);
-    // localHelper.setUp();
     
     JsonObject responseJsonObject = getLoginServletResponse();
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
