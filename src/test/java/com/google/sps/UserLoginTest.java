@@ -47,7 +47,6 @@ public class UserLoginTest {
     */
     when(response.getWriter()).thenReturn(printWriter);
 
-    // UserLoginServlet userServlet = new UserLoginServlet();
     userServlet.doGet(request, response);
 
     String responseStr = stringWriter.getBuffer().toString().trim();
