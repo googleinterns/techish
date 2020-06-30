@@ -26,6 +26,8 @@ public class ProfileBuilderServlet extends HttpServlet {
     if(userType.contains("student")){
 
         Entity profileEntity = new Entity("StudentProfile");
+        long id = profileEntity.getKey().getId();
+        profileEntity.setProperty("id", id);
         profileEntity.setProperty("fullname", fullname);
         profileEntity.setProperty("school", input2);
         profileEntity.setProperty("major", input3);
@@ -34,6 +36,8 @@ public class ProfileBuilderServlet extends HttpServlet {
     }
     else{
         Entity profileEntity = new Entity("ProfessionalProfile");
+        long id = profileEntity.getKey().getId();
+        profileEntity.setProperty("id", id);
         profileEntity.setProperty("fullname", fullname);
         profileEntity.setProperty("company", input2);
         profileEntity.setProperty("careerTitle", input3);
@@ -46,18 +50,19 @@ public class ProfileBuilderServlet extends HttpServlet {
  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String profile = request.getParameter("profile-section");
-    String fullname = request.getParameter("name-input");
     String userType = request.getParameter("user-Type");
-    String school = request.getParameter("school-input");
-    String major = request.getParameter("major-input");
-    String company = request.getParameter("company-input");
-    String careerTitle = request.getParameter("careerTitle-input");
-    String profName = request.getParameter("profName-input");
+
 
     if(userType.contains("student")){
+        String fullname = request.getParameter("name-input");
+        String school = request.getParameter("school-input");
+        String major = request.getParameter("major-input");
         storeProfile(userType, fullname, school, major);
     }
     else{
+        String profName = request.getParameter("profName-input");
+        String company = request.getParameter("company-input");
+        String careerTitle = request.getParameter("careerTitle-input");
         storeProfile(userType, profName, company, careerTitle);
     }
 
