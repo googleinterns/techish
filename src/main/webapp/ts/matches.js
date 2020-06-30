@@ -53,14 +53,7 @@ function createMatchElement(match) {
     matchElement.appendChild(nameElement);
     return matchElement;
 }
-function openForm() {
-    document.getElementById("matchForm").style.display = "block";
-}
-function closeForm() {
-    document.getElementById("matchForm").style.display = "none";
-}
 function sendMatchRequest() {
-    closeForm();
     var productArea = document.getElementById('product_area').value;
     // Create the request to send to the server using the data we collected from
     // the web form.
