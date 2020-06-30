@@ -6,7 +6,7 @@ public final class ProfessionalProfile {
   
   private final long id;
   private final String fullname;
-  private final String school;
+  private final String company;
   private final String careerTitle;
 
   /**
@@ -18,7 +18,7 @@ public final class ProfessionalProfile {
   public ProfessionalProfile(long id, String fullname, String company, String careerTitle) {
     this.id = id;
     this.fullname = fullname;
-    this.school = company;
+    this.company = company;
     this.careerTitle = careerTitle;
   }
 } 

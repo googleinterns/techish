@@ -21,49 +21,46 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/profile")
 public class ProfileBuilderServlet extends HttpServlet {
 
-  private void storeProfile(String userType, String fullname, String input2, String input3) {
+  private void storeStudentProfile(String fullname, String school, String major) {
+    Entity profileEntity = new Entity("StudentProfile");
+    long id = profileEntity.getKey().getId();
+    profileEntity.setProperty("id", id);
+    profileEntity.setProperty("fullname", fullname);
+    profileEntity.setProperty("school", school);
+    profileEntity.setProperty("major", major);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(profileEntity);
+  }  
 
-    if(userType.contains("student")){
-
-        Entity profileEntity = new Entity("StudentProfile");
-        long id = profileEntity.getKey().getId();
-        profileEntity.setProperty("id", id);
-        profileEntity.setProperty("fullname", fullname);
-        profileEntity.setProperty("school", input2);
-        profileEntity.setProperty("major", input3);
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        datastore.put(profileEntity);
-    }
-    else{
-        Entity profileEntity = new Entity("ProfessionalProfile");
-        long id = profileEntity.getKey().getId();
-        profileEntity.setProperty("id", id);
-        profileEntity.setProperty("fullname", fullname);
-        profileEntity.setProperty("company", input2);
-        profileEntity.setProperty("careerTitle", input3);
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        datastore.put(profileEntity);
-    }
+  private void storeProfessionalProfile(String fullname, String company, String careerTitle) {
+    Entity profileEntity = new Entity("ProfessionalProfile");
+    long id = profileEntity.getKey().getId();
+    profileEntity.setProperty("id", id);
+    profileEntity.setProperty("fullname", fullname);
+    profileEntity.setProperty("company", company);
+    profileEntity.setProperty("careerTitle", careerTitle);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(profileEntity);
   }
 
 
  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String profile = request.getParameter("profile-section");
     String userType = request.getParameter("user-Type");
-
-
     if(userType.contains("student")){
         String fullname = request.getParameter("name-input");
         String school = request.getParameter("school-input");
         String major = request.getParameter("major-input");
-        storeProfile(userType, fullname, school, major);
+        storeStudentProfile(fullname, school, major);
     }
-    else{
+    else if(userType.contains("professional")){
         String profName = request.getParameter("profName-input");
         String company = request.getParameter("company-input");
         String careerTitle = request.getParameter("careerTitle-input");
-        storeProfile(userType, profName, company, careerTitle);
+        storeProfessionalProfile(profName, company, careerTitle);
+    }
+    else{
+        System.out.println("Error invalid userType");
     }
 
     response.sendRedirect("/index.html");

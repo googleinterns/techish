@@ -7,13 +7,14 @@
   <meta name="author" content="Samuel Sandoval and Hadley Shapland">
   <title>Techish</title>
   <link href="css/styles.css" rel="stylesheet">
+
 </head>
 <body>
     <h1>Profile Builder</h1>
         <form action="/profile" id="profile_form" method="POST" id="makeProfile">
             <div>
                 <label style= "color: black;"> User Type:
-                <select class="" placeholder={{category}} name="user-Type" onchange="setForm(this.value)">
+                <select placeholder={{category}} name="user-Type" onchange="setForm(this.value)">
                     <option>Choose your User Type</option>
                     <option name="user-Type" value="professional">Professional</option>
                     <option name="user-Type"  value="student">Student</option>
@@ -70,6 +71,6 @@
             </div>
         </form>
   
-    <script type="text/javascript" src="ts/profileBuild.js"></script>
+  <script type="text/javascript" src="../ts/profileBuild.js"></script>
 </body>
 </html>

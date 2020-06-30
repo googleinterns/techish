@@ -4,9 +4,7 @@ function setForm(value) {
     if (studentForm && professionalForm) {
         if (value == 'student') {
             studentForm.setAttribute('style', 'display:block;');
-            // .style='display:block;';
             professionalForm.setAttribute('style', 'display:none;');
-            // style='display:none;';
         }
         else {
             professionalForm.setAttribute('style', 'display:block;');
