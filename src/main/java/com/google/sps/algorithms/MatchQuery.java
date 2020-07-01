@@ -12,7 +12,7 @@ public final class MatchQuery {
 
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
     mockRepo.addFakeMentors();
-    Collection<User> mockMentors = mockRepo.getUsers();
+    Collection<User> mockMentors = mockRepo.getAllUsers();
     
     return mockMentors;
   }

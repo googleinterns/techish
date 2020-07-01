@@ -43,7 +43,7 @@ import java.util.Map;
          allUsers.remove(user);
      }
 
-     public Collection<User> getUsers() {
+     public Collection<User> getAllUsers() {
          return allUsers;
      }
 

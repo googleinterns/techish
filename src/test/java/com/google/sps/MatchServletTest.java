@@ -59,7 +59,6 @@ public class MatchServletTest {
         //First doGet Call
         String result = doGetHelper(request, response, matchServlet);
         int numMatches = matchesInString(result);
-        // System.out.println(result);
         Assert.assertEquals(4, numMatches);
 
         //DoPost to add 3 more matches

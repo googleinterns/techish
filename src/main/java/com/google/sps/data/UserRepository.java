@@ -9,7 +9,7 @@ public interface UserRepository {
 
   public void removeUser(User user);
 
-  public Collection<User> getUsers();
+  public Collection<User> getAllUsers();
 
   public String toString();
 }
