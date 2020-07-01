@@ -1,6 +1,7 @@
 package com.google.sps;
 
 import com.google.sps.data.User;
+import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,15 @@ public final class UserTest {
     User myUser = new User("user name");
     String expected = "user name";
     Assert.assertEquals(expected, myUser.toString());
+  }
+
+  @Test
+  public void addProductArea() {
+      User userA = new User("John");
+      userA.addProductArea("ML");
+      ArrayList<String> productAreas = userA.getProductAreas();
+
+      Assert.assertEquals(1, productAreas.size());
   }
 
   @Test
