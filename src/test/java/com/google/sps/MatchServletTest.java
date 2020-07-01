@@ -72,6 +72,22 @@ public class MatchServletTest {
         numMatches = matchesInString(result);
         Assert.assertEquals(7, numMatches);
     }
+
+    @Test
+    public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
+        //Initialize variables
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+    
+        MatchServlet matchServlet = new MatchServlet();
+        matchServlet.init();
+
+        String[] nullMatches = null;
+        when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
+        matchServlet.doPost(request, response);
+
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+    }
     
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
