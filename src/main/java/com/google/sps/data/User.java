@@ -13,7 +13,7 @@ public final class User {
   }
 
   public String toString() {
-      return name;
+    return name;
   }
 
   public boolean equals(User user) {
