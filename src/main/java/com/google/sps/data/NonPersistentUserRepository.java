@@ -1,5 +1,6 @@
 package com.google.sps.data;
 
+import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,11 +49,11 @@ import java.util.Map;
      }
 
      public String toString() {
-         String toReturn = "";
+         StringBuilder toReturn = new StringBuilder();
          for(User user : allUsers) {
-             toReturn += user.toString();
-             toReturn += " ";
+             toReturn.append(user.toString());
+             toReturn.append(" ");
          }
-         return toReturn;
+         return toReturn.toString();
      }
  }
