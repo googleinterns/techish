@@ -39,11 +39,16 @@ public class MatchServlet extends HttpServlet {
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
 
-    String[] matchesToSave = request.getParameterValues("new-matches");
+    if(request.getParameterValues("new-matches") != null) {
 
-    for (String matchName : matchesToSave) {
-      User newMatch = new User(matchName);
-      testRepository.addMatch(testUser, newMatch);
+        String[] matchesToSave = request.getParameterValues("new-matches");
+
+        for (String matchName : matchesToSave) {
+        User newMatch = new User(matchName);
+        testRepository.addMatch(testUser, newMatch);
+        }
+    } else {
+        System.err.println("new-matches is null in MatchServlet doPost()");
     }
 
     response.sendRedirect("/logged_in_homepage.html");
