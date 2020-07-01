@@ -2,6 +2,8 @@ package com.google.sps;
 
 import com.google.sps.data.NonPersistentUserRepository;
 import com.google.sps.data.User;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,4 +53,64 @@ public final class NonPersistentUserRepositoryTest {
       Assert.fail("Exception should not be thrown in removeUserThatDoesNotExist()");
     }
   }
+
+  @Test
+  public void getAllUsersTest() {
+      User userA = new User("John");
+      User userB = new User("Bob");
+      User userC = new User("Haley");
+
+      NonPersistentUserRepository myRepo = new NonPersistentUserRepository();
+      myRepo.addUser(userA);
+      myRepo.addUser(userB);
+      myRepo.addUser(userC);
+
+      Collection<User> expected = new ArrayList<User>();
+      expected.add(userA);
+      expected.add(userB);
+      expected.add(userC);
+
+      Assert.assertEquals(expected, myRepo.getAllUsers());
+  }
+
+  @Test
+  public void addSameUserMultipleTimes() {
+      User userA = new User("John");
+
+      NonPersistentUserRepository myRepo = new NonPersistentUserRepository();
+      myRepo.addUser(userA);
+      myRepo.addUser(userA);
+      myRepo.addUser(userA);
+
+      Collection<User> allUsers = myRepo.getAllUsers();
+
+      //myRepo should only have 1 user stored
+      Assert.assertEquals(1, allUsers.size());
+  }
+
+  @Test
+  public void multipleAddAndRemove() {
+      User userA = new User("John");
+      User userB = new User("Bob");
+
+      NonPersistentUserRepository myRepo = new NonPersistentUserRepository();
+      myRepo.addUser(userA);
+      myRepo.addUser(userB);
+
+      Collection<User> allUsers = myRepo.getAllUsers();
+
+      //myRepo should have 2 users stored
+      Assert.assertEquals(2, allUsers.size());
+
+      myRepo.removeUser(userB);
+      allUsers = myRepo.getAllUsers();
+      //myRepo should now only have 1 user stored
+      Assert.assertEquals(1, allUsers.size());
+
+      myRepo.addUser(userB);
+      allUsers = myRepo.getAllUsers();
+      //myRepo should have 2 users stored again
+      Assert.assertEquals(2, allUsers.size());
+  }
+
 }

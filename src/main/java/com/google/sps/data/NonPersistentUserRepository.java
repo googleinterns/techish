@@ -37,7 +37,9 @@ import java.util.Map;
      }
 
      public void addUser(User user) {
-         allUsers.add(user);
+         if(!allUsers.contains(user)) {
+            allUsers.add(user);
+         }
      }
 
      public void removeUser(User user) {
