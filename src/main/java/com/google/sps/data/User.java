@@ -1,15 +1,16 @@
 package com.google.sps.data;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 public final class User {
 
   private final String name;
-  private final ArrayList<String> productArea;
+  private final Collection<String> productArea;
 
   public User(String name) {
     this.name = name;
-    productArea = new ArrayList<String>();
+    productArea = new HashSet<String>();
   }
 
   public String toString() {
@@ -24,7 +25,7 @@ public final class User {
       productArea.add(toAdd);
   }
 
-  public ArrayList<String> getProductAreas() {
+  public Collection<String> getProductAreas() {
       return productArea;
   }
 
