@@ -43,7 +43,6 @@ public class ProfileBuilderServlet extends HttpServlet {
     datastore.put(profileEntity);
   }
 
-
  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userType = request.getParameter("user-Type");
@@ -60,7 +59,7 @@ public class ProfileBuilderServlet extends HttpServlet {
         storeProfessionalProfile(profName, company, careerTitle);
     }
     else{
-        System.out.println("Error invalid userType");
+        System.err.println("Error invalid userType");
     }
 
     response.sendRedirect("/index.html");
