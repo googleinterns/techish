@@ -6,11 +6,11 @@ import java.util.HashSet;
 public final class User {
 
   private final String name;
-  private final Collection<String> productArea;
+  private final Collection<String> specialties;
 
   public User(String name) {
     this.name = name;
-    productArea = new HashSet<String>();
+    specialties = new HashSet<String>();
   }
 
   public String toString() {
@@ -21,12 +21,12 @@ public final class User {
     return this.name == user.name;
   }
 
-  public void addProductArea(String toAdd) {
-      productArea.add(toAdd);
+  public void addSpecialty(String toAdd) {
+      specialties.add(toAdd);
   }
 
-  public Collection<String> getProductAreas() {
-      return productArea;
+  public Collection<String> getSpecialties() {
+      return specialties;
   }
 
 }

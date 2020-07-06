@@ -18,12 +18,12 @@ public final class UserTest {
   }
 
   @Test
-  public void addProductArea() {
+  public void addSpecialty() {
       User userA = new User("John");
-      userA.addProductArea("ML");
-      Collection<String> productAreas = userA.getProductAreas();
+      userA.addSpecialty("ML");
+      Collection<String> specialties = userA.getSpecialties();
 
-      Assert.assertEquals(1, productAreas.size());
+      Assert.assertEquals(1, specialties.size());
   }
 
   @Test

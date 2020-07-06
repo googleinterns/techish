@@ -25,11 +25,11 @@ function createMatchElement(match: User) {
 }
 
 function sendMatchRequest() {
-    const productArea = (<HTMLInputElement>document.getElementById('product_area')).value;
+    const specialty = (<HTMLInputElement>document.getElementById('specialty')).value;
 
   // Create the request to send to the server using the data we collected from
   // the web form.
-  const matchRequest = new MatchRequest(productArea);
+  const matchRequest = new MatchRequest(specialty);
 
   queryServer(matchRequest).then((matches) => {
       displayNewMatchPopup(matches);
@@ -75,9 +75,9 @@ async function queryServer(matchRequest: MatchRequest) {
 }
 
 class MatchRequest {
-    productArea: string;
-    constructor(productArea: string) {
-        this.productArea = productArea;
+    specialty: string;
+    constructor(specialty: string) {
+        this.specialty = specialty;
     }
 }
 

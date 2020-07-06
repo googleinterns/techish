@@ -20,16 +20,16 @@ import java.util.Map;
 
      public void addFakeMentors() {
         User mentorA = new User("Andre");
-        mentorA.addProductArea("Machine Learning");
-        mentorA.addProductArea("DoS");
+        mentorA.addSpecialty("Machine Learning");
+        mentorA.addSpecialty("DoS");
 
         User mentorB = new User("Jerry");
-        mentorB.addProductArea("Electrical Engineering");
-        mentorB.addProductArea("DoS");
+        mentorB.addSpecialty("Electrical Engineering");
+        mentorB.addSpecialty("DoS");
 
         User mentorC = new User("Julie");
-        mentorC.addProductArea("Machine Learning");
-        mentorC.addProductArea("Security");
+        mentorC.addSpecialty("Machine Learning");
+        mentorC.addSpecialty("Security");
 
         addUser(mentorA);
         addUser(mentorB);

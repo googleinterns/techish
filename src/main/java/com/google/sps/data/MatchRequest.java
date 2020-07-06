@@ -3,17 +3,17 @@ package com.google.sps.data;
 public final class MatchRequest {
   // in the future, this will become a data structure but for MVP, we are just matching based on one
   // criteria
-  private final String productArea;
+  private final String specialty;
 
   public MatchRequest(String area) {
-    productArea = area;
+    specialty = area;
   }
 
   public MatchRequest() {
-      productArea = "";
+      specialty = "";
   }
 
   public String getCriteria() {
-    return productArea;
+    return specialty;
   }
 }

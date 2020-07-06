@@ -54,10 +54,10 @@ function createMatchElement(match) {
     return matchElement;
 }
 function sendMatchRequest() {
-    var productArea = document.getElementById('product_area').value;
+    var specialty = document.getElementById('specialty').value;
     // Create the request to send to the server using the data we collected from
     // the web form.
-    var matchRequest = new MatchRequest(productArea);
+    var matchRequest = new MatchRequest(specialty);
     queryServer(matchRequest).then(function (matches) {
         displayNewMatchPopup(matches);
     });
@@ -101,8 +101,8 @@ function queryServer(matchRequest) {
     });
 }
 var MatchRequest = /** @class */ (function () {
-    function MatchRequest(productArea) {
-        this.productArea = productArea;
+    function MatchRequest(specialty) {
+        this.specialty = specialty;
     }
     return MatchRequest;
 }());
