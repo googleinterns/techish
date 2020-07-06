@@ -28,11 +28,11 @@ public final class User {
     return this.id == user.id;
   }
 
-  public void addSpecialty(String toAdd) {
+  public void addProductArea(String toAdd) {
       specialties.add(toAdd);
   }
 
-  public Collection<String> getSpecialties() {
+  public Collection<String> getProductArea() {
       return specialties;
   }
   
