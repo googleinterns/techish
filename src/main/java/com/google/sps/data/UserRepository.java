@@ -7,7 +7,7 @@ public interface UserRepository {
 
   public void addUser(User user);
 
-  public void removeUser(User user);
+  public void removeUser(User user) throws Exception;
 
   public Collection<User> getAllUsers();
 

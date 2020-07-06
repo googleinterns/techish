@@ -42,8 +42,12 @@ import java.util.Map;
          }
      }
 
-     public void removeUser(User user) {
-         allUsers.remove(user);
+     public void removeUser(User user) throws Exception {
+         if(allUsers.contains(user)) {
+           allUsers.remove(user);
+         } else {
+             throw new Exception("Can't remove user that does not exist");
+         }
      }
 
      public Collection<User> getAllUsers() {

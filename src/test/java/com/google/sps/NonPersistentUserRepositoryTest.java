@@ -49,8 +49,9 @@ public final class NonPersistentUserRepositoryTest {
     NonPersistentUserRepository emptyRepo = new NonPersistentUserRepository();
     try {
       emptyRepo.removeUser(USER_A);
+      Assert.fail("Exception should be thrown in removeUserThatDoesNotExist()");
     } catch (Exception e) {
-      Assert.fail("Exception should not be thrown in removeUserThatDoesNotExist()");
+      // don't need to do anything here because test should catch exception
     }
   }
 
@@ -102,7 +103,9 @@ public final class NonPersistentUserRepositoryTest {
       //myRepo should have 2 users stored
       Assert.assertEquals(2, allUsers.size());
 
-      myRepo.removeUser(userB);
+      try {
+        myRepo.removeUser(userB);
+      } catch (Exception e) {}
       allUsers = myRepo.getAllUsers();
       //myRepo should now only have 1 user stored
       Assert.assertEquals(1, allUsers.size());
