@@ -18,7 +18,7 @@ public final class NonPersistentMatchRepositoryTest {
   public void addTestDataTest() {
     NonPersistentMatchRepository testDataRepo = new NonPersistentMatchRepository();
     User testUser = testDataRepo.addTestData();
-    String expected = "{Test User=[Hadley, Sam, Andre, Jerry]}";
+    String expected = "{Test User=[Scott Miller, Trevor Morgan, Twila Singleton, Rhonda Garrett]}";
     Assert.assertEquals(expected, testDataRepo.toString());
   }
 

@@ -1,67 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Techish Web Application">
-  <meta name="author" content="Samuel Sandoval and Hadley Shapland">
-
-  <title>Homepage</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="css/one-page-wonder.min.css" rel="stylesheet">
-
-</head>
-
-<body onload="loadMatches();">
-
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Techish</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" id="login-link" href="index.html">Log Out</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
- <header class="masthead text-center text-white">
-    <div class="masthead-content">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Techish Web Application">
+    <meta name="author" content="Samuel Sandoval and Hadley Shapland">
+    <title>Homepage</title>
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/one-page-wonder.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet">
+  </head>
+  <body onload="loadMatches();">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
       <div class="container">
-        <h1 class="masthead-heading mb-0">Logged In Homepage</h1>
+        <a class="navbar-brand" href="#">Techish</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" id="login-link" href="index.html">Log Out</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="bg-circle-1 bg-circle"></div>
-    <div class="bg-circle-2 bg-circle"></div>
-    <div class="bg-circle-3 bg-circle"></div>
-    <div class="bg-circle-4 bg-circle"></div>
-  </header>
+    </nav>
+    <header class="masthead text-center text-white">
+      <div class="masthead-content">
+        <div class="container">
+          <h1 class="masthead-heading mb-0">Logged In Homepage</h1>
+        </div>
+      </div>
+      <div class="bg-circle-1 bg-circle"></div>
+      <div class="bg-circle-2 bg-circle"></div>
+      <div class="bg-circle-3 bg-circle"></div>
+      <div class="bg-circle-4 bg-circle"></div>
+    </header>
+    <section>
+      <div class="container">
+        <h3>Match History:</h3>
+        <ul id="match-history"></ul>
 
-  <section>
-    <div class="container">
-
-    <h3>Match History:</h3>
-    <ul id="match-history"></ul>
-  
-
-    <div class="form" id="matchForm">
-      <form class="form-container" id="match_form">
+       <div class="form" id="matchForm">
+        <form class="form-container" id="match_form">
         <h3>Get New Matches</h3>
 
         <label for="specialty"><b>Select a Specialty:</b></label>
@@ -81,39 +69,47 @@
           <option value="Electrical Engineering">Electrical Engineering</option>
           <option value="DoS">DoS</option>
         </select>
-        <input type="button" class="btn btn-primary" value="Submit" onclick="sendMatchRequest()" />
+        <input type="button" class="btn btn-primary" value="Submit" onclick="sendMatchRequest()" data-toggle="modal" data-target="#exampleModal"/>
       </form>
     </div>
-
-  <hr>
-  <h3>New Matches (Going to be a popup):</h3>
-    <!-- FORM TO SELECT WHICH NEW MATCHES TO SAVE -->
-    <form action="/matches" id="new_match_form" method="POST">
-      <label for="new-matches">Select matches to save:</label>
-      <select class="selectpicker" name="new-matches" id="new-matches" multiple>
-        <!-- populated using JavaScript -->
-      </select>
-      <br/><br/>
-      <input type="submit" value="Submit" />
-    </form>
-
-    </div>
-  </section>
-
-
-  <!-- Footer -->
-  <footer class="py-5 bg-black">
-    <div class="container">
-      <p class="m-0 text-center text-white small">Copyright &copy; Techish 2020</p>
-    </div>
-    <!-- /.container -->
-  </footer>
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
+        <hr>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select One or More Matches to Save:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/matches" id="new_match_form" method="POST">
+                  <select  name="new-matches" id="new-matches" multiple>
+                    <!-- populated using JavaScript -->
+                  </select>
+                  <br/><br/>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="new_match_form" class="btn btn-primary">Save Matches</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="py-5 bg-black">
+      <div class="container">
+        <p class="m-0 text-center text-white small">Copyright &copy; Techish 2020</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="ts/matches.js"></script>
   </body>
 </html>

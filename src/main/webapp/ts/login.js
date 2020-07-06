@@ -41,7 +41,7 @@ function loadHome() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logging = document.getElementById('login-status-section');
+                    logging = document.getElementById('navbarResponsive');
                     link = document.getElementById('login-link');
                     return [4 /*yield*/, getLogStatus()];
                 case 1:
