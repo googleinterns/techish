@@ -12,8 +12,19 @@ public final class MatchQuery {
 
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
     mockRepo.addFakeMentors();
+
     Collection<User> mockMentors = mockRepo.getAllUsers();
-    
-    return mockMentors;
+    Collection<User> mentorMatches = new ArrayList<User>();
+
+    String matchCriteria = request.getCriteria();
+
+    for(User potentialMentor : mockMentors) {
+        Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
+        if(mentorSpecialties.contains(matchCriteria)) {
+            mentorMatches.add(potentialMentor);
+        }
+    }
+
+    return mentorMatches;
   }
 }
