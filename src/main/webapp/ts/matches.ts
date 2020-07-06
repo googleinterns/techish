@@ -16,7 +16,7 @@ function createMatchElement(match: User) {
     matchElement.className = 'match';
 
     const nameElement = document.createElement('span');
-    nameElement.innerText = match.name;
+    nameElement.innerText = matchToString(match);
 
 
     matchElement.appendChild(nameElement);

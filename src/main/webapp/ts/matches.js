@@ -49,7 +49,7 @@ function createMatchElement(match) {
     var matchElement = document.createElement('li');
     matchElement.className = 'match';
     var nameElement = document.createElement('span');
-    nameElement.innerText = match.name;
+    nameElement.innerText = matchToString(match);
     matchElement.appendChild(nameElement);
     return matchElement;
 }
