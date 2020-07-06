@@ -45,7 +45,7 @@ function displayNewMatchPopup(matches : Array<User>) {
   // add results to the page
   for (const match of matches) {
     const matchString : string = matchToString(match);
-    let newOption = new Option(matchString, match.name);
+    let newOption = new Option(matchString, matchString);
     newMatchContainer.add(newOption, undefined);
   }
 }

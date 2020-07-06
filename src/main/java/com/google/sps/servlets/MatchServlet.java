@@ -5,7 +5,9 @@ import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +46,7 @@ public class MatchServlet extends HttpServlet {
         String[] matchesToSave = request.getParameterValues("new-matches");
 
         for (String matchName : matchesToSave) {
-        User newMatch = new User(matchName);
+        User newMatch = stringToUser(matchName);
         testRepository.addMatch(testUser, newMatch);
         }
     } else {
@@ -53,4 +55,25 @@ public class MatchServlet extends HttpServlet {
 
     response.sendRedirect("/logged_in_homepage.html");
   }
+
+  private User stringToUser(String str) {
+      int colonIndex = str.indexOf(":");
+      String name = str.substring(0, colonIndex);
+
+      User toReturn = new User(name);
+
+      String noName = str.substring(colonIndex + 1).trim();
+      
+      if(noName.equals("no specialties")) {
+          return toReturn;
+      }
+
+      List<String> specialties = Arrays.asList(noName.split(","));
+      for(String specialty : specialties) {
+          toReturn.addSpecialty(specialty.trim());
+      }
+
+      return toReturn;
+  }
+
 }

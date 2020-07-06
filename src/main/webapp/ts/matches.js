@@ -70,7 +70,7 @@ function displayNewMatchPopup(matches) {
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
         var matchString = matchToString(match);
-        var newOption = new Option(matchString, match.name);
+        var newOption = new Option(matchString, matchString);
         newMatchContainer.add(newOption, undefined);
     }
 }

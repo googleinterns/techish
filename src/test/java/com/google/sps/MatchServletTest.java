@@ -62,7 +62,7 @@ public class MatchServletTest {
         Assert.assertEquals(4, numMatches);
 
         //DoPost to add 3 more matches
-        String[] newMatches = {"John", "Bob", "Cathy"};
+        String[] newMatches = {"John: no specialties", "Bob: Security, DoS", "Cathy: Artificial Intelligence"};
         when(request.getParameterValues("new-matches")).thenReturn(newMatches);
         matchServlet.doPost(request, response);
         verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
