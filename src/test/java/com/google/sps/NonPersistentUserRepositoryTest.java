@@ -105,7 +105,9 @@ public final class NonPersistentUserRepositoryTest {
 
       try {
         myRepo.removeUser(userB);
-      } catch (Exception e) {}
+      } catch (Exception e) {
+          Assert.fail("Can't remove user that does not exist");
+      }
       allUsers = myRepo.getAllUsers();
       //myRepo should now only have 1 user stored
       Assert.assertEquals(1, allUsers.size());
