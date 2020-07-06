@@ -86,7 +86,6 @@ public class ProfileBuilderServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     String userType = request.getParameter("user-Type");
     if(userType.contains("student")){
         List<StudentProfile> studentProfiles = fetchStudentProfile();
