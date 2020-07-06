@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
@@ -72,6 +73,7 @@ public class ProfileBuilderTest {
 
             stringWriterResult = stringWriter.getBuffer().toString().trim();
         }
+        printWriter.flush();
         return stringWriterResult;
     }
 
@@ -84,7 +86,8 @@ public class ProfileBuilderTest {
         studentProfile.setProperty("school", school);
         studentProfile.setProperty("major", major);
         dataService.put(studentProfile);
-        userServlet.doGet(request, response);
+
+        Assert.assertEquals(1,dataService.prepare(new Query("StudentProfile")).countEntities(withLimit(10)));                
     }
 
     private void doTest() throws IOException, ServletException {
@@ -115,7 +118,11 @@ public class ProfileBuilderTest {
         verify(response, times(1)).sendRedirect("/index.html");
     }
     
-
+    @Test
+    public void entityTest() throws IOException, ServletException {
+        testQuery();
+    }
+    
     //Test call post and get method, and look at results
     @Test
     public void userTypeIsIncorrect() throws IOException, ServletException {
@@ -125,7 +132,11 @@ public class ProfileBuilderTest {
 
         String currentType = "student";
         when(request.getParameter("user-Type")).thenReturn(currentType);
-    
+
+        request.setAttribute("name-input", "Jeff");
+        request.setAttribute("school-input", "UC Irvine");
+        request.setAttribute("major-input", "Computer Science");
+
         userServlet.doPost(request, response);
 
         //GET data from GET Request
@@ -139,20 +150,19 @@ public class ProfileBuilderTest {
         
     
         // calls Get method here, string returns the profile in Datastore
-        String expectedProfile = getdoGetProfiles(current); 
-        System.out.println(expectedProfile);
+        String result = getdoGetProfiles(current);
+        System.out.println(result);
+        // userServlet.doGet(request, response);
 
-        // entity creation method
-        testQuery();
 
         
 
         //Compare results
         
-                // Assert.assertEquals(1,dataService.prepare(new Query("StudentProfile")).countEntities(withLimit(10)));        
+        // Assert.assertEquals(1,dataService.prepare(new Query("StudentProfile")).countEntities(withLimit(10)));        
 
         Assert.assertEquals(1,1);
-    // }
+    }
     // @Test
     // public void testOne()throws IOException, ServletException {
     //     String fullname = "Jeff Person";
@@ -165,7 +175,4 @@ public class ProfileBuilderTest {
  
 
 
-    // Test to check if prof and getting parameters
-
-    // Test for professional  calling function 
 }
