@@ -21,7 +21,7 @@ public final class UserTest {
   public void addProductArea() {
       User userA = new User("John");
       userA.addProductArea("ML");
-      Collection<String> productAreas = userA.getProductAreas();
+      Collection<String> productAreas = userA.getProductArea();
 
       Assert.assertEquals(1, productAreas.size());
   }
@@ -39,6 +39,6 @@ public final class UserTest {
     User userA = new User("John");
     User userB = new User("Not John");
 
-    Assert.assertFalse(userA.equals(userB));
+    Assert.assertFalse((userA).equals(userB));
   }
 }
