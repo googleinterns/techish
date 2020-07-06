@@ -75,7 +75,20 @@ function displayNewMatchPopup(matches) {
     }
 }
 function matchToString(match) {
-    return match.name;
+    var toReturn = "";
+    toReturn += match.name;
+    toReturn += ": ";
+    if (match.specialties.length == 0) {
+        toReturn += "no specialties";
+    }
+    else {
+        for (var i = 0; i < match.specialties.length - 1; i++) {
+            toReturn += match.specialties[i];
+            toReturn += ", ";
+        }
+        toReturn += match.specialties[match.specialties.length - 1];
+    }
+    return toReturn;
 }
 /**
  * Sends the match request to the server and get back the matches.
@@ -93,7 +106,7 @@ function queryServer(matchRequest) {
                     // Convert the range from a json representation to our User class.
                     var out = [];
                     users.forEach(function (range) {
-                        out.push(new User(range.name));
+                        out.push(new User(range.name, range.specialties));
                     });
                     return out;
                 })];
@@ -107,8 +120,9 @@ var MatchRequest = /** @class */ (function () {
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(name) {
+    function User(name, specialties) {
         this.name = name;
+        this.specialties = specialties;
     }
     return User;
 }());

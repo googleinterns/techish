@@ -19,15 +19,15 @@ import java.util.Map;
      }
 
      public void addFakeMentors() {
-        User mentorA = new User("Andre");
+        User mentorA = new User("Andre Harder");
         mentorA.addSpecialty("Machine Learning");
         mentorA.addSpecialty("DoS");
 
-        User mentorB = new User("Jerry");
+        User mentorB = new User("Jerry Chang");
         mentorB.addSpecialty("Electrical Engineering");
         mentorB.addSpecialty("DoS");
 
-        User mentorC = new User("Julie");
+        User mentorC = new User("Julie Johnson");
         mentorC.addSpecialty("Machine Learning");
         mentorC.addSpecialty("Security");
 

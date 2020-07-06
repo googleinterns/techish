@@ -52,7 +52,20 @@ function displayNewMatchPopup(matches : Array<User>) {
 
 
 function matchToString(match : User) {
-    return match.name;
+    let toReturn : string = "";
+    toReturn += match.name;
+    toReturn += ": ";
+    
+    if(match.specialties.length == 0) {
+        toReturn += "no specialties";
+    } else {
+        for(let i = 0; i < match.specialties.length - 1; i++) {
+            toReturn += match.specialties[i];
+            toReturn += ", ";
+        }
+        toReturn += match.specialties[match.specialties.length - 1];
+    }
+    return toReturn;
 }
 
 /**
@@ -68,7 +81,7 @@ async function queryServer(matchRequest: MatchRequest) {
         // Convert the range from a json representation to our User class.
         const out : Array<User> = [];
         users.forEach((range: User) => {
-          out.push(new User(range.name));
+          out.push(new User(range.name, range.specialties));
         });
         return out;
       });
@@ -83,8 +96,10 @@ class MatchRequest {
 
 class User {
     name: string;
-    constructor(name: string) {
+    specialties: string[];
+    constructor(name: string, specialties: string[]) {
         this.name = name;
+        this.specialties = specialties;
     }
 }
 

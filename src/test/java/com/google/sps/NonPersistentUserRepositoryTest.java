@@ -19,7 +19,7 @@ public final class NonPersistentUserRepositoryTest {
   public void addFakeMentorsTest() {
     NonPersistentUserRepository testDataRepo = new NonPersistentUserRepository();
     testDataRepo.addFakeMentors();
-    String expected = "Andre Jerry Julie ";
+    String expected = "Andre Harder Jerry Chang Julie Johnson ";
     Assert.assertEquals(expected, testDataRepo.toString());
   }
 
