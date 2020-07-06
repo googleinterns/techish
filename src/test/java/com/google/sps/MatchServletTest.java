@@ -104,9 +104,9 @@ public class MatchServletTest {
         return result;
     }
 
-    //count number of commas in result string, and number of matches will be one more
+    //count number of opening brackets in result string, which is equal to number of matches
     private int matchesInString(String result) {
-        int numMatches = (result.length() - result.replaceAll(",", "").length()) + 1;
+        int numMatches = (result.length() - result.replace("{", "").length());
         return numMatches;
     }
 
