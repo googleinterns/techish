@@ -1,7 +1,6 @@
 package com.google.sps;
 
 import com.google.gson.Gson;
-
 import com.google.sps.data.User;
 import java.util.Collection;
 import org.junit.Assert;
@@ -15,8 +14,8 @@ public final class UserTest {
   @Test
   public void userConstructorAndToString() {
     User myUser = new User("user name");
-    // String expected = "user name: no specialties";
     String expected = new Gson().toJson(myUser);
+    
     Assert.assertEquals(expected, myUser.toString());
   }
 

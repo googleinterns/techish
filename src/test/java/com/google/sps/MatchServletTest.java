@@ -68,7 +68,6 @@ public class MatchServletTest {
         userB.addSpecialty("Security");
         userB.addSpecialty("DoS");
         userC.addSpecialty("Artificial Intelligence");
-        // String[] newMatches = {"John: no specialties", "Bob: Security, DoS", "Cathy: Artificial Intelligence"};
         User[] newMatchesArray = {userA, userB, userC};
         Gson gson = new Gson();
         String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};

@@ -21,11 +21,10 @@ public final class MatchQuery {
     for(User potentialMentor : mockMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
         if(mentorSpecialties.contains(matchCriteria)) {
-            System.out.println("ALGORITHM STRING: " + potentialMentor.toJsonString());
-            mentorMatches.add(potentialMentor.toJsonString());
+            mentorMatches.add(potentialMentor.toString());
         }
     }
-
+    
     return mentorMatches;
   }
 }

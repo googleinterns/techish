@@ -43,33 +43,17 @@ public class MatchServlet extends HttpServlet {
       throws IOException {
 
     if(request.getParameterValues("new-matches") != null) {
+      String[] matchesToSave = request.getParameterValues("new-matches");
 
-        String[] matchesToSave = request.getParameterValues("new-matches");
-        System.out.println("matchesToSave []: " + Arrays.toString(matchesToSave));
-
-        for (String matchName : matchesToSave) {
-            System.out.println("MATCHNAME: " + matchName);
-        User newMatch = stringToUser(matchName);
+      for (String matchName : matchesToSave) {
+        User newMatch = new Gson().fromJson(matchName, User.class);
         testRepository.addMatch(testUser, newMatch);
-        }
-    } else {
+      }
+      } else {
         System.err.println("new-matches is null in MatchServlet doPost()");
-    }
-
+      }
     response.sendRedirect("/logged_in_homepage.html");
   }
 
-  private User stringToUser(String str) {
-
-
-      GsonBuilder builder = new GsonBuilder();
-    //   builder.setPrettyPrinting();
-
-      Gson gson = builder.create();
-      User user = gson.fromJson(str, User.class);
-
-
-      return user;
-  }
 
 }
