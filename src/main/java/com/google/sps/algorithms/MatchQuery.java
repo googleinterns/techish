@@ -9,7 +9,6 @@ import java.util.Collection;
 public final class MatchQuery {
 
   public Collection<String> query(MatchRequest request) {
-
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
     mockRepo.addFakeMentors();
 
@@ -17,6 +16,11 @@ public final class MatchQuery {
     Collection<String> mentorMatches = new ArrayList<String>();
 
     String matchCriteria = request.getCriteria();
+
+    //return empty collection if there is no criteria
+    if(matchCriteria == "") {
+      return mentorMatches;
+    }
 
     for(User potentialMentor : mockMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
