@@ -19,26 +19,38 @@ public final class MatchQueryTest {
   private static final MatchRequest EMPTY_REQUEST = new MatchRequest();
   private static final MatchRequest ML_REQUEST = new MatchRequest("Machine Learning");
   private static final MatchRequest BAD_REQUEST = new MatchRequest("not a specialty");
-
-  private static final NonPersistentUserRepository USER_REPO = new NonPersistentUserRepository();
-  private static final Collection<User> ALL_MATCHES = USER_REPO.getAllUsers();
   private static final MatchQuery MATCH_QUERY = new MatchQuery();
 
-    @Before
-    public void setUp() {
-      USER_REPO.addFakeMentors();
-    }
-
   @Test
-  public void emptyRequest_shouldReturnAllMentors() {
+  public void emptyRequest_shouldReturnNoMentors() {
     Collection<String> expected = new ArrayList<String>();
-    // for(User user : ALL_MATCHES) {
-    //     expected.add(user.toString());
-    // }
 
     Assert.assertEquals(expected, MATCH_QUERY.query(EMPTY_REQUEST));
-    
   }
 
-  
+  @Test
+  public void mlRequest_ShouldReturnMLMentors() {
+    Collection<String> expected = new ArrayList<String>();
+
+    User mentorA = new User("Andre Harder");
+    mentorA.addSpecialty("Machine Learning");
+    mentorA.addSpecialty("DoS");
+
+    User mentorC = new User("Julie Johnson");
+    mentorC.addSpecialty("Machine Learning");
+    mentorC.addSpecialty("Security");
+
+    expected.add(mentorA.toString());
+    expected.add(mentorC.toString());
+
+    Assert.assertEquals(expected, MATCH_QUERY.query(ML_REQUEST));
+  }
+
+  @Test
+  public void badRequest_ShouldReturnNoMentors() {
+    Collection<String> expected = new ArrayList<String>();
+
+    Assert.assertEquals(expected, MATCH_QUERY.query(BAD_REQUEST));
+  }
+
 }
