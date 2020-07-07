@@ -5,17 +5,16 @@ import java.util.HashSet;
 
 
 public final class User {
-  public static enum profileType {
+  public static enum ProfileType {
     STUDENT, MENTOR;
   };
 
-  private Long id;
+  private long id;
   private String company;
   private String major;
   private String name;
   private String occupation;
-  private String profileInput;
-  private profileType userType;
+  private ProfileType userType;
   private String school;
   private Collection<String> specialties;
 
@@ -42,22 +41,22 @@ public final class User {
 
   public void setProfileType(String input) {
       if(input == "student"){
-        this.userType = profileType.STUDENT;
+        this.userType = ProfileType.STUDENT;
       }
       else {
-        this.userType = profileType.MENTOR;
+        this.userType = ProfileType.MENTOR;
       }
   }
 
-  public profileType getProfileType() {
+  public ProfileType getProfileType() {
       return this.userType;
   }
 
-  public void setID(Long id) {
+  public void setID(long id) {
       this.id = id;
   }
 
-  public Long getID() {
+  public long getID() {
       return id;
   }
  

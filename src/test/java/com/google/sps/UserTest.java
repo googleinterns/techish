@@ -1,7 +1,7 @@
 package com.google.sps;
 
 import com.google.sps.data.User;
-import com.google.sps.data.User.profileType;
+import com.google.sps.data.User.ProfileType;
 import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public final class UserTest {
     User userA = new User("John");
     User userB = new User("John");
 
-    Assert.assertTrue(userA.equals(userB));
+    Assert.assertNotEquals(userA, userB);
   }
 
   @Test
@@ -46,10 +46,10 @@ public final class UserTest {
   @Test
   public void setProfileTypeANDGetProfileType(){
       User userA = new User("Tom");
-      profileType expected = profileType.STUDENT;
+      ProfileType expected = ProfileType.STUDENT;
       String input ="student";
       userA.setProfileType(input);
-      profileType result = userA.getProfileType();
+      ProfileType result = userA.getProfileType();
       
       Assert.assertEquals(expected, result);
   }
@@ -59,9 +59,9 @@ public final class UserTest {
       User userA = new User("Jeff");
       long expected = 82129102381L;
       userA.setID(expected);
-      Long result = userA.getID();
+      long result = userA.getID();
 
-      Assert.assertEquals(Long.valueOf(expected), result);
+      Assert.assertEquals(expected, result);
   }
 
   @Test
