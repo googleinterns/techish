@@ -27,6 +27,21 @@ public final class User {
     return name;
   }
 
+  public ProfileType toEnum(String input) {
+      if(input == "student" || input == "STUDENT") {
+          input = "STUDENT";
+      }
+      else if(input == "mentor" || input == "MENTOR") {
+          input = "MENTOR";
+      }
+      else {
+          System.err.println("Invalid input type");
+      }
+      
+      ProfileType result = ProfileType.valueOf(input);
+      return result;
+  }
+
   public boolean equals(User user) {
     return this.name == user.name;
   }
@@ -39,12 +54,15 @@ public final class User {
       return specialties;
   }
 
-  public void setProfileType(String input) {
-      if(input == "student"){
+  public void setProfileType(ProfileType input) {
+      if(input == ProfileType.STUDENT) {
         this.userType = ProfileType.STUDENT;
       }
-      else {
+      else if (input == ProfileType.MENTOR){
         this.userType = ProfileType.MENTOR;
+      }
+      else {
+          System.err.println("Invalid profile type");
       }
   }
 

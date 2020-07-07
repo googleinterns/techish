@@ -31,8 +31,10 @@ public final class UserTest {
   public void userEquals() {
     User userA = new User("John");
     User userB = new User("John");
+    String userA_Name = userA.toString();
+    String userB_Name = userB.toString();
 
-    Assert.assertNotEquals(userA, userB);
+    Assert.assertEquals(userA_Name, userB_Name);
   }
 
   @Test
@@ -40,15 +42,15 @@ public final class UserTest {
     User userA = new User("John");
     User userB = new User("Not John");
 
-    Assert.assertFalse((userA).equals(userB));
+    Assert.assertNotEquals(userA, userB);
   }
   
   @Test
   public void setProfileTypeANDGetProfileType(){
       User userA = new User("Tom");
-      ProfileType expected = ProfileType.STUDENT;
       String input ="student";
-      userA.setProfileType(input);
+      ProfileType expected = userA.toEnum(input);
+      userA.setProfileType(expected);
       ProfileType result = userA.getProfileType();
       
       Assert.assertEquals(expected, result);
