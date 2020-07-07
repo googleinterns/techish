@@ -28,7 +28,7 @@ public class NewMatchQueryServlet extends HttpServlet {
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();
-    Collection<User> answer = matchQuery.query(matchRequest);
+    Collection<String> answer = matchQuery.query(matchRequest);
 
     // Convert the times to JSON
     String jsonResponse = gson.toJson(answer);

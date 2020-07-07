@@ -35,7 +35,7 @@ public class NewMatchQueryServletTest {
     @Test
     public void doPost_returnsNewMatches() throws IOException, ServletException {
         MatchQuery matchQuery = new MatchQuery();
-        Collection<User> answer = matchQuery.query(new MatchRequest()); 
+        Collection<String> answer = matchQuery.query(new MatchRequest()); 
  
         StringWriter StringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(StringWriter);

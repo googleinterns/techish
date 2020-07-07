@@ -16,7 +16,7 @@ function createMatchElement(match: User) {
     matchElement.className = 'match';
 
     const nameElement = document.createElement('span');
-    nameElement.innerText = matchToString(match);
+    nameElement.innerText = JSON.stringify(match);
 
 
     matchElement.appendChild(nameElement);
@@ -36,7 +36,7 @@ function sendMatchRequest() {
   });
 }
 
-function displayNewMatchPopup(matches : Array<User>) {
+function displayNewMatchPopup(matches : Array<string>) {
     const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
 
   // clear out any old results
@@ -44,29 +44,29 @@ function displayNewMatchPopup(matches : Array<User>) {
 
   // add results to the page
   for (const match of matches) {
-    const matchString : string = matchToString(match);
-    let newOption = new Option(matchString, matchString);
+    // const matchString : string = matchToString(match);
+    let newOption = new Option(match, match);
     newMatchContainer.add(newOption, undefined);
   }
 }
 
 
-function matchToString(match : User) {
-    let toReturn : string = "";
-    toReturn += match.name;
-    toReturn += ": ";
+// function matchToString(match : User) {
+//     let toReturn : string = "";
+//     toReturn += match.name;
+//     toReturn += ": ";
     
-    if(match.specialties.length == 0) {
-        toReturn += "no specialties";
-    } else {
-        for(let i = 0; i < match.specialties.length - 1; i++) {
-            toReturn += match.specialties[i];
-            toReturn += ", ";
-        }
-        toReturn += match.specialties[match.specialties.length - 1];
-    }
-    return toReturn;
-}
+//     if(match.specialties.length == 0) {
+//         toReturn += "no specialties";
+//     } else {
+//         for(let i = 0; i < match.specialties.length - 1; i++) {
+//             toReturn += match.specialties[i];
+//             toReturn += ", ";
+//         }
+//         toReturn += match.specialties[match.specialties.length - 1];
+//     }
+//     return toReturn;
+// }
 
 /**
  * Sends the match request to the server and get back the matches.
@@ -79,11 +79,11 @@ async function queryServer(matchRequest: MatchRequest) {
       })
       .then((users) => {
         // Convert the range from a json representation to our User class.
-        const out : Array<User> = [];
-        users.forEach((range: User) => {
-          out.push(new User(range.name, range.specialties));
-        });
-        return out;
+        // const out : Array<string> = [];
+        // users.forEach((range: string) => {
+        //   out.push(range);
+        // });
+        return users;
       });
 }
 

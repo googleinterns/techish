@@ -16,4 +16,8 @@ public final class MatchRequest {
   public String getCriteria() {
     return specialty;
   }
+
+  public String toString() {
+      return specialty;
+  }
 }

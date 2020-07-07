@@ -49,7 +49,7 @@ function createMatchElement(match) {
     var matchElement = document.createElement('li');
     matchElement.className = 'match';
     var nameElement = document.createElement('span');
-    nameElement.innerText = matchToString(match);
+    nameElement.innerText = JSON.stringify(match);
     matchElement.appendChild(nameElement);
     return matchElement;
 }
@@ -69,27 +69,26 @@ function displayNewMatchPopup(matches) {
     // add results to the page
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
-        var matchString = matchToString(match);
-        var newOption = new Option(matchString, matchString);
+        // const matchString : string = matchToString(match);
+        var newOption = new Option(match, match);
         newMatchContainer.add(newOption, undefined);
     }
 }
-function matchToString(match) {
-    var toReturn = "";
-    toReturn += match.name;
-    toReturn += ": ";
-    if (match.specialties.length == 0) {
-        toReturn += "no specialties";
-    }
-    else {
-        for (var i = 0; i < match.specialties.length - 1; i++) {
-            toReturn += match.specialties[i];
-            toReturn += ", ";
-        }
-        toReturn += match.specialties[match.specialties.length - 1];
-    }
-    return toReturn;
-}
+// function matchToString(match : User) {
+//     let toReturn : string = "";
+//     toReturn += match.name;
+//     toReturn += ": ";
+//     if(match.specialties.length == 0) {
+//         toReturn += "no specialties";
+//     } else {
+//         for(let i = 0; i < match.specialties.length - 1; i++) {
+//             toReturn += match.specialties[i];
+//             toReturn += ", ";
+//         }
+//         toReturn += match.specialties[match.specialties.length - 1];
+//     }
+//     return toReturn;
+// }
 /**
  * Sends the match request to the server and get back the matches.
  */
@@ -104,11 +103,11 @@ function queryServer(matchRequest) {
                 })
                     .then(function (users) {
                     // Convert the range from a json representation to our User class.
-                    var out = [];
-                    users.forEach(function (range) {
-                        out.push(new User(range.name, range.specialties));
-                    });
-                    return out;
+                    // const out : Array<string> = [];
+                    // users.forEach((range: string) => {
+                    //   out.push(range);
+                    // });
+                    return users;
                 })];
         });
     });

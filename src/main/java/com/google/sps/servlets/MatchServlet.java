@@ -1,6 +1,7 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;  
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
@@ -44,8 +45,10 @@ public class MatchServlet extends HttpServlet {
     if(request.getParameterValues("new-matches") != null) {
 
         String[] matchesToSave = request.getParameterValues("new-matches");
+        System.out.println("matchesToSave []: " + Arrays.toString(matchesToSave));
 
         for (String matchName : matchesToSave) {
+            System.out.println("MATCHNAME: " + matchName);
         User newMatch = stringToUser(matchName);
         testRepository.addMatch(testUser, newMatch);
         }
@@ -57,23 +60,16 @@ public class MatchServlet extends HttpServlet {
   }
 
   private User stringToUser(String str) {
-      int colonIndex = str.indexOf(":");
-      String name = str.substring(0, colonIndex);
 
-      User toReturn = new User(name);
 
-      String noName = str.substring(colonIndex + 1).trim();
-      
-      if(noName.equals("no specialties")) {
-          return toReturn;
-      }
+      GsonBuilder builder = new GsonBuilder();
+    //   builder.setPrettyPrinting();
 
-      List<String> specialties = Arrays.asList(noName.split(","));
-      for(String specialty : specialties) {
-          toReturn.addSpecialty(specialty.trim());
-      }
+      Gson gson = builder.create();
+      User user = gson.fromJson(str, User.class);
 
-      return toReturn;
+
+      return user;
   }
 
 }

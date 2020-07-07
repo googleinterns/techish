@@ -8,20 +8,21 @@ import java.util.Collection;
 
 public final class MatchQuery {
 
-  public Collection<User> query(MatchRequest request) {
+  public Collection<String> query(MatchRequest request) {
 
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
     mockRepo.addFakeMentors();
 
     Collection<User> mockMentors = mockRepo.getAllUsers();
-    Collection<User> mentorMatches = new ArrayList<User>();
+    Collection<String> mentorMatches = new ArrayList<String>();
 
     String matchCriteria = request.getCriteria();
 
     for(User potentialMentor : mockMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
         if(mentorSpecialties.contains(matchCriteria)) {
-            mentorMatches.add(potentialMentor);
+            System.out.println("ALGORITHM STRING: " + potentialMentor.toJsonString());
+            mentorMatches.add(potentialMentor.toJsonString());
         }
     }
 
