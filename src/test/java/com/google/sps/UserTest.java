@@ -1,6 +1,7 @@
 package com.google.sps;
 
 import com.google.sps.data.User;
+import com.google.sps.data.User.profileType.*;
 import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public final class UserTest {
   public void addProductArea() {
       User userA = new User("John");
       userA.addProductArea("ML");
-      Collection<String> productAreas = userA.getProductArea();
+      Collection<String> productAreas = userA.getSpecialties();
 
       Assert.assertEquals(1, productAreas.size());
   }
@@ -41,4 +42,80 @@ public final class UserTest {
 
     Assert.assertFalse((userA).equals(userB));
   }
+
+  @Test
+  public void setIDAndGetID(){
+      User userA = new User("Jeff");
+      long expected = 1112;
+      userA.setID(expected);
+      Long result = userA.getID();
+
+      Assert.assertEquals(Long.valueOf(expected), result);
+  }
+
+  @Test
+  public void setSchoolAndGetSchool(){
+      User userA = new User("Ben");
+      String expected = "Stanford University";
+      userA.setSchool(expected);
+      String result = userA.getSchool();
+
+      Assert.assertEquals(expected, result);
+  }
+   // test for profileType here
+  /*
+  @Test
+  public void setProfileTypeANDGetProfileType(){
+      User userA = new User("Tom");
+      String expected ="student";
+      userA.profileType(expected);
+      String result = userA.getProfileType();
+      
+      Assert.equals(expected, result);
+  }
+
+  */
+
+
+  @Test
+  public void setMajorAndGetMajor(){
+      User userA = new User("Tim");
+      String expected = "Computer Science";
+      userA.setMajor(expected);
+      String result = userA.getMajor();
+
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void setCompanyandGetCompany(){
+      User userA = new User("Sergey");
+      String expected = "Google";
+      userA.setCompany(expected);
+      String result = userA.getCompany();
+
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void setOccupationAndGetOccupation(){
+      User userA = new User("Larry");
+      String expected = "Product Manager";
+      userA.setOccupation(expected);
+      String result = userA.getOccupation();
+
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void setSpecialtyAndGetSpecialty(){
+      User userA = new User("Dan");
+      String expected = "Machine Learning";
+      userA.setSpecialty(expected);
+      String result = userA.getSpecialty();
+
+      Assert.assertEquals(expected, result);
+  }
+
+
 }
