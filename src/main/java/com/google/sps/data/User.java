@@ -2,33 +2,21 @@ package com.google.sps.data;
 
 import java.util.Collection;
 import java.util.HashSet;
-package profileType;
 
 
 public final class User {
-
-public enum profileType{
-    STUDENT("student"),
-    MENTOR("mentor");
-
-    private String profileInput;
-
-    profileType(String input) {
-        this.profileInput = input;
-    }
-
-    public String getProfileInput() {
-        return this.profileInput;
-    }
-}
+  public static enum profileType {
+    STUDENT, MENTOR;
+  };
 
   private Long id;
-  private String name;
-  private String school;
-  private String major;
   private String company;
+  private String major;
+  private String name;
   private String occupation;
-  private String specialty;
+  private String profileInput;
+  private profileType userType;
+  private String school;
   private Collection<String> specialties;
 
   public User(String name) {
@@ -50,6 +38,19 @@ public enum profileType{
 
   public Collection<String> getSpecialties() {
       return specialties;
+  }
+
+  public void setProfileType(String input) {
+      if(input == "student"){
+        this.userType = profileType.STUDENT;
+      }
+      else {
+        this.userType = profileType.MENTOR;
+      }
+  }
+
+  public profileType getProfileType() {
+      return this.userType;
   }
 
   public void setID(Long id) {
@@ -84,7 +85,7 @@ public enum profileType{
       return company;
   }
 
-    public void setOccupation(String occupation) {
+  public void setOccupation(String occupation) {
       this.occupation = occupation;
   }
   
@@ -92,13 +93,4 @@ public enum profileType{
       return occupation;
   }
  
- 
-  public void setSpecialty(String specialty) {
-      this.specialty = specialty;
-  }
-
-  public String getSpecialty() {
-      return specialty;   
-  }
-
 }

@@ -1,14 +1,14 @@
 package com.google.sps;
 
 import com.google.sps.data.User;
-import com.google.sps.data.User.profileType.*;
+import com.google.sps.data.User.profileType;
 import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** */
+/** Tests for User java */
 @RunWith(JUnit4.class)
 public final class UserTest {
   @Test
@@ -42,11 +42,22 @@ public final class UserTest {
 
     Assert.assertFalse((userA).equals(userB));
   }
+  
+  @Test
+  public void setProfileTypeANDGetProfileType(){
+      User userA = new User("Tom");
+      profileType expected = profileType.STUDENT;
+      String input ="student";
+      userA.setProfileType(input);
+      profileType result = userA.getProfileType();
+      
+      Assert.assertEquals(expected, result);
+  }
 
   @Test
   public void setIDAndGetID(){
       User userA = new User("Jeff");
-      long expected = 1112;
+      long expected = 82129102381L;
       userA.setID(expected);
       Long result = userA.getID();
 
@@ -62,20 +73,6 @@ public final class UserTest {
 
       Assert.assertEquals(expected, result);
   }
-   // test for profileType here
-  /*
-  @Test
-  public void setProfileTypeANDGetProfileType(){
-      User userA = new User("Tom");
-      String expected ="student";
-      userA.profileType(expected);
-      String result = userA.getProfileType();
-      
-      Assert.equals(expected, result);
-  }
-
-  */
-
 
   @Test
   public void setMajorAndGetMajor(){
@@ -106,16 +103,4 @@ public final class UserTest {
 
       Assert.assertEquals(expected, result);
   }
-
-  @Test
-  public void setSpecialtyAndGetSpecialty(){
-      User userA = new User("Dan");
-      String expected = "Machine Learning";
-      userA.setSpecialty(expected);
-      String result = userA.getSpecialty();
-
-      Assert.assertEquals(expected, result);
-  }
-
-
 }
