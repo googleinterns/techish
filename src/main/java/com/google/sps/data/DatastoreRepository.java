@@ -10,6 +10,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+import com.google.sps.data.User;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,42 +20,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
 
 /**
  * This class implements the match repository using the datastore 
  */
 public class DatastoreRepository implements MatchRepository {
+  private Map<User, List<User>> userMatches = new HashMap<User,List<User>>();
+  private List<User> allProfiles;
+  
+  private static final Gson gson = new Gson();
   private DatastoreService datastore;
+  private int maxProfiles = 10;
   
   public DatastoreRepository() {
-    datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore = DatastoreServiceFactory.getDatastoreService();
+  }
+  public DatastoreService getDatastore() {
+      return datastore;
   }
 
-  // returns the User that data was added for
-  public User addTestData() {
-    User matchA = new User("Hadley");
-    String matchAName = matchA.toString();
-    addDatabase(matchAName);
-
-    User matchB = new User("Sam");
-    String matchBName = matchB.toString();
-    addDatabase(matchBName);
-
-    User matchC = new User("Andre");
-    String matchCName = matchC.toString();
-    addDatabase(matchCName);
-
-    User matchD = new User("Jerry");
-    String matchDName = matchD.toString();
-    addDatabase(matchDName);
-    
-    User testUser = new User("Test User");
-    String testUserName = testUser.toString();
-    addDatabase(testUserName);
-
-  }
   // function to add profile to database
   public void addDatabase(String input) {
     Entity userEntity = new Entity("User");
@@ -62,16 +50,40 @@ public class DatastoreRepository implements MatchRepository {
     datastore.put(userEntity);
   }
 
+  public List<User> fetchUserProfile() {
+    Query query = new Query("User");
+    PreparedQuery results = datastore.prepare(query);
+    List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(maxProfiles));
+
+    List<User> userProfiles = new ArrayList<>();
+    for (Entity entity : resultsList) {
+        String name = (String) entity.getProperty("name");
+
+        User userObject = new User(name);
+        userProfiles.add(userObject);
+    }
+    return userProfiles;
+  }
+
+  public void addMatch(User user, User match) {
+
+  }
   public void removeMatch(User user, User match) throws Exception {
 
   }
 
   public Collection<User> getMatchesForUser(User user) {
-
+      List<User> emptyMatch = new ArrayList<User>();
+      
+      return emptyMatch;
   }
+ 
+  public String profileToString(User inputUser) {
+      allProfiles = fetchUserProfile();
+      userMatches.put(inputUser, allProfiles);
 
-  public String toString() {
-      return 
+    //   String jsonMatches = gson.ToJson(userMatches);
+
+      return userMatches.toString();
   }
-
 }
