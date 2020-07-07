@@ -2,16 +2,16 @@ package com.google.sps.data;
 
 import com.google.gson.Gson;
 import java.util.Collection;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public final class User {
 
   private final String name;
-  private final ArrayList<String> specialties;
+  private final Collection<String> specialties;
 
   public User(String name) {
     this.name = name;
-    specialties = new ArrayList<String>();
+    specialties = new HashSet<String>();
   }
 
   public String toString() {
