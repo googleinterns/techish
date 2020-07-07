@@ -23,9 +23,7 @@ public final class MatchQueryTest {
 
   @Test
   public void emptyRequest_shouldReturnNoMentors() {
-    Collection<String> expected = new ArrayList<String>();
-
-    Assert.assertEquals(expected, MATCH_QUERY.query(EMPTY_REQUEST));
+    Assert.assertTrue(MATCH_QUERY.query(EMPTY_REQUEST).isEmpty());
   }
 
   @Test
@@ -48,9 +46,7 @@ public final class MatchQueryTest {
 
   @Test
   public void badRequest_ShouldReturnNoMentors() {
-    Collection<String> expected = new ArrayList<String>();
-
-    Assert.assertEquals(expected, MATCH_QUERY.query(BAD_REQUEST));
+    Assert.assertTrue(MATCH_QUERY.query(BAD_REQUEST).isEmpty());
   }
 
 }
