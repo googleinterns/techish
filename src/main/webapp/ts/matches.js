@@ -72,10 +72,6 @@ function displayNewMatchPopup(matches) {
     var newMatchContainer = document.getElementById('new-matches');
     // clear out any old results
     newMatchContainer.innerHTML = '';
-    if (matches.length == 0) {
-        alert("no matches found");
-        //exit function
-    }
     // add results to the page
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
