@@ -13,23 +13,37 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 
 /** Servlet responsible for creating new saved matches AND listing matches. */
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
-  private static MatchRepository testRepository;
+//   private static MatchRepository testRepository;
   private static User testUser;
 
+  //get MatchRepository method
+
   @Override
-  public void init() {
+  public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+
     NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
     testUser = repository.addTestData();
-    testRepository = repository;
+    MatchRepository testRepository = repository;
+
+    // MatchRepository testRepository 
+
+    getServletContext().setAttribute("matchRepository", testRepository);
+    // getServletContext().setAttribute("testUser", testUser);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    ServletContext servletContext = getServletContext();
+    MatchRepository testRepository = (MatchRepository) servletContext.getServletContext();
 
     Collection<User> matches = testRepository.getMatchesForUser(testUser);
 
@@ -41,6 +55,8 @@ public class MatchServlet extends HttpServlet {
   @Override
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
+    ServletContext servletContext = getServletContext();
+    MatchRepository testRepository = (MatchRepository) servletContext.getServletContext();
 
     if(request.getParameterValues("new-matches") != null) {
       String[] matchesToSave = request.getParameterValues("new-matches");
