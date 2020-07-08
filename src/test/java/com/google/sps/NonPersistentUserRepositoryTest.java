@@ -1,5 +1,6 @@
 package com.google.sps;
 
+import com.google.gson.Gson;
 import com.google.sps.data.NonPersistentUserRepository;
 import com.google.sps.data.User;
 import java.util.ArrayList;
@@ -19,16 +20,18 @@ public final class NonPersistentUserRepositoryTest {
   public void addFakeMentorsTest() {
     NonPersistentUserRepository testDataRepo = new NonPersistentUserRepository();
     testDataRepo.addFakeMentors();
-    String expected = "Andre Jerry Julie ";
-    Assert.assertEquals(expected, testDataRepo.toString());
+    int expected = 3;
+
+    Assert.assertEquals(expected, testDataRepo.getAllUsers().size());
   }
 
   @Test
   public void addUserTest() {
     NonPersistentUserRepository emptyRepo = new NonPersistentUserRepository();
     emptyRepo.addUser(USER_A);
-    String expected = "User A ";
-    Assert.assertEquals(expected, emptyRepo.toString());
+    int expected = 1;
+
+    Assert.assertEquals(expected, emptyRepo.getAllUsers().size());
   }
 
   @Test

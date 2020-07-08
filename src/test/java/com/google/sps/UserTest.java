@@ -1,5 +1,6 @@
 package com.google.sps;
 
+import com.google.gson.Gson;
 import com.google.sps.data.User;
 import com.google.sps.data.User.ProfileType;
 import java.util.Collection;
@@ -14,17 +15,18 @@ public final class UserTest {
   @Test
   public void userConstructorAndToString() {
     User myUser = new User("user name");
-    String expected = "user name";
+    String expected = new Gson().toJson(myUser);
+    
     Assert.assertEquals(expected, myUser.toString());
   }
 
   @Test
-  public void addProductArea() {
+  public void addSpecialty() {
       User userA = new User("John");
-      userA.addProductArea("ML");
-      Collection<String> productAreas = userA.getSpecialties();
+      userA.addSpecialty("ML");
+      Collection<String> specialties = userA.getSpecialties();
 
-      Assert.assertEquals(1, productAreas.size());
+      Assert.assertEquals(1, specialties.size());
   }
 
   @Test

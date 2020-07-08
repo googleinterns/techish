@@ -16,7 +16,7 @@ function createMatchElement(match: User) {
     matchElement.className = 'match';
 
     const nameElement = document.createElement('span');
-    nameElement.innerText = match.name;
+    nameElement.innerText = JSON.stringify(match);
 
 
     matchElement.appendChild(nameElement);
@@ -25,34 +25,34 @@ function createMatchElement(match: User) {
 }
 
 function sendMatchRequest() {
-    const productArea = (<HTMLInputElement>document.getElementById('product_area')).value;
+    const specialty = (<HTMLInputElement>document.getElementById('specialty')).value;
 
   // Create the request to send to the server using the data we collected from
   // the web form.
-  const matchRequest = new MatchRequest(productArea);
+  const matchRequest = new MatchRequest(specialty);
 
   queryServer(matchRequest).then((matches) => {
-      displayNewMatchPopup(matches);
+      if(matches.length == 0) {
+        $('#noNewMatchModal').modal();
+      } else {
+        $('#newMatchModal').modal();
+        displayNewMatchPopup(matches);
+      }
   });
 }
 
 function displayNewMatchPopup(matches : Array<User>) {
-    const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
+  const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
 
   // clear out any old results
   newMatchContainer.innerHTML = '';
 
   // add results to the page
   for (const match of matches) {
-    const matchString : string = matchToString(match);
+    const matchString : string = JSON.stringify(match);
     let newOption = new Option(matchString, matchString);
     newMatchContainer.add(newOption, undefined);
   }
-}
-
-
-function matchToString(match : User) {
-    return match.name;
 }
 
 /**
@@ -65,26 +65,29 @@ async function queryServer(matchRequest: MatchRequest) {
         return response.json();
       })
       .then((users) => {
-        // Convert the range from a json representation to our User class.
+        //convert range from json to User
         const out : Array<User> = [];
         users.forEach((range: User) => {
-          out.push(new User(range.name));
+          out.push(range);
         });
         return out;
       });
 }
 
 class MatchRequest {
-    productArea: string;
-    constructor(productArea: string) {
-        this.productArea = productArea;
+    specialty: string;
+    constructor(specialty: string) {
+        this.specialty = specialty;
     }
 }
 
 class User {
+    id: number;
     name: string;
-    constructor(name: string) {
+    specialties: string[];
+    constructor(id: number, name: string, specialties: string[]) {
+        this.id = id;
         this.name = name;
+        this.specialties = specialties;
     }
 }
-
