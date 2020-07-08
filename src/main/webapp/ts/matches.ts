@@ -32,7 +32,12 @@ function sendMatchRequest() {
   const matchRequest = new MatchRequest(specialty);
 
   queryServer(matchRequest).then((matches) => {
-      displayNewMatchPopup(matches);
+      if(matches.length == 0) {
+        $('#noNewMatchModal').modal();
+      } else {
+        $('#newMatchModal').modal();
+        displayNewMatchPopup(matches);
+      }
   });
 }
 
