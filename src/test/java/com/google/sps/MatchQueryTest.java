@@ -28,20 +28,7 @@ public final class MatchQueryTest {
 
   @Test
   public void mlRequest_ShouldReturnMLMentors() {
-    Collection<String> expected = new ArrayList<String>();
-
-    User mentorA = new User("Andre Harder");
-    mentorA.addSpecialty("Machine Learning");
-    mentorA.addSpecialty("DoS");
-
-    User mentorC = new User("Julie Johnson");
-    mentorC.addSpecialty("Machine Learning");
-    mentorC.addSpecialty("Security");
-
-    expected.add(mentorA.toString());
-    expected.add(mentorC.toString());
-
-    Assert.assertEquals(expected, MATCH_QUERY.query(ML_REQUEST));
+    Assert.assertEquals(2, MATCH_QUERY.query(ML_REQUEST).size());
   }
 
   @Test

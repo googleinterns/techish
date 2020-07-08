@@ -36,7 +36,7 @@ function sendMatchRequest() {
   });
 }
 
-function displayNewMatchPopup(matches : Array<string>) {
+function displayNewMatchPopup(matches : Array<User>) {
   const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
 
   // clear out any old results
@@ -44,7 +44,8 @@ function displayNewMatchPopup(matches : Array<string>) {
 
   // add results to the page
   for (const match of matches) {
-    let newOption = new Option(match, match);
+    const matchString : string = JSON.stringify(match);
+    let newOption = new Option(matchString, matchString);
     newMatchContainer.add(newOption, undefined);
   }
 }
@@ -58,7 +59,14 @@ async function queryServer(matchRequest: MatchRequest) {
       .then((response) => {
         return response.json();
       })
-      .then((users) => {return users;});
+      .then((users) => {
+        //convert range from json to User
+        const out : Array<User> = [];
+        users.forEach((range: User) => {
+          out.push(range);
+        });
+        return out;
+      });
 }
 
 class MatchRequest {
@@ -69,9 +77,11 @@ class MatchRequest {
 }
 
 class User {
+    id: number;
     name: string;
     specialties: string[];
-    constructor(name: string, specialties: string[]) {
+    constructor(id: number, name: string, specialties: string[]) {
+        this.id = id;
         this.name = name;
         this.specialties = specialties;
     }

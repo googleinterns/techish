@@ -69,7 +69,8 @@ function displayNewMatchPopup(matches) {
     // add results to the page
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
-        var newOption = new Option(match, match);
+        var matchString = JSON.stringify(match);
+        var newOption = new Option(matchString, matchString);
         newMatchContainer.add(newOption, undefined);
     }
 }
@@ -85,7 +86,14 @@ function queryServer(matchRequest) {
                     .then(function (response) {
                     return response.json();
                 })
-                    .then(function (users) { return users; })];
+                    .then(function (users) {
+                    //convert range from json to User
+                    var out = [];
+                    users.forEach(function (range) {
+                        out.push(range);
+                    });
+                    return out;
+                })];
         });
     });
 }
@@ -96,7 +104,8 @@ var MatchRequest = /** @class */ (function () {
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(name, specialties) {
+    function User(id, name, specialties) {
+        this.id = id;
         this.name = name;
         this.specialties = specialties;
     }

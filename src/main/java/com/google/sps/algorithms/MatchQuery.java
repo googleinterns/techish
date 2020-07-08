@@ -8,12 +8,12 @@ import java.util.Collection;
 
 public final class MatchQuery {
 
-  public Collection<String> query(MatchRequest request) {
+  public Collection<User> query(MatchRequest request) {
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
     mockRepo.addFakeMentors();
 
     Collection<User> mockMentors = mockRepo.getAllUsers();
-    Collection<String> mentorMatches = new ArrayList<String>();
+    Collection<User> mentorMatches = new ArrayList<User>();
 
     String matchCriteria = request.getCriteria();
 
@@ -25,7 +25,7 @@ public final class MatchQuery {
     for(User potentialMentor : mockMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
         if(mentorSpecialties.contains(matchCriteria)) {
-            mentorMatches.add(potentialMentor.toString());
+            mentorMatches.add(potentialMentor);
         }
     }
     
