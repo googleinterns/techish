@@ -47,38 +47,36 @@
       <div class="container">
         <h3>Match History:</h3>
         <ul id="match-history"></ul>
-
-       <div class="form" id="matchForm">
-        <form class="form-container" id="match_form">
-        <h3>Get New Matches</h3>
-
-        <label for="specialty"><b>Select a Specialty:</b></label>
-        <select
-          name="specialty"
-          id="specialty"
-          form="match_form"
-          required
-        />
-          <option value="Machine Learning">Maching Learning</option>
-          <option value="Artificial Intelligence">Artificial Intelligence</option>
-          <option value="Systems">Systems</option>
-          <option value="Networks">Networks</option>
-          <option value="Security">Security</option>
-          <option value="Database">Database</option>
-          <option value="Graphics">Graphics</option>
-          <option value="Electrical Engineering">Electrical Engineering</option>
-          <option value="DoS">DoS</option>
-        </select>
-        <input type="button" class="btn btn-primary" value="Submit" onclick="sendMatchRequest()" data-toggle="modal" data-target="#exampleModal"/>
-      </form>
-    </div>
+        <div class="form" id="matchForm">
+          <form class="form-container" id="match_form">
+            <h3>Get New Matches</h3>
+            <label for="specialty"><b>Select a Specialty:</b></label>
+            <select
+              name="specialty"
+              id="specialty"
+              form="match_form"
+              required
+              />
+              <option value="Machine Learning">Maching Learning</option>
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Systems">Systems</option>
+              <option value="Networks">Networks</option>
+              <option value="Security">Security</option>
+              <option value="Database">Database</option>
+              <option value="Graphics">Graphics</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+              <option value="DoS">DoS</option>
+            </select>
+            <input type="button" class="btn btn-primary" value="Submit" onclick="sendMatchRequest()"/>
+          </form>
+        </div>
         <hr>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- New Matches Popup -->
+        <div class="modal fade" id="newMatchModal" tabindex="-1" role="dialog" aria-labelledby="newMatchModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select One or More Matches to Save:</h5>
+                <h5 class="modal-title" id="newMatchModalLabel">Select One or More Matches to Save:</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -94,6 +92,19 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" form="new_match_form" class="btn btn-primary">Save Matches</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- NO NEW MATCHES Popup -->
+        <div class="modal fade" id="noNewMatchModal" tabindex="-1" role="dialog" aria-labelledby="noNewMatchModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="newMatchModalLabel">No New Matches Found. Please try different criteria.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
               </div>
             </div>
           </div>

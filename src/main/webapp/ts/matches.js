@@ -59,7 +59,13 @@ function sendMatchRequest() {
     // the web form.
     var matchRequest = new MatchRequest(specialty);
     queryServer(matchRequest).then(function (matches) {
-        displayNewMatchPopup(matches);
+        if (matches.length == 0) {
+            $('#noNewMatchModal').modal();
+        }
+        else {
+            $('#newMatchModal').modal();
+            displayNewMatchPopup(matches);
+        }
     });
 }
 function displayNewMatchPopup(matches) {
