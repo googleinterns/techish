@@ -24,6 +24,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -35,9 +36,6 @@ public class NewMatchQueryServletTest {
     @Mock
     HttpServletResponse response;
 
-    @Mock
-    ServletConfig servletConfig;
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -45,39 +43,39 @@ public class NewMatchQueryServletTest {
 
     @Test
     public void doPost_returnsNewMatches() throws IOException, ServletException {
-    //     MatchQuery matchQuery = new MatchQuery();
-    //     Collection<User> userSavedMatches = new ArrayList<User>();
-    //     Collection<User> answer = matchQuery.query(new MatchRequest(), userSavedMatches);
+        MatchQuery matchQuery = new MatchQuery();
+        Collection<User> userSavedMatches = new ArrayList<User>();
+        Collection<User> answer = matchQuery.query(new MatchRequest(), userSavedMatches);
  
-    //     StringWriter StringWriter = new StringWriter();
-    //     PrintWriter printWriter = new PrintWriter(StringWriter);
-    //     when(response.getWriter()).thenReturn(printWriter);
- 
-    // //test area
-   
+        StringWriter StringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(StringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        //initialize variables
+        MatchRepository testRepository;
+        NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
+        User testUser = repository.addTestData();
+        testRepository = repository;
          
-    //     ServletContext servletContext = mock(ServletContext.class);
-        
+        //mock ServletContext
+        final ServletContext servletContext = Mockito.mock(ServletContext.class);
 
-    //     MatchServlet matchServlet = mock(MatchServlet.class);
-    //     when(matchServlet.getServletConfig()).thenReturn(servletConfig);
-    //     matchServlet.init();
+        //override getServletContext
+        NewMatchQueryServlet myServlet = new NewMatchQueryServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+        };
+        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
+        when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
 
-    //     NonPersistentMatchRepository testRepo = new NonPersistentMatchRepository();
-    //     User testUser = testRepo.addTestData();
-    //     when(servletContext.getAttribute("matchRepository")).thenReturn(testRepo);
-    //     when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
+        myServlet.doPost(request, response);
 
-    //     NewMatchQueryServlet myServlet =new NewMatchQueryServlet();
-    //     myServlet.doPost(request, response);
+        Gson gson = new Gson();
+        String expected = gson.toJson(answer);
+        String result = StringWriter.getBuffer().toString().trim();
 
-    //     //////
-
-    //     Gson gson = new Gson();
-    //     String expected = gson.toJson(answer);
-    //     String result = StringWriter.getBuffer().toString().trim();
-
-    //     printWriter.flush();
-    //     Assert.assertEquals(expected, result);
+        printWriter.flush();
+        Assert.assertEquals(expected, result);
     }
 }
