@@ -3,7 +3,6 @@ package com.google.sps;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
-
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.gson.Gson;
