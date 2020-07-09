@@ -67,7 +67,7 @@ public class PersistentUserRepository implements UserRepository {
         User userObject = new User(name);
         if(specialties != null) {
             for (String specialty : specialties) {
-                userObject.addProductArea(specialty);
+                userObject.addSpecialty(specialty);
             }
         }
         userProfiles.add(userObject);
