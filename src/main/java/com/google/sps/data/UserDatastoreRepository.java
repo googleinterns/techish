@@ -5,13 +5,11 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
-
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gson.Gson;
 import com.google.sps.data.User;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -34,8 +32,6 @@ public class UserDatastoreRepository implements UserRepository {
     
   private Collection<User> allUsers = new ArrayList<>();
   
-  private static final Gson gson = new Gson();
-
   private DatastoreService datastore;
   
   private int maxProfiles = 10;
@@ -94,14 +90,18 @@ public class UserDatastoreRepository implements UserRepository {
         }
     }
   }
-
+  // function that adds user to the database if it does not exist already
   public void addUser(User user) {
     allUsers = fetchUserProfiles();
-
+    /*
+     * if the user exists in the database then nothing happens,
+     * if it doesnt exist then it gets added
+    */
     if(!allUsers.contains(user)) {
         allUsers.add(user);
         addUserToDatabase(user);
     }
+
   }
 
   public void removeUser(User user) throws Exception {

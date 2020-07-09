@@ -43,8 +43,6 @@ public final class UserDatastoreRepositoryTest {
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-  private DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
-
   private static final User USER_A = new User("User A");
   private static final User MATCH_A = new User("Match A");
 
