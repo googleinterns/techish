@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * This class implements the match repository using the datastore 
  */
-public class UserDatastoreRepository implements UserRepository {
+public class PersistentUserRepository implements UserRepository {
     
   private Collection<User> allUsers = new ArrayList<>();
   
@@ -36,7 +36,7 @@ public class UserDatastoreRepository implements UserRepository {
   
   private int maxProfiles = 10;
   
-  public UserDatastoreRepository() {
+  public PersistentUserRepository() {
       datastore = DatastoreServiceFactory.getDatastoreService();
   }
 

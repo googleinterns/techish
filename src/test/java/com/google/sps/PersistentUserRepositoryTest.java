@@ -8,7 +8,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.gson.Gson;
-import com.google.sps.data.UserDatastoreRepository;
+import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,7 +34,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 /** */
 @RunWith(JUnit4.class)
-public final class UserDatastoreRepositoryTest { 
+public final class PersistentUserRepositoryTest { 
     
   @Mock private HttpServletRequest request;
 
@@ -46,7 +46,7 @@ public final class UserDatastoreRepositoryTest {
   private static final User USER_A = new User("User A");
   private static final User MATCH_A = new User("Match A");
 
-  public void addFakeMentors(UserDatastoreRepository input) {
+  public void addFakeMentors(PersistentUserRepository input) {
     User mentorA = new User("Andre");
     mentorA.addProductArea("Machine Learning");
     mentorA.addProductArea("DoS");
@@ -77,7 +77,7 @@ public final class UserDatastoreRepositoryTest {
 
   @Test
   public void addFakeMentorsTest() {
-    UserDatastoreRepository testDataRepo = new UserDatastoreRepository();
+    PersistentUserRepository testDataRepo = new PersistentUserRepository();
     addFakeMentors(testDataRepo);
     String expected = "Andre Jerry Julie ";
     String result = testDataRepo.toString();
@@ -86,7 +86,7 @@ public final class UserDatastoreRepositoryTest {
 
   @Test
   public void addUserTest() {
-    UserDatastoreRepository emptyRepo = new UserDatastoreRepository();
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
     emptyRepo.addUser(USER_A);
     String expected = "User A ";
     String result = emptyRepo.toString();
@@ -95,7 +95,7 @@ public final class UserDatastoreRepositoryTest {
 
   @Test
   public void removeUserThatExists() {
-    UserDatastoreRepository emptyRepo = new UserDatastoreRepository();
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
     emptyRepo.addUser(USER_A);
     try {
       emptyRepo.removeUser(USER_A);
@@ -109,7 +109,7 @@ public final class UserDatastoreRepositoryTest {
 
   @Test
   public void removeUserThatDoesNotExist() {
-    UserDatastoreRepository emptyRepo = new UserDatastoreRepository();
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
     try {
       emptyRepo.removeUser(USER_A);
       Assert.fail("Exception should be thrown in removeUserThatDoesNotExist()");
@@ -124,7 +124,7 @@ public final class UserDatastoreRepositoryTest {
       User userB = new User("Bob");
       User userC = new User("Haley");
 
-      UserDatastoreRepository myRepo = new UserDatastoreRepository();
+      PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
       myRepo.addUser(userB);
       myRepo.addUser(userC);
@@ -145,7 +145,7 @@ public final class UserDatastoreRepositoryTest {
   public void addSameUserMultipleTimes() {
       User userA = new User("John");
 
-      UserDatastoreRepository myRepo = new UserDatastoreRepository();
+      PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
       myRepo.addUser(userA);
       myRepo.addUser(userA);
@@ -162,7 +162,7 @@ public final class UserDatastoreRepositoryTest {
       User userA = new User("John");
       User userB = new User("Bob");
 
-      UserDatastoreRepository myRepo = new UserDatastoreRepository();
+      PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
       myRepo.addUser(userB);
 
@@ -195,7 +195,7 @@ public final class UserDatastoreRepositoryTest {
   public void singleAddAndGetUser() {
       User userA = new User("Sundar");
 
-      UserDatastoreRepository myRepo = new UserDatastoreRepository();
+      PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
       Collection<User> allUsers = myRepo.getAllUsers();
       int currentSize = allUsers.size();
@@ -208,7 +208,7 @@ public final class UserDatastoreRepositoryTest {
   public void singleAddAndRemoveUser() {
       User userA = new User("Sundar");
 
-      UserDatastoreRepository myRepo = new UserDatastoreRepository();
+      PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
 
       try {
