@@ -42,8 +42,9 @@ public final class User {
       return result;
   }
 
-  public boolean equals(User user) {
-    return this.name == user.name;
+  public boolean equals(Object user) {
+    User other = (User) user; 
+    return other.name.equals(this.name);
   }
 
   public void addProductArea(String toAdd) {
