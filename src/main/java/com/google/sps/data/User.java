@@ -1,5 +1,6 @@
 package com.google.sps.data;
 
+import com.google.gson.Gson;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -24,8 +25,8 @@ public final class User {
   }
 
   public String toString() {
-    return name;
-  }
+    return new Gson().toJson(this);
+  } 
 
   public ProfileType toEnum(String input) {
       if(input == "student" || input == "STUDENT") {
@@ -45,9 +46,9 @@ public final class User {
   public boolean equals(Object user) {
     User other = (User) user; 
     return other.name.equals(this.name);
-  }
 
-  public void addProductArea(String toAdd) {
+
+  public void addSpecialty(String toAdd) {
       specialties.add(toAdd);
   }
 

@@ -18,16 +18,18 @@ public final class NonPersistentMatchRepositoryTest {
   public void addTestDataTest() {
     NonPersistentMatchRepository testDataRepo = new NonPersistentMatchRepository();
     User testUser = testDataRepo.addTestData();
-    String expected = "{Test User=[Hadley, Sam, Andre, Jerry]}";
-    Assert.assertEquals(expected, testDataRepo.toString());
+    int expected = 4;
+
+    Assert.assertEquals(expected, testDataRepo.getMatchesForUser(testUser).size());
   }
 
   @Test
   public void addMatchTest() {
     NonPersistentMatchRepository emptyRepo = new NonPersistentMatchRepository();
     emptyRepo.addMatch(USER_A, MATCH_A);
-    String expected = "{User A=[Match A]}";
-    Assert.assertEquals(expected, emptyRepo.toString());
+    int expected = 1;
+
+    Assert.assertEquals(expected, emptyRepo.getMatchesForUser(USER_A).size());
   }
 
   @Test
@@ -36,8 +38,9 @@ public final class NonPersistentMatchRepositoryTest {
     emptyRepo.addMatch(USER_A, MATCH_A);
     try {
       emptyRepo.removeMatch(USER_A, MATCH_A);
-      String expected = "{User A=[]}";
-      Assert.assertEquals(expected, emptyRepo.toString());
+      int expected = 0;
+
+      Assert.assertEquals(expected, emptyRepo.getMatchesForUser(USER_A).size());
     } catch (Exception e) {
       Assert.fail("Exception should not be thrown in removeMatchThatExists");
     }

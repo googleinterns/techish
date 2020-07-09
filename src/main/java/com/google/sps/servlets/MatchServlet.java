@@ -1,11 +1,14 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;  
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,17 +43,17 @@ public class MatchServlet extends HttpServlet {
       throws IOException {
 
     if(request.getParameterValues("new-matches") != null) {
+      String[] matchesToSave = request.getParameterValues("new-matches");
 
-        String[] matchesToSave = request.getParameterValues("new-matches");
-
-        for (String matchName : matchesToSave) {
-        User newMatch = new User(matchName);
+      for (String matchName : matchesToSave) {
+        User newMatch = new Gson().fromJson(matchName, User.class);
         testRepository.addMatch(testUser, newMatch);
-        }
-    } else {
+      }
+      } else {
         System.err.println("new-matches is null in MatchServlet doPost()");
-    }
-
+      }
     response.sendRedirect("/logged_in_homepage.html");
   }
+
+
 }
