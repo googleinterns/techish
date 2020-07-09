@@ -49,17 +49,23 @@ function createMatchElement(match) {
     var matchElement = document.createElement('li');
     matchElement.className = 'match';
     var nameElement = document.createElement('span');
-    nameElement.innerText = match.name;
+    nameElement.innerText = JSON.stringify(match);
     matchElement.appendChild(nameElement);
     return matchElement;
 }
 function sendMatchRequest() {
-    var productArea = document.getElementById('product_area').value;
+    var specialty = document.getElementById('specialty').value;
     // Create the request to send to the server using the data we collected from
     // the web form.
-    var matchRequest = new MatchRequest(productArea);
+    var matchRequest = new MatchRequest(specialty);
     queryServer(matchRequest).then(function (matches) {
-        displayNewMatchPopup(matches);
+        if (matches.length == 0) {
+            $('#noNewMatchModal').modal();
+        }
+        else {
+            $('#newMatchModal').modal();
+            displayNewMatchPopup(matches);
+        }
     });
 }
 function displayNewMatchPopup(matches) {
@@ -69,13 +75,10 @@ function displayNewMatchPopup(matches) {
     // add results to the page
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
-        var matchString = matchToString(match);
+        var matchString = JSON.stringify(match);
         var newOption = new Option(matchString, matchString);
         newMatchContainer.add(newOption, undefined);
     }
-}
-function matchToString(match) {
-    return match.name;
 }
 /**
  * Sends the match request to the server and get back the matches.
@@ -90,10 +93,10 @@ function queryServer(matchRequest) {
                     return response.json();
                 })
                     .then(function (users) {
-                    // Convert the range from a json representation to our User class.
+                    //convert range from json to User
                     var out = [];
                     users.forEach(function (range) {
-                        out.push(new User(range.name));
+                        out.push(range);
                     });
                     return out;
                 })];
@@ -101,14 +104,16 @@ function queryServer(matchRequest) {
     });
 }
 var MatchRequest = /** @class */ (function () {
-    function MatchRequest(productArea) {
-        this.productArea = productArea;
+    function MatchRequest(specialty) {
+        this.specialty = specialty;
     }
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(name) {
+    function User(id, name, specialties) {
+        this.id = id;
         this.name = name;
+        this.specialties = specialties;
     }
     return User;
 }());

@@ -62,7 +62,15 @@ public class MatchServletTest {
         Assert.assertEquals(4, numMatches);
 
         //DoPost to add 3 more matches
-        String[] newMatches = {"John", "Bob", "Cathy"};
+        User userA = new User("John");
+        User userB = new User("Bob");
+        User userC = new User("Cathy");
+        userB.addSpecialty("Security");
+        userB.addSpecialty("DoS");
+        userC.addSpecialty("Artificial Intelligence");
+        User[] newMatchesArray = {userA, userB, userC};
+        Gson gson = new Gson();
+        String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
         when(request.getParameterValues("new-matches")).thenReturn(newMatches);
         matchServlet.doPost(request, response);
         verify(response, times(1)).sendRedirect("/logged_in_homepage.html");

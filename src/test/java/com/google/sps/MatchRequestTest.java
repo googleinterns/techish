@@ -22,4 +22,11 @@ public final class MatchRequestTest {
     String expected = "";
     Assert.assertEquals(expected, myRequest.getCriteria());
   }
+
+  @Test
+  public void toStringTest() {
+    MatchRequest myRequest = new MatchRequest("AI");
+    String expected = "AI";
+    Assert.assertEquals(expected, myRequest.toString());  
+  }
 }
