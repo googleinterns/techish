@@ -26,12 +26,8 @@ public final class MatchQuery {
       return mentorMatches;
     }
 
-    //debugging
-    System.out.println("USER SAVED MATCHES: " + userSavedMatches);
-
     for(User potentialMentor : mockMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
-        System.out.println("Boolean for " + potentialMentor + " : " + userSavedMatches.contains(potentialMentor));
 
         //see if new mentor is not already saved AND contains correct criteria
         if(!(userSavedMatches.contains(potentialMentor)) && (mentorSpecialties.contains(matchCriteria))) {
