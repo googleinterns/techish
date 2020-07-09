@@ -46,6 +46,7 @@ public final class User {
   public boolean equals(Object user) {
     User other = (User) user; 
     return other.name.equals(this.name);
+  }
 
 
   public void addSpecialty(String toAdd) {
