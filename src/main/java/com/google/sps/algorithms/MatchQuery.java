@@ -11,7 +11,8 @@ public final class MatchQuery {
 
 //   public MatchQuery()
 
-  public Collection<User> query(MatchRequest request, MatchRepository matchRepo) {
+  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches) {
+    //Access User Repository
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
     mockRepo.addFakeMentors();
 
@@ -25,18 +26,15 @@ public final class MatchQuery {
       return mentorMatches;
     }
 
-    User fakeTestUser = new User("");
-    Collection<User> alreadySavedMatches = matchRepo.getMatchesForUser(fakeTestUser);
-
-    //get already saved matches using a fake request
-    // HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
-    // MatchServlet matchServlet = new MatchServlet();
-    // matchServlet.init();
-    // Collection<User> matches = 
+    //debugging
+    System.out.println("USER SAVED MATCHES: " + userSavedMatches);
 
     for(User potentialMentor : mockMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
-        if(mentorSpecialties.contains(matchCriteria)) {
+        System.out.println("Boolean for " + potentialMentor + " : " + userSavedMatches.contains(potentialMentor));
+
+        //see if new mentor is not already saved AND contains correct criteria
+        if(!(userSavedMatches.contains(potentialMentor)) && (mentorSpecialties.contains(matchCriteria))) {
             mentorMatches.add(potentialMentor);
         }
     }

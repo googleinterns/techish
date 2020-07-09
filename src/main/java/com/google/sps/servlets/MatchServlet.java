@@ -22,28 +22,31 @@ import javax.servlet.ServletException;
 public class MatchServlet extends HttpServlet {
 
 //   private static MatchRepository testRepository;
-  private static User testUser;
+//   private static User testUser;
+//   ServletContext sc;
 
   //get MatchRepository method
 
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
+    // sc = config.getServletContext();
 
     NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
-    testUser = repository.addTestData();
+    User testUser = repository.addTestData();
     MatchRepository testRepository = repository;
 
     // MatchRepository testRepository 
 
     getServletContext().setAttribute("matchRepository", testRepository);
-    // getServletContext().setAttribute("testUser", testUser);
+    getServletContext().setAttribute("currentUser", testUser);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     ServletContext servletContext = getServletContext();
-    MatchRepository testRepository = (MatchRepository) servletContext.getServletContext();
+    MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+    User testUser = (User) servletContext.getAttribute("currentUser");
 
     Collection<User> matches = testRepository.getMatchesForUser(testUser);
 
@@ -56,7 +59,8 @@ public class MatchServlet extends HttpServlet {
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     ServletContext servletContext = getServletContext();
-    MatchRepository testRepository = (MatchRepository) servletContext.getServletContext();
+    MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+    User testUser = (User) servletContext.getAttribute("currentUser");
 
     if(request.getParameterValues("new-matches") != null) {
       String[] matchesToSave = request.getParameterValues("new-matches");

@@ -30,12 +30,13 @@ public class NewMatchQueryServlet extends HttpServlet {
 
     //get MatchServlet and current user to pass into MatchQuery
     ServletContext servletContext = getServletContext();
-    MatchRepository matchRepository = (MatchRepository) servletContext.getServletContext();
-    // User currentUser = (User) servletContext.getServletContext();
+    MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+    User currentUser = (User) servletContext.getAttribute("currentUser");
+    Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();
-    Collection<User> answer = matchQuery.query(matchRequest, matchRepository);
+    Collection<User> answer = matchQuery.query(matchRequest, userSavedMatches);
 
     // Convert the times to JSON
     String jsonResponse = gson.toJson(answer);
