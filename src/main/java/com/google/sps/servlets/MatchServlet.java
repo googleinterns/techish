@@ -21,23 +21,15 @@ import javax.servlet.ServletException;
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
-//   private static MatchRepository testRepository;
-//   private static User testUser;
-//   ServletContext sc;
-
-  //get MatchRepository method
-
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
-    // sc = config.getServletContext();
 
     NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
     User testUser = repository.addTestData();
     MatchRepository testRepository = repository;
 
-    // MatchRepository testRepository 
-
+    //Set MatchRepository and Current User as ServletContext so that they can be accessed by all servlets
     getServletContext().setAttribute("matchRepository", testRepository);
     getServletContext().setAttribute("currentUser", testUser);
   }
@@ -69,11 +61,10 @@ public class MatchServlet extends HttpServlet {
         User newMatch = new Gson().fromJson(matchName, User.class);
         testRepository.addMatch(testUser, newMatch);
       }
-      } else {
-        System.err.println("new-matches is null in MatchServlet doPost()");
-      }
+    } else {
+      System.err.println("new-matches is null in MatchServlet doPost()");
+    }
     response.sendRedirect("/logged_in_homepage.html");
   }
-
 
 }

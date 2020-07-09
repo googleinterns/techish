@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 public class NewMatchQueryServlet extends HttpServlet {
 
   @Override
-  public void init() {}
-
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
 

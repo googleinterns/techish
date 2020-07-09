@@ -22,79 +22,115 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import javax.servlet.ServletContext;
 
 public class MatchServletTest {
     @Test
     public void doGet_returnMatches() throws IOException, ServletException {
-        //Initialize variables
-        // HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
-        // HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        // MatchRepository testRepository;
-        // NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
-        // User testUser = repository.addTestData();
-        // testRepository = repository;
-        // Gson gson = new Gson();
+        // Initialize variables
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        MatchRepository testRepository;
+        NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
+        User testUser = repository.addTestData();
+        testRepository = repository;
+        Gson gson = new Gson();
 
-        // MatchServlet matchServlet = new MatchServlet();
-        // matchServlet.init();
+        //mock ServletContext
+        final ServletContext servletContext = Mockito.mock(ServletContext.class);
 
-        // //get expected result
-        // Collection<User> matches = testRepository.getMatchesForUser(testUser);
-        // String expected = gson.toJson(matches);
+        //override getServletContext
+        MatchServlet matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+        };
+        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
+        when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
 
-        // //call doGet
-        // String result = doGetHelper(request, response, matchServlet);
-        // Assert.assertEquals(expected, result);
+        //get expected result
+        Collection<User> matches = testRepository.getMatchesForUser(testUser);
+        String expected = gson.toJson(matches);
+
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+        Assert.assertEquals(expected, result);
     }
 
     @Test
     public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
-        // //Initialize variables
-        // HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
-        // HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        //Initialize variables
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        MatchRepository testRepository;
+        NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
+        User testUser = repository.addTestData();
+        testRepository = repository;
     
-        // MatchServlet matchServlet = new MatchServlet();
-        // matchServlet.init();
+        //mock ServletContext
+        final ServletContext servletContext = Mockito.mock(ServletContext.class);
 
-        // //First doGet Call
-        // String result = doGetHelper(request, response, matchServlet);
-        // int numMatches = matchesInString(result);
-        // Assert.assertEquals(4, numMatches);
+        //override getServletContext
+        MatchServlet matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+        };
+        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
+        when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
 
-        // //DoPost to add 3 more matches
-        // User userA = new User("John");
-        // User userB = new User("Bob");
-        // User userC = new User("Cathy");
-        // userB.addSpecialty("Security");
-        // userB.addSpecialty("DoS");
-        // userC.addSpecialty("Artificial Intelligence");
-        // User[] newMatchesArray = {userA, userB, userC};
-        // Gson gson = new Gson();
-        // String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
-        // when(request.getParameterValues("new-matches")).thenReturn(newMatches);
-        // matchServlet.doPost(request, response);
-        // verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+        //First doGet Call
+        String result = doGetHelper(request, response, matchServlet);
+        int numMatches = matchesInString(result);
+        Assert.assertEquals(4, numMatches);
 
-        // //doGet again to verify there are now 7 matches
-        // result = doGetHelper(request, response, matchServlet);
-        // numMatches = matchesInString(result);
-        // Assert.assertEquals(7, numMatches);
+        //DoPost to add 3 more matches
+        User userA = new User("John");
+        User userB = new User("Bob");
+        User userC = new User("Cathy");
+        userB.addSpecialty("Security");
+        userB.addSpecialty("DoS");
+        userC.addSpecialty("Artificial Intelligence");
+        User[] newMatchesArray = {userA, userB, userC};
+        Gson gson = new Gson();
+        String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
+        when(request.getParameterValues("new-matches")).thenReturn(newMatches);
+        matchServlet.doPost(request, response);
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+
+        //doGet again to verify there are now 7 matches
+        result = doGetHelper(request, response, matchServlet);
+        numMatches = matchesInString(result);
+        Assert.assertEquals(7, numMatches);
     }
 
     @Test
     public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
-        // //Initialize variables
-        // HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
-        // HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        //Initialize variables
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class); 
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+        MatchRepository testRepository;
+        NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
+        User testUser = repository.addTestData();
+        testRepository = repository;
     
-        // MatchServlet matchServlet = new MatchServlet();
-        // matchServlet.init();
+        //mock ServletContext
+        final ServletContext servletContext = Mockito.mock(ServletContext.class);
 
-        // String[] nullMatches = null;
-        // when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
-        // matchServlet.doPost(request, response);
+        //override getServletContext
+        MatchServlet matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+        };
+        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
+        when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
 
-        // verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+        String[] nullMatches = null;
+        when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
+        matchServlet.doPost(request, response);
+
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
     }
     
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)

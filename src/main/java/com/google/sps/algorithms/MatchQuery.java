@@ -9,8 +9,6 @@ import java.util.Collection;
 
 public final class MatchQuery {
 
-//   public MatchQuery()
-
   public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches) {
     //Access User Repository
     NonPersistentUserRepository mockRepo = new NonPersistentUserRepository();
