@@ -5,11 +5,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="STEP Capstone: Techish">
   <meta name="author" content="Samuel Sandoval and Hadley Shapland">
-  <title>Techish</title>
-  <link href="css/styles.css" rel="stylesheet">
-</head>
-<body>
-  
-  <script src="ts/app.ts"></script>
+  <title>Sign Up</title>
+   <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/one-page-wonder.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Techish</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <header class="masthead text-center text-white">
+      <div class="masthead-content">
+        <div class="container">
+          <h1 class="masthead-heading mb-0">Profile Builder</h1>
+        </div>
+      </div>
+      <div class="bg-circle-1 bg-circle"></div>
+      <div class="bg-circle-2 bg-circle"></div>
+      <div class="bg-circle-3 bg-circle"></div>
+      <div class="bg-circle-4 bg-circle"></div>
+    </header>
+    <section>
+        <div class="container">
+            <h1>Profile Builder</h1>
+            <form action="/profile" id="profile_form" method="POST" id="makeProfile">
+                <div>
+                    <!-- <label style= "color: black;"> User Type:
+                        <select placeholder={{category}} name="user-Type" onchange="setForm(this.value)">
+                            <option>Choose your User Type</option>
+                            <option name="user-Type" value="professional">Professional</option>
+                            <option name="user-Type"  value="student">Student</option>
+                        </select>
+                    </label> -->
+                </div>
+                <div change="setForm(this.value)">
+                    <button class="btn btn-primary" value="mentor">Mentpr</button>
+                    <button class="btn btn-primary" value="student">Student</button>
+                </div>
+
+                <!-- Student Input Form -->
+                <div id="student">
+                <!-- full name input -->
+                    <div>
+                        <label style="color:black;" name="name-input"> Full Name:
+                            <input type="text" name="name-input" class="form-control">
+                        </label>
+                    </div>
+                    <!-- School input -->
+                    <div>
+                        <label style="color:black;" name="school-input"> School:
+                            <input type="text" name="school-input" class="form-control"  placeholder="School">
+                        </label>
+                    </div>
+                    <!-- Major input -->
+                    <div>
+                        <label style="color:black;" name="major-input"> Major:
+                            <input type="text" name="major-input" class="form-control"  placeholder="Major">
+                        </label>
+                    </div>
+
+                        <input type="submit" value="Submit">
+                    </div>
+
+                <div id="mentor" style="display: none">
+
+                <!-- full name -->
+                    <div>
+                        <label style="color:black;" name="profName-input"> Full Name:
+                            <input type="text" name="profName-input" class="form-control">
+                        </label>
+                    </div>
+                    <!-- Company input -->
+                    <div>
+                        <label style="color:black;" name="company-input"> Company:
+                            <input type="text" name="company-input" class="form-control" placeholder="Company">
+                        </label>
+                    </div>
+                    <!-- Career Title input -->
+                    <div>
+                        <label style="color:black;" name="careerTitle-input"> Career Title:
+                            <input type="text" name="careerTitle-input" class="form-control"  placeholder="Career Title">
+                        </label>
+                    </div>
+                    
+                    <!-- Specialty Input  -->
+                    <label style= "color: black;"> User Type:
+                        <br>
+                        <select placeholder={{specialty}} name="specialty-Input" multiple>
+                            <option value="Machine Learning">Maching Learning</option>
+                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                            <option value="Systems">Systems</option>
+                            <option value="Networks">Networks</option>
+                            <option value="Security">Security</option>
+                            <option value="Database">Database</option>
+                            <option value="Graphics">Graphics</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="DoS">DoS</option>
+                        </select>
+                    </label>
+                    <p style= "color: black;">Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+
+
+
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="py-5 bg-black">
+      <div class="container">
+        <p class="m-0 text-center text-white small">Copyright &copy; Techish 2020</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="../ts/profileBuild.js"></script>
 </body>
 </html>
