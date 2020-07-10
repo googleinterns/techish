@@ -14,7 +14,7 @@ public final class User {
   };
 
   private long id;
-  private String company; int expected = 3;
+  private String company;
   private String major;
   private String name;
   private String occupation;
