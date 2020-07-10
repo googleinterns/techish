@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * This class implements the match repository using the datastore 
+ * This class implements the user repository using the datastore 
  */
 public class PersistentUserRepository implements UserRepository {
   
