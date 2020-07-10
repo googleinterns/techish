@@ -27,10 +27,9 @@ public class MatchServlet extends HttpServlet {
 
     NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
     User testUser = repository.addTestData();
-    MatchRepository testRepository = repository;
 
     //Set MatchRepository and Current User as ServletContext so that they can be accessed by all servlets
-    getServletContext().setAttribute("matchRepository", testRepository);
+    getServletContext().setAttribute("matchRepository", repository);
     getServletContext().setAttribute("currentUser", testUser);
   }
 

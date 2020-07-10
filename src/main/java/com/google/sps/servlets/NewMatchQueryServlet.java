@@ -35,7 +35,7 @@ public class NewMatchQueryServlet extends HttpServlet {
     MatchQuery matchQuery = new MatchQuery();
     Collection<User> answer = matchQuery.query(matchRequest, userSavedMatches);
 
-    // Convert the times to JSON
+    // Convert the answer to JSON
     String jsonResponse = gson.toJson(answer);
 
     // Send the JSON back as the response
