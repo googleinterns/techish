@@ -100,9 +100,8 @@ public class PersistentUserRepository implements UserRepository {
   }
 
     // function that fetches a single user, collection of users, filter on that user for name?
-  public Collection<User> fetchSingleUserProfile(User user) {
-    String inputUserName = user.getName();
-    PreparedQuery results = getQueryFilterForName(inputUserName);
+  public Collection<User> fetchUsersWithName(String userName) {
+    PreparedQuery results = getQueryFilterForName(userName);
     Collection<User> userProfiles = fetchUserEntities(results);
 
     return userProfiles;
@@ -110,7 +109,8 @@ public class PersistentUserRepository implements UserRepository {
 
   // function that adds user to the database if it does not exist already
   public void addUser(User user) {
-    Collection<User> userProfiles = fetchSingleUserProfile(user);
+    String userName = user.getName();
+    Collection<User> userProfiles = fetchUsersWithName(userName);
     /*
      * if the userProfiles is larger than 1, that means the 
      * if it doesnt exist then it gets added
