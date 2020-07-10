@@ -22,39 +22,34 @@ public final class MatchQueryTest {
   private static final MatchRequest BAD_REQUEST = new MatchRequest("not a specialty");
   private static final MatchQuery MATCH_QUERY = new MatchQuery();
 
+  private NonPersistentMatchRepository matchRepo;
+  private User testUser;
+  Collection<User> userSavedMatches;
+
+  @Before
+  public void setup() {
+    matchRepo = new NonPersistentMatchRepository();
+    testUser = matchRepo.addTestData();
+    userSavedMatches = matchRepo.getMatchesForUser(testUser);
+  }
+
   @Test
   public void emptyRequest_shouldReturnNoMentors() {
-    NonPersistentMatchRepository matchRepo = new NonPersistentMatchRepository();
-    User testUser = matchRepo.addTestData();
-    Collection<User> userSavedMatches = matchRepo.getMatchesForUser(testUser);
-
     Assert.assertTrue(MATCH_QUERY.query(EMPTY_REQUEST, userSavedMatches).isEmpty());
   }
 
   @Test
   public void mlRequest_ShouldReturnMLMentors() {
-    NonPersistentMatchRepository matchRepo = new NonPersistentMatchRepository();
-    User testUser = matchRepo.addTestData();
-    Collection<User> userSavedMatches = matchRepo.getMatchesForUser(testUser);
-
     Assert.assertEquals(2, MATCH_QUERY.query(ML_REQUEST, userSavedMatches).size());
   }
 
   @Test
   public void badRequest_ShouldReturnNoMentors() {
-    NonPersistentMatchRepository matchRepo = new NonPersistentMatchRepository();
-    User testUser = matchRepo.addTestData();
-    Collection<User> userSavedMatches = matchRepo.getMatchesForUser(testUser);
-
     Assert.assertTrue(MATCH_QUERY.query(BAD_REQUEST, userSavedMatches).isEmpty());
   }
 
   @Test
   public void noRepeatMatches() {
-    NonPersistentMatchRepository matchRepo = new NonPersistentMatchRepository();
-    User testUser = matchRepo.addTestData();
-    Collection<User> userSavedMatches = matchRepo.getMatchesForUser(testUser);
-
     //Save one of the mentors so that it should skip over and only return 1 new mentor
     User newMentor = new User("Andre Harder");
     newMentor.addSpecialty("Machine Learning");
