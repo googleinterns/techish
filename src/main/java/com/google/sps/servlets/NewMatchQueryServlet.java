@@ -1,17 +1,17 @@
 package com.google.sps.servlets;
 
-import com.google.sps.data.MatchRepository;
 import com.google.gson.Gson;
 import com.google.sps.algorithms.MatchQuery;
+import com.google.sps.data.MatchRepository;
 import com.google.sps.data.MatchRequest;
 import com.google.sps.data.User;
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Collection;
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet responsible for displaying new mentor matches after user fills out match form. */
