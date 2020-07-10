@@ -122,8 +122,11 @@ public class PersistentUserRepository implements UserRepository {
 
   public void removeUserProfile(User user) throws Exception{
     String inputUserName = user.getName();
+    System.out.println(inputUserName);
     PreparedQuery results = getQueryFilterForName(inputUserName);
     int size = results.countEntities();
+    System.out.println(size);
+
     /*
      *  if size is greater than 0 then there are entities available,
      *  if size is 0 then users do not equal, so an exception is thrown
@@ -131,7 +134,8 @@ public class PersistentUserRepository implements UserRepository {
     if(size > 0){
         for (Entity entity : results.asIterable()) {
             String currentName = (String) entity.getProperty("name");
-            if(inputUserName.contains(currentName)) {
+            System.out.println(currentName);
+            if(inputUserName.equals(currentName)) {
                 Key current = entity.getKey();
                 datastore.delete(current);
             }
