@@ -229,6 +229,7 @@ public final class PersistentUserRepositoryTest {
       PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
       myRepo.addUser(userB);
+    
       try {
         myRepo.removeUser(userB);
       } catch (Exception e) {

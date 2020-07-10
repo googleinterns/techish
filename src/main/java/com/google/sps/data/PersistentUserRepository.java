@@ -68,9 +68,9 @@ public class PersistentUserRepository implements UserRepository {
 
     Collection<User> userProfiles = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-        long id = entity.getKey().getId();
         String name = (String) entity.getProperty("name");
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
+        String company = (String) entity.getProperty("company");
 
         User userObject = new User(name);
         if(specialties != null) {
@@ -78,12 +78,9 @@ public class PersistentUserRepository implements UserRepository {
                 userObject.addSpecialty(specialty);
             }
         }
-        if(specialties != null) {
-            for (String specialty : specialties) {
-                userObject.addSpecialty(specialty);
-            }
+        if(company != null) {
+            userObject.setCompany(company);
         }
-        userObject.setID(id);
         userProfiles.add(userObject);
     }
     return userProfiles;
@@ -127,7 +124,6 @@ public class PersistentUserRepository implements UserRepository {
 
   public void removeUserProfile(User user) throws Exception{
     String inputUserName = user.getName();
-    System.out.println(inputUserName);
     PreparedQuery results = getQueryFilterForName(inputUserName);
     int size = results.countEntities();
     /*
@@ -138,7 +134,6 @@ public class PersistentUserRepository implements UserRepository {
         for (Entity entity : results.asIterable()) {
             String currentName = (String) entity.getProperty("name");
             if(inputUserName.contains(currentName)) {
-                System.out.println(inputUserName + " getting deleted");
                 Key current = entity.getKey();
                 datastore.delete(current);
             }
