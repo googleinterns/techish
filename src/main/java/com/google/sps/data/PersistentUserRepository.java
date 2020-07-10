@@ -43,8 +43,6 @@ public class PersistentUserRepository implements UserRepository {
       datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-
-  // function to add profile to database
   public void addUserToDatabase(User user) {
     String name = user.getName();
     Collection<String> specialties = user.getSpecialties();
