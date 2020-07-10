@@ -90,7 +90,7 @@ public class PersistentUserRepository implements UserRepository {
   }
 
   // function that sets a query filter for the results in the datastore
-  public PreparedQuery getQueryFilterForUsers(String name) {
+  public PreparedQuery getQueryFilterForName(String name) {
     Filter userNameFilter = new FilterPredicate("name", FilterOperator.EQUAL, name);
     Query query = new Query("User").setFilter(userNameFilter);
     PreparedQuery results = datastore.prepare(query);
@@ -100,7 +100,7 @@ public class PersistentUserRepository implements UserRepository {
     // function that fetches a single user, collection of users, filter on that user for name?
   public Collection<User> fetchSingleUserProfile(User user) {
     String inputUserName = user.getName();
-    PreparedQuery results = getQueryFilterForUsers(inputUserName);
+    PreparedQuery results = getQueryFilterForName(inputUserName);
 
     Collection<User> userProfiles = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
@@ -128,7 +128,7 @@ public class PersistentUserRepository implements UserRepository {
   public void removeUserProfile(User user) throws Exception{
     String inputUserName = user.getName();
     System.out.println(inputUserName);
-    PreparedQuery results = getQueryFilterForUsers(inputUserName);
+    PreparedQuery results = getQueryFilterForName(inputUserName);
     int size = results.countEntities();
     /*
      *  if size is greater than 0 then there are entities available,
