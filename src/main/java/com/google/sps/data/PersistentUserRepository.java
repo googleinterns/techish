@@ -61,12 +61,9 @@ public class PersistentUserRepository implements UserRepository {
     datastore.put(userEntity);
   }
 
-  // function to fetch the user from the database
-  public Collection<User> fetchUserProfiles() {
-    Query query = new Query("User");
-    PreparedQuery results = datastore.prepare(query);
+  public Collection<User> fetchUserEntities(PreparedQuery results) {
+    Collection<User> userEntities = new ArrayList<>();
 
-    Collection<User> userProfiles = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
         String name = (String) entity.getProperty("name");
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
@@ -81,8 +78,16 @@ public class PersistentUserRepository implements UserRepository {
         if(company != null) {
             userObject.setCompany(company);
         }
-        userProfiles.add(userObject);
+        userEntities.add(userObject);
     }
+    return userEntities;
+  }
+
+  // function to fetch the user from the database
+  public Collection<User> fetchUserProfiles() {
+    Query query = new Query("User");
+    PreparedQuery results = datastore.prepare(query);
+    Collection<User> userProfiles = fetchUserEntities(results);
     return userProfiles;
   }
 
@@ -98,15 +103,8 @@ public class PersistentUserRepository implements UserRepository {
   public Collection<User> fetchSingleUserProfile(User user) {
     String inputUserName = user.getName();
     PreparedQuery results = getQueryFilterForName(inputUserName);
+    Collection<User> userProfiles = fetchUserEntities(results);
 
-    Collection<User> userProfiles = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
-        String name = (String) entity.getProperty("name");
-
-        User userObject = new User(name);
-        
-        userProfiles.add(userObject);
-    }
     return userProfiles;
   }
 
