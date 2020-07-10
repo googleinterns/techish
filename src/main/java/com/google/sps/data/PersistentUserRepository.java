@@ -51,7 +51,7 @@ public class PersistentUserRepository implements UserRepository {
     Entity userEntity = new Entity("User");
     userEntity.setProperty("name", name);
     
-    if(specialties.size() > 0) {
+    if(!specialties.isEmpty()) {
         userEntity.setProperty("specialties", specialties);
     }
     if(company != null) {
