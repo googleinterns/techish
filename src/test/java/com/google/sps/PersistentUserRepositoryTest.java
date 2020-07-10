@@ -7,12 +7,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.gson.Gson;
 import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,7 +30,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-/** */
+
 @RunWith(JUnit4.class)
 public final class PersistentUserRepositoryTest { 
     
@@ -79,8 +77,8 @@ public final class PersistentUserRepositoryTest {
   public void addFakeMentorsTest() {
     PersistentUserRepository testDataRepo = new PersistentUserRepository();
     addFakeMentors(testDataRepo);
-    String expected = "Andre Jerry Julie ";
-    String result = testDataRepo.toString();
+    int expected = 3;
+    int result = testDataRepo.getAllUsers().size();
     Assert.assertEquals(expected, result);
   }
 
@@ -88,8 +86,8 @@ public final class PersistentUserRepositoryTest {
   public void addUserTest() {
     PersistentUserRepository emptyRepo = new PersistentUserRepository();
     emptyRepo.addUser(USER_A);
-    String expected = "User A ";
-    String result = emptyRepo.toString();
+    int expected = 1;
+    int result = emptyRepo.getAllUsers().size();
     Assert.assertEquals(expected, result);
   }
 
@@ -185,10 +183,9 @@ public final class PersistentUserRepositoryTest {
       Assert.assertEquals(1, currentSize);
 
       myRepo.addUser(userB);
-      allUsers = myRepo.getAllUsers();
-      currentSize = allUsers.size();
       //myRepo should have 2 users stored again
-      Assert.assertEquals(2, currentSize);
+      Assert.assertEquals(2, myRepo.getAllUsers().size());
+
   }
 
   @Test
@@ -222,5 +219,28 @@ public final class PersistentUserRepositoryTest {
       //myRepo should have 0 users stored
       Assert.assertEquals(0, currentSize);
   }
+
+  @Test
+  public void addUserNameThatSameAsCompanyName() {
+      User userA = new User("Mckinsey");
+      User userB = new User("John");
+      userB.setCompany("Mckinsey");
+
+      PersistentUserRepository myRepo = new PersistentUserRepository();
+      myRepo.addUser(userA);
+      myRepo.addUser(userB);
+      try {
+        myRepo.removeUser(userB);
+      } catch (Exception e) {
+          Assert.fail("Can't remove user that does not exist");
+      }
+
+      Collection<User> allUsers = myRepo.getAllUsers();
+      int currentSize = allUsers.size();
+
+      //myRepo should have 1 user stored
+      Assert.assertEquals(1, currentSize);
+  }
+
 
 }
