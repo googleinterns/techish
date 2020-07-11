@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="STEP Capstone: Techish">
   <meta name="author" content="Samuel Sandoval and Hadley Shapland">
-  <title>Sign Up</title>
+  <title>Profile Builder | Techish</title>
    <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template -->
@@ -43,7 +43,10 @@
     </header>
     <section>
         <div class="container">
-            <h1>Profile Builder</h1>
+            <div>
+                <input type="button" class="button_slide slide_down" value="Mentor" onclick="setForm(this.value)">
+                <input type="button" class="button_slide slide_down" value="Mentee" onclick="setForm(this.value)">
+            </div>
             <form action="/profile" id="profile_form" method="POST" id="makeProfile">
                 <div>
                     <!-- <label style= "color: black;"> User Type:
@@ -54,13 +57,10 @@
                         </select>
                     </label> -->
                 </div>
-                <div change="setForm(this.value)">
-                    <button class="btn btn-primary" value="mentor">Mentpr</button>
-                    <button class="btn btn-primary" value="student">Student</button>
-                </div>
+                
 
-                <!-- Student Input Form -->
-                <div id="student">
+                <!-- Mentee Input Form -->
+                <div id="Mentee">
                 <!-- full name input -->
                     <div>
                         <label style="color:black;" name="name-input"> Full Name:
@@ -83,8 +83,8 @@
                         <input type="submit" value="Submit">
                     </div>
 
-                <div id="mentor" style="display: none">
-
+                <!-- Mentor Input Form -->
+                <div id="Mentor" style="display: none">
                 <!-- full name -->
                     <div>
                         <label style="color:black;" name="profName-input"> Full Name:
@@ -121,8 +121,6 @@
                     </label>
                     <p style= "color: black;">Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
 
-
-
                     <input type="submit" value="Submit">
                 </div>
             </form>
@@ -138,6 +136,6 @@
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="../ts/profileBuild.js"></script>
+    <script type="text/javascript" src="../ts/profileBuilder.js"></script>
 </body>
 </html>

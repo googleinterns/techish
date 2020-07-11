@@ -1,15 +1,15 @@
 function setForm(value: any) {
-    const studentForm =  document.getElementById('student');
-    const professionalForm = document.getElementById('mentor')
+    const menteeForm =  document.getElementById('Mentee');
+    const mentorForm = document.getElementById('Mentor')
 
-    if(studentForm && professionalForm){
-        if(value == 'student') {
-            studentForm.setAttribute('style','display:block;');
-            professionalForm.setAttribute('style','display:none;');
+    if(menteeForm && mentorForm){
+        if(value == 'Mentee') {
+            menteeForm.setAttribute('style','display:block;');
+            mentorForm.setAttribute('style','display:none;');
         }
         else {
-            professionalForm.setAttribute('style','display:block;');
-            studentForm.setAttribute('style','display:none;');
+            mentorForm.setAttribute('style','display:block;');
+            menteeForm.setAttribute('style','display:none;');
         }
     }
 } 
