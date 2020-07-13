@@ -1,5 +1,7 @@
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.sps.data.MatchRepository;
@@ -21,12 +23,18 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
+  private UserService userService;
+
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
 
     NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
     User testUser = repository.addTestData();
+
+    //real user login check
+    userService = UserServiceFactory.getUserService();
+
 
     //Set MatchRepository and Current User as ServletContext so that they can be accessed by all servlets
     getServletContext().setAttribute("matchRepository", repository);
@@ -35,15 +43,21 @@ public class MatchServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ServletContext servletContext = getServletContext();
-    MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    User testUser = (User) servletContext.getAttribute("currentUser");
-
-    Collection<User> matches = testRepository.getMatchesForUser(testUser);
-
     Gson gson = new Gson();
-    response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(matches));
+
+    //is user logged in?
+    if(!userService.isUserLoggedIn()) {
+        //return null for matches so that page redirects to logged out homepage
+        response.getWriter().println(gson.toJson(null));
+    } else {
+        ServletContext servletContext = getServletContext();
+        MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+        User testUser = (User) servletContext.getAttribute("currentUser");
+        Collection<User> matches = testRepository.getMatchesForUser(testUser);
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(matches));
+    }
   }
 
   @Override

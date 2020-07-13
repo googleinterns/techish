@@ -2,12 +2,17 @@ function loadMatches() {
     fetch('/matches')
         .then(response => response.json())
         .then((matches) => {
+            if(matches != null) {
             const matchListElement = document.getElementById('match-history')!;
             matchListElement.innerHTML = "";
 
             matches.forEach((match: User) => {
                 matchListElement.appendChild(createMatchElement(match));
             })
+            } else {
+                //redirect to logged out homepage because user is not logged in
+                document.location.href = "/index.html";
+            }
         });
 }
 

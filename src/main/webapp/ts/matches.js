@@ -38,11 +38,17 @@ function loadMatches() {
     fetch('/matches')
         .then(function (response) { return response.json(); })
         .then(function (matches) {
-        var matchListElement = document.getElementById('match-history');
-        matchListElement.innerHTML = "";
-        matches.forEach(function (match) {
-            matchListElement.appendChild(createMatchElement(match));
-        });
+        if (matches != null) {
+            var matchListElement_1 = document.getElementById('match-history');
+            matchListElement_1.innerHTML = "";
+            matches.forEach(function (match) {
+                matchListElement_1.appendChild(createMatchElement(match));
+            });
+        }
+        else {
+            //redirect to logged out homepage because user is not logged in
+            document.location.href = "/index.html";
+        }
     });
 }
 function createMatchElement(match) {
