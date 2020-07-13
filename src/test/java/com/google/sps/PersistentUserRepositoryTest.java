@@ -92,6 +92,28 @@ public final class PersistentUserRepositoryTest {
   }
 
   @Test
+  public void userSpecialtyWrittenBack() {
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    User userA = new User("Bobby");
+    userA.addSpecialty("UI / UX Design");
+    userA.addSpecialty("Front-end Development");
+    emptyRepo.addUser(userA);
+    int result = userA.getSpecialties().size();
+    Assert.assertEquals(2, result);
+  }
+
+  @Test
+  public void userFieldsWrittenBack() {
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    User userA = new User("Sergey");
+    String company = "Google";
+    userA.setCompany(company);
+    emptyRepo.addUser(userA);
+    String result = userA.getCompany();
+    Assert.assertEquals(company, result);
+  }
+
+  @Test
   public void removeUserThatExists() {
     PersistentUserRepository emptyRepo = new PersistentUserRepository();
     emptyRepo.addUser(USER_A);

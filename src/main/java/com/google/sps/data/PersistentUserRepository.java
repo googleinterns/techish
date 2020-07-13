@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -142,7 +140,6 @@ public class PersistentUserRepository implements UserRepository {
         throw new Exception("Can't remove " + inputUserName + " not found in datastore.");
     }
       
-    
   }
   public void removeUser(User user) throws Exception {
     try {
