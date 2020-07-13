@@ -13,5 +13,5 @@ public interface UserRepository {
 
   public String toString();
 
-  public User getUser(com.google.appengine.api.users.User googleUser);
+//   public User getUser(com.google.appengine.api.users.User googleUser);
 }

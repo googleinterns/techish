@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MatchServlet extends HttpServlet {
 
   private UserService userService;
-  private UserRepository userRepository;
+  private NonPersistentUserRepository userRepository;
 
   @Override
   public void init(ServletConfig config) throws ServletException {
