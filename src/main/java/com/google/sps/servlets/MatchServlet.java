@@ -38,7 +38,7 @@ public class MatchServlet extends HttpServlet {
     setLoggedInUser();
   }
 
-  private void setLoggedInUser() {
+  public void setLoggedInUser() {
     User currentUser;
     
     userService = UserServiceFactory.getUserService();

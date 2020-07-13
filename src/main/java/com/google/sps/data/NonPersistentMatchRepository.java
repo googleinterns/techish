@@ -37,6 +37,7 @@ public class NonPersistentMatchRepository implements MatchRepository {
     return testUser;
   }
 
+  //add a new match given User ID
   public void addMatch(String userId, User match) {
     if (userMatches.containsKey(userId)) {
       List<User> currentMatches = userMatches.get(userId);
@@ -48,6 +49,12 @@ public class NonPersistentMatchRepository implements MatchRepository {
     }
   }
 
+  //add a new match given User
+  public void addMatch(User user, User match) {
+    addMatch(user.getId(), match);
+  }
+
+  //remove a match given User ID
   public void removeMatch(String userId, User match) throws Exception {
     if (userMatches.containsKey(userId)) {
       List<User> currentMatches = userMatches.get(userId);
@@ -58,6 +65,12 @@ public class NonPersistentMatchRepository implements MatchRepository {
     }
   }
 
+  //remove a match given User
+  public void removeMatch(User user, User match) throws Exception {
+    removeMatch(user.getId(), match); 
+  }
+
+  //get matches for User given User ID
   public Collection<User> getMatchesForUser(String userId) {
     if (userMatches.containsKey(userId)) {
       return userMatches.get(userId);
@@ -66,6 +79,11 @@ public class NonPersistentMatchRepository implements MatchRepository {
       userMatches.put(userId, emptyMatch);
       return emptyMatch;
     }
+  }
+
+  //get matches for User given User
+  public Collection<User> getMatchesForUser(User user) {
+    return getMatchesForUser(user.getId());
   }
 
   public String toString() {

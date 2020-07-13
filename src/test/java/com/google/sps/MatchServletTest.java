@@ -3,6 +3,7 @@ package com.google.sps;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 
 import com.google.gson.Gson;
 import com.google.sps.data.MatchRepository;
@@ -50,6 +51,9 @@ public class MatchServletTest {
             public ServletContext getServletContext() {
                 return servletContext;
             }
+            public void setLoggedInUser() {
+                //do nothing
+            }
         };
         when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
         when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
@@ -58,50 +62,62 @@ public class MatchServletTest {
 
     @Test
     public void doGet_returnMatches() throws IOException, ServletException {
-        // //get expected result
-        // Collection<User> matches = repository.getMatchesForUser(testUser);
-        // String expected = gson.toJson(matches);
+        //get expected result
+        Collection<User> matches = repository.getMatchesForUser(testUser);
+        String expected = gson.toJson(matches);
 
-        // //call doGet
-        // String result = doGetHelper(request, response, matchServlet);
-        // Assert.assertEquals(expected, result);
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+        Assert.assertEquals(expected, result);
     }
 
     @Test
     public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
-        // //First doGet Call
-        // String result = doGetHelper(request, response, matchServlet);
-        // int numMatches = matchesInString(result);
-        // Assert.assertEquals(4, numMatches);
+        //First doGet Call
+        String result = doGetHelper(request, response, matchServlet);
+        int numMatches = matchesInString(result);
+        Assert.assertEquals(4, numMatches);
 
-        // //DoPost to add 3 more matches
-        // User userA = new User("John");
-        // User userB = new User("Bob");
-        // User userC = new User("Cathy");
-        // userB.addSpecialty("Security");
-        // userB.addSpecialty("DoS");
-        // userC.addSpecialty("Artificial Intelligence");
-        // User[] newMatchesArray = {userA, userB, userC};
-        // String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
-        // when(request.getParameterValues("new-matches")).thenReturn(newMatches);
-        // matchServlet.doPost(request, response);
-        // verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+        //DoPost to add 3 more matches
+        User userA = new User("John");
+        User userB = new User("Bob");
+        User userC = new User("Cathy");
+        userB.addSpecialty("Security");
+        userB.addSpecialty("DoS");
+        userC.addSpecialty("Artificial Intelligence");
+        User[] newMatchesArray = {userA, userB, userC};
+        String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
+        when(request.getParameterValues("new-matches")).thenReturn(newMatches);
+        matchServlet.doPost(request, response);
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
 
-        // //doGet again to verify there are now 7 matches
-        // result = doGetHelper(request, response, matchServlet);
-        // numMatches = matchesInString(result);
-        // Assert.assertEquals(7, numMatches);
+        //doGet again to verify there are now 7 matches
+        result = doGetHelper(request, response, matchServlet);
+        numMatches = matchesInString(result);
+        Assert.assertEquals(7, numMatches);
     }
 
     @Test
     public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
-        // String[] nullMatches = null;
-        // when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
-        // matchServlet.doPost(request, response);
+        String[] nullMatches = null;
+        when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
+        matchServlet.doPost(request, response);
 
-        // verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
     }
     
+    @Test
+    public void nullUser_ShouldReturnNull() throws IOException, ServletException {
+        User nullUser = null;
+        when(servletContext.getAttribute("currentUser")).thenReturn(nullUser);
+
+        String expected = gson.toJson(null);
+
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+        Assert.assertEquals(expected, result);
+    }
+
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
      {
