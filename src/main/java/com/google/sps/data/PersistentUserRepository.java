@@ -142,12 +142,7 @@ public class PersistentUserRepository implements UserRepository {
       
   }
   public void removeUser(User user) throws Exception {
-    try {
         removeUserProfile(user);
-    }
-    catch(Exception e){
-        throw new Exception(e);
-    }
   }
 
   public Collection<User> getAllUsers() {
