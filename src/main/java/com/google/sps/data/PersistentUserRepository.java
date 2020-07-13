@@ -139,7 +139,7 @@ public class PersistentUserRepository implements UserRepository {
 
         }
     } else {
-        throw new Exception("Can't remove " + inputUserName + " that does not exist");
+        throw new Exception("Can't remove " + inputUserName + " not found in datastore.");
     }
       
     
