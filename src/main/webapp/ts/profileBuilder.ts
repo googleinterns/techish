@@ -1,4 +1,4 @@
-function setForm(value: any) {
+function setForm(value: string) {
     const menteeForm =  document.getElementById('Mentee');
     const mentorForm = document.getElementById('Mentor')
 
