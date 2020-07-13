@@ -10,7 +10,6 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
