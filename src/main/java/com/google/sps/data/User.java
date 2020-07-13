@@ -10,10 +10,11 @@ public final class User {
     STUDENT, MENTOR;
   };
 
-  private long id;
+  private String id;
   private String company;
   private String major;
   private String name;
+  private String email;
   private String occupation;
   private ProfileType userType;
   private String school;
@@ -76,11 +77,11 @@ public final class User {
       return this.userType;
   }
 
-  public void setID(long id) {
+  public void setId(String id) {
       this.id = id;
   }
 
-  public long getID() {
+  public String getId() {
       return id;
   }
  
@@ -114,6 +115,14 @@ public final class User {
   
   public String getOccupation() {    
       return occupation;
+  }
+
+  public void setEmail(String email) {
+      this.email = email;
+  }
+
+  public String getEmail() {
+      return email;
   }
  
 }

@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.NonPersistentMatchRepository;
+import com.google.sps.data.UserRepository;
+import com.google.sps.data.NonPersistentUserRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,31 +31,41 @@ public class MatchServlet extends HttpServlet {
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
 
-    NonPersistentMatchRepository repository = new NonPersistentMatchRepository();
-    User testUser = repository.addTestData();
+    NonPersistentMatchRepository matchRepository = new NonPersistentMatchRepository();
+    // User testUser = matchRepository.addTestData();
+    User currentUser;
 
-    //real user login check
+    //get logged in user
+    NonPersistentUserRepository UserRepository = new NonPersistentUserRepository();
     userService = UserServiceFactory.getUserService();
+    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
+    if(currentGoogleUser == null) {
+        currentUser = null;
+    } else {
+        currentUser = UserRepository.getUser(currentGoogleUser);
+    }
 
 
     //Set MatchRepository and Current User as ServletContext so that they can be accessed by all servlets
-    getServletContext().setAttribute("matchRepository", repository);
-    getServletContext().setAttribute("currentUser", testUser);
+    getServletContext().setAttribute("matchRepository", matchRepository);
+    getServletContext().setAttribute("currentUser", currentUser);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
+    ServletContext servletContext = getServletContext();
+    User currentUser = (User) servletContext.getAttribute("currentUser");
 
     //is user logged in?
-    if(!userService.isUserLoggedIn()) {
+    if(currentUser == null) {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        ServletContext servletContext = getServletContext();
+        
         MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-        User testUser = (User) servletContext.getAttribute("currentUser");
-        Collection<User> matches = testRepository.getMatchesForUser(testUser);
+        
+        Collection<User> matches = testRepository.getMatchesForUser(currentUser);
 
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(matches));
