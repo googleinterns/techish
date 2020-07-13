@@ -46,8 +46,17 @@ public final class User {
 
 
   public boolean equals(Object user) {
+      System.out.println("IN USER EQUALS");
+
+      
     if (user instanceof User) {
+        
+        
         User toCompare = (User) user;
+        
+        System.out.println("comparing " + toCompare + " to " + this + " result: " + this.name.equals(toCompare.name));
+
+
         return this.name.equals(toCompare.name);
     }
     return false;

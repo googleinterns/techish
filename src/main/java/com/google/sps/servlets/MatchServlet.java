@@ -26,33 +26,35 @@ import javax.servlet.http.HttpServletResponse;
 public class MatchServlet extends HttpServlet {
 
   private UserService userService;
+  private UserRepository userRepository;
 
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
+    userRepository = new NonPersistentUserRepository();
+    MatchRepository matchRepository = new NonPersistentMatchRepository();
 
-    NonPersistentMatchRepository matchRepository = new NonPersistentMatchRepository();
-    // User testUser = matchRepository.addTestData();
+    getServletContext().setAttribute("matchRepository", matchRepository);
+    setLoggedInUser();
+  }
+
+  private void setLoggedInUser() {
     User currentUser;
-
-    //get logged in user
-    NonPersistentUserRepository UserRepository = new NonPersistentUserRepository();
+    
     userService = UserServiceFactory.getUserService();
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
     if(currentGoogleUser == null) {
-        currentUser = null;
+      currentUser = null;
     } else {
-        currentUser = UserRepository.getUser(currentGoogleUser);
+      currentUser = userRepository.getUser(currentGoogleUser);
     }
 
-
-    //Set MatchRepository and Current User as ServletContext so that they can be accessed by all servlets
-    getServletContext().setAttribute("matchRepository", matchRepository);
     getServletContext().setAttribute("currentUser", currentUser);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    setLoggedInUser();
     Gson gson = new Gson();
     ServletContext servletContext = getServletContext();
     User currentUser = (User) servletContext.getAttribute("currentUser");
@@ -62,10 +64,8 @@ public class MatchServlet extends HttpServlet {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        
-        MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-        
-        Collection<User> matches = testRepository.getMatchesForUser(currentUser);
+        MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+        Collection<User> matches = matchRepository.getMatchesForUser(currentUser.getId());
 
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(matches));
@@ -84,11 +84,15 @@ public class MatchServlet extends HttpServlet {
 
       for (String matchName : matchesToSave) {
         User newMatch = new Gson().fromJson(matchName, User.class);
-        matchRepository.addMatch(currentUser, newMatch);
+        matchRepository.addMatch(currentUser.getId(), newMatch);
       }
     } else {
       System.err.println("new-matches is null in MatchServlet doPost()");
     }
+
+    //update global matchRepo
+    servletContext.setAttribute("matchRepository", matchRepository);
+
     response.sendRedirect("/logged_in_homepage.html");
   }
 

@@ -48,6 +48,7 @@ function loadMatches() {
         else {
             //redirect to logged out homepage because user is not logged in
             document.location.href = "/index.html";
+            alert("Please login or create an account.");
         }
     });
 }

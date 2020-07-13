@@ -29,7 +29,7 @@ public class NewMatchQueryServlet extends HttpServlet {
     ServletContext servletContext = getServletContext();
     MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
     User currentUser = (User) servletContext.getAttribute("currentUser");
-    Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
+    Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser.getId());
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();

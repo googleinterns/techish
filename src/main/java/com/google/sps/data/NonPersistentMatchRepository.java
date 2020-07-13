@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * operations do not entail locking.
  */
 public class NonPersistentMatchRepository implements MatchRepository {
-  private Map<User, List<User>> userMatches;
+  private Map<String, List<User>> userMatches;
 
   public NonPersistentMatchRepository() {
     userMatches = new ConcurrentHashMap();
@@ -31,38 +31,39 @@ public class NonPersistentMatchRepository implements MatchRepository {
     matchD.addSpecialty("DoS");
     matchD.addSpecialty("Security");
     User testUser = new User("Test User");
+    testUser.setId("000");
     List<User> allMatches = new ArrayList<User>(Arrays.asList(matchA, matchB, matchC, matchD));
-    userMatches.put(testUser, allMatches);
+    userMatches.put(testUser.getId(), allMatches);
     return testUser;
   }
 
-  public void addMatch(User user, User match) {
-    if (userMatches.containsKey(user)) {
-      List<User> currentMatches = userMatches.get(user);
+  public void addMatch(String userId, User match) {
+    if (userMatches.containsKey(userId)) {
+      List<User> currentMatches = userMatches.get(userId);
       currentMatches.add(match);
-      userMatches.replace(user, currentMatches);
+      userMatches.replace(userId, currentMatches);
     } else {
       List<User> newMatch = new ArrayList<User>(Arrays.asList(match));
-      userMatches.put(user, newMatch);
+      userMatches.put(userId, newMatch);
     }
   }
 
-  public void removeMatch(User user, User match) throws Exception {
-    if (userMatches.containsKey(user)) {
-      List<User> currentMatches = userMatches.get(user);
+  public void removeMatch(String userId, User match) throws Exception {
+    if (userMatches.containsKey(userId)) {
+      List<User> currentMatches = userMatches.get(userId);
       currentMatches.remove(match);
-      userMatches.replace(user, currentMatches);
+      userMatches.replace(userId, currentMatches);
     } else {
       throw new Exception("User does not exist");
     }
   }
 
-  public Collection<User> getMatchesForUser(User user) {
-    if (userMatches.containsKey(user)) {
-      return userMatches.get(user);
-    } else {
+  public Collection<User> getMatchesForUser(String userId) {
+    if (userMatches.containsKey(userId)) {
+      return userMatches.get(userId);
+    } else { 
       List<User> emptyMatch = new ArrayList<User>();
-      userMatches.put(user, emptyMatch);
+      userMatches.put(userId, emptyMatch);
       return emptyMatch;
     }
   }
