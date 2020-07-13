@@ -1,0 +1,19 @@
+
+.button_slide {
+  color: #3a3a3a;
+  border: 2px solid #ee0979;
+  border-radius: 0px;
+  padding: 10px 10px;
+  display: inline-block;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #ee0979;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+}
+
+.slide_down:hover {
+  box-shadow: inset 0 100px 0 0 #ee0979;
+}

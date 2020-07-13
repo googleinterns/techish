@@ -47,9 +47,8 @@ public final class User {
       ProfileType result = ProfileType.valueOf(input);
       return result;
   }
-
+ 
   public boolean equals(Object user) {
-
     if (user instanceof User) {
         User toCompare = (User) user;
         return this.name.equals(toCompare.name);
