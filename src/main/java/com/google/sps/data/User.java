@@ -44,8 +44,12 @@ public final class User {
   }
 
 
-  public boolean equals(User user) {
-    return this.name == user.name;
+  public boolean equals(Object user) {
+    if (user instanceof User) {
+        User toCompare = (User) user;
+        return this.name.equals(toCompare.name);
+    }
+    return false;
   }
 
   public void addSpecialty(String toAdd) {
