@@ -76,15 +76,15 @@ public class MatchServlet extends HttpServlet {
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     ServletContext servletContext = getServletContext();
-    MatchRepository testRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    User testUser = (User) servletContext.getAttribute("currentUser");
+    MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+    User currentUser = (User) servletContext.getAttribute("currentUser");
 
     if(request.getParameterValues("new-matches") != null) {
       String[] matchesToSave = request.getParameterValues("new-matches");
 
       for (String matchName : matchesToSave) {
         User newMatch = new Gson().fromJson(matchName, User.class);
-        testRepository.addMatch(testUser, newMatch);
+        matchRepository.addMatch(currentUser, newMatch);
       }
     } else {
       System.err.println("new-matches is null in MatchServlet doPost()");
