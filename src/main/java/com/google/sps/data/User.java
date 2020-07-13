@@ -3,6 +3,9 @@ package com.google.sps.data;
 import com.google.gson.Gson;
 import java.util.Collection;
 import java.util.HashSet;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public final class User {
@@ -23,7 +26,9 @@ public final class User {
     this.name = name;
     specialties = new HashSet<String>();
   }
-
+  public String getName() {
+      return name;
+  }
   public String toString() {
     return new Gson().toJson(this);
   } 
@@ -42,8 +47,7 @@ public final class User {
       ProfileType result = ProfileType.valueOf(input);
       return result;
   }
-
-
+ 
   public boolean equals(Object user) {
     if (user instanceof User) {
         User toCompare = (User) user;
