@@ -3,6 +3,8 @@ package com.google.sps;
 import static org.mockito.Mockito.when;
 
 import com.google.sps.data.SessionContext;
+import com.google.sps.data.NonPersistentUserRepository;
+import com.google.sps.data.UserRepository;
 import com.google.sps.data.User;
 import java.lang.Exception;
 import org.junit.Assert;

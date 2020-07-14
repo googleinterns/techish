@@ -10,9 +10,11 @@ import java.lang.Exception;
 public class SessionContext {
 
   private final UserService userService;
+  private final UserRepository userRepository;
 
-  public SessionContext() {
+  public SessionContext(UserRepository userRepository) {
     userService = UserServiceFactory.getUserService();
+    this.userRepository = userRepository;
   }
 
   /**
@@ -21,9 +23,8 @@ public class SessionContext {
   */
   public User getLoggedInUser() {
     User currentUser;
-    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
-        
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
+    
     if(currentGoogleUser == null) {
       currentUser = null;
     } else {

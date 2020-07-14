@@ -40,6 +40,11 @@ public class PersistentUserRepository implements UserRepository {
       datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+  //for Sam TODO
+  public User getUser(com.google.appengine.api.users.User googleUser) {
+      return new User("mock");
+  }
+
   public void addUserToDatabase(User user) {
     String name = user.getName();
     Collection<String> specialties = user.getSpecialties();
