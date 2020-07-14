@@ -1,10 +1,15 @@
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.MatchRequest;
+import com.google.sps.data.NonPersistentUserRepository;
 import com.google.sps.data.User;
+import com.google.sps.data.UserRepository;
+import com.google.sps.servlets.MatchServlet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
@@ -28,7 +33,7 @@ public class NewMatchQueryServlet extends HttpServlet {
     //get MatchServlet and current user to pass into MatchQuery
     ServletContext servletContext = getServletContext();
     MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    User currentUser = (User) servletContext.getAttribute("currentUser");
+    User currentUser = getLoggedInUser();
     Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser.getId());
 
     // Find the possible matches.
@@ -51,8 +56,23 @@ public class NewMatchQueryServlet extends HttpServlet {
       } catch (Exception e) {
           System.err.println("Exception thrown in getMatchRequest");
       }
-      
+
       return toReturn;
+  }
+
+  public User getLoggedInUser() {
+    User currentUser;
+    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
+    
+    UserService userService = UserServiceFactory.getUserService();
+    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
+    if(currentGoogleUser == null) {
+      currentUser = null;
+    } else {
+      currentUser = userRepository.getUser(currentGoogleUser);
+    }
+
+    return currentUser;
   }
 
 }

@@ -3,7 +3,6 @@ package com.google.sps;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doNothing;
 
 import com.google.gson.Gson;
 import com.google.sps.data.MatchRepository;
@@ -45,20 +44,18 @@ public class MatchServletTest {
 
         //mock ServletContext
         servletContext = Mockito.mock(ServletContext.class);
+        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
 
-        //override getServletContext
+        // override getServletContext and getLoggedInUser
         matchServlet = new MatchServlet() {
             public ServletContext getServletContext() {
                 return servletContext;
             }
-            public void setLoggedInUser() {
-                //do nothing
+            public User getLoggedInUser() {
+                return testUser;
             }
         };
-        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
-        when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
     }
-
 
     @Test
     public void doGet_returnMatches() throws IOException, ServletException {
@@ -109,7 +106,15 @@ public class MatchServletTest {
     @Test
     public void nullUser_ShouldReturnNull() throws IOException, ServletException {
         User nullUser = null;
-        when(servletContext.getAttribute("currentUser")).thenReturn(nullUser);
+
+        matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+            public User getLoggedInUser() {
+                return nullUser;
+            }
+        };
 
         String expected = gson.toJson(null);
 
