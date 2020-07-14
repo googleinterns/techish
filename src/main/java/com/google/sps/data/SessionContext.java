@@ -5,6 +5,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.User;
 import com.google.sps.data.NonPersistentUserRepository;
 import com.google.sps.data.UserRepository;
+import java.lang.Exception;
 
 public class SessionContext {
 
@@ -30,6 +31,14 @@ public class SessionContext {
     }
 
     return currentUser;
+  }
+
+  /**
+  * returns user ID. If no user is logged in, throws Exception.
+  */
+  public String getLoggedInUserId() throws Exception {
+      User loggedInUser = getLoggedInUser();
+      return loggedInUser.getId();
   }
 
   /**

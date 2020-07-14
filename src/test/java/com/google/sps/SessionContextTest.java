@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
+import java.lang.Exception;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +57,18 @@ public class SessionContextTest {
         when(sessionContext.isUserLoggedIn()).thenReturn(expected);
 
         boolean result = sessionContext.isUserLoggedIn();
+
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void getLoggedInUserId_ReturnId() throws Exception {
+        User testUser = new User("Bob");
+        String expected = "1234";
+        testUser.setId(expected);
+        when(sessionContext.getLoggedInUserId()).thenReturn(expected);
+
+        String result = sessionContext.getLoggedInUserId();
 
         Assert.assertEquals(expected, result);
     }
