@@ -56,6 +56,7 @@ public class MatchServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     setLoggedInUser();
     Gson gson = new Gson();
+    response.setContentType("application/json;");
     ServletContext servletContext = getServletContext();
     User currentUser = (User) servletContext.getAttribute("currentUser");
 
@@ -67,7 +68,6 @@ public class MatchServlet extends HttpServlet {
         MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
         Collection<User> matches = matchRepository.getMatchesForUser(currentUser.getId());
 
-        response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(matches));
     }
   }

@@ -45,7 +45,7 @@ function loadMatches() {
                     fetch('/matches')
                         .then(function (response) { return response.json(); })
                         .then(function (matches) {
-                        if (logStatus.loginUrl === "") {
+                        if ((logStatus.loginUrl === "") && (matches != null)) {
                             var matchListElement_1 = document.getElementById('match-history');
                             matchListElement_1.innerHTML = "";
                             matches.forEach(function (match) {
@@ -54,7 +54,6 @@ function loadMatches() {
                         }
                         else {
                             //redirect to logged out homepage because user is not logged in
-                            // document.location.href = "/index.html";
                             document.location.href = logStatus.loginUrl;
                             alert("Please login or create an account.");
                         }

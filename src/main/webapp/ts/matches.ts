@@ -9,7 +9,7 @@ async function loadMatches() {
     fetch('/matches')
         .then(response => response.json())
         .then((matches) => {
-            if(logStatus.loginUrl === "") {
+            if((logStatus.loginUrl === "") && (matches != null)) {
             const matchListElement = document.getElementById('match-history')!;
             matchListElement.innerHTML = "";
 
