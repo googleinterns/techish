@@ -75,6 +75,10 @@ public class MatchServlet extends HttpServlet {
     MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
     User currentUser = getLoggedInUser();
 
+    if (currentUser == null) {
+        throw new IOException("Logged out user cannot access POST request.");
+    }
+
     if(request.getParameterValues("new-matches") != null) {
       String[] matchesToSave = request.getParameterValues("new-matches");
 
