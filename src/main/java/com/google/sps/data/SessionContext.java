@@ -9,44 +9,42 @@ import java.lang.Exception;
 
 public class SessionContext {
 
-    private UserService userService;
+  private final UserService userService;
 
-    public SessionContext() {
-        userService = UserServiceFactory.getUserService();
-    }
+  public SessionContext() {
+    userService = UserServiceFactory.getUserService();
+  }
 
-    /**
-    * method that returns the current logged in User or null if
-    * no user is logged in
-    */
-    public User getLoggedInUser() {
-      User currentUser;
-      NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
+  /**
+  * method that returns the current logged in User or null if
+  * no user is logged in
+  */
+  public User getLoggedInUser() {
+    User currentUser;
+    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
         
-      com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-      if(currentGoogleUser == null) {
-        currentUser = null;
-      } else {
-        currentUser = userRepository.getUser(currentGoogleUser);
-      }
-
-      return currentUser;
+    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
+    if(currentGoogleUser == null) {
+      currentUser = null;
+    } else {
+      currentUser = userRepository.getUser(currentGoogleUser);
     }
+
+    return currentUser;
+  }
 
   /**
   * returns user ID.
   */
   public String getLoggedInUserId() {
-      User loggedInUser = getLoggedInUser();
-      return loggedInUser.getId();
+    User loggedInUser = getLoggedInUser();
+    return loggedInUser.getId();
   }
 
   /**
   * method that returns boolean if there is a user logged in or not
   */
   public boolean isUserLoggedIn() {
-      return userService.isUserLoggedIn();
+    return userService.isUserLoggedIn();
   }
-
-
 }
