@@ -1,7 +1,9 @@
-type authInfo = {
-    loginUrl: string;
-    logoutUrl: string;
-};
+import {getLogStatus} from './login';
+
+// type authInfo = {
+//     loginUrl: string;
+//     logoutUrl: string;
+// };
 
 async function loadMatches() {
     const logStatus = await getLogStatus();
@@ -24,12 +26,12 @@ async function loadMatches() {
         });
 }
 
-async function getLogStatus(): Promise<authInfo> {
-    const response = await fetch('/userapi');
-    const currentStatus = await response.json();
-    let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
-    return authStatus;
-}
+// async function getLogStatus(): Promise<authInfo> {
+//     const response = await fetch('/userapi');
+//     const currentStatus = await response.json();
+//     let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+//     return authStatus;
+// }
 
 function createMatchElement(match: User) {
     const matchElement = document.createElement('li');

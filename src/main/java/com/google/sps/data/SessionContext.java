@@ -20,23 +20,23 @@ public class SessionContext {
     * no user is logged in
     */
     public User getLoggedInUser() {
-    User currentUser;
-    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
-    
-    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    if(currentGoogleUser == null) {
-      currentUser = null;
-    } else {
-      currentUser = userRepository.getUser(currentGoogleUser);
+      User currentUser;
+      NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
+        
+      com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
+      if(currentGoogleUser == null) {
+        currentUser = null;
+      } else {
+        currentUser = userRepository.getUser(currentGoogleUser);
+      }
+
+      return currentUser;
     }
 
-    return currentUser;
-  }
-
   /**
-  * returns user ID. If no user is logged in, throws Exception.
+  * returns user ID.
   */
-  public String getLoggedInUserId() throws Exception {
+  public String getLoggedInUserId() {
       User loggedInUser = getLoggedInUser();
       return loggedInUser.getId();
   }
