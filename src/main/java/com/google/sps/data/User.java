@@ -10,7 +10,7 @@ import com.google.gson.JsonParser;
 
 public final class User {
   public static enum ProfileType {
-    STUDENT, MENTOR;
+    MENTEE, MENTOR;
   };
 
   private long id;
@@ -34,10 +34,10 @@ public final class User {
   } 
 
   public ProfileType toEnum(String input) {
-      if(input == "student" || input == "STUDENT") {
-          input = "STUDENT";
+      if(input == "Mentee" || input == "MENTEE") {
+          input = "MENTEE";
       }
-      else if(input == "mentor" || input == "MENTOR") {
+      else if(input == "Mentor" || input == "MENTOR") {
           input = "MENTOR";
       }
       else {
@@ -65,8 +65,8 @@ public final class User {
   }
 
   public void setProfileType(ProfileType input) {
-      if(input == ProfileType.STUDENT) {
-        this.userType = ProfileType.STUDENT;
+      if(input == ProfileType.MENTEE) {
+        this.userType = ProfileType.MENTEE;
       }
       else if (input == ProfileType.MENTOR){
         this.userType = ProfileType.MENTOR;

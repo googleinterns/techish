@@ -43,30 +43,30 @@
     </header>
     <section>
         <div class="container">
-            <div>
-                <input type="button" class="button_slide slide_down" value="Mentor" onclick="setForm(this.value)">
-                <input type="button" class="button_slide slide_down" value="Mentee" onclick="setForm(this.value)">
-            </div>
-            <form action="/profile" id="profile_form" method="POST" id="makeProfile">               
 
+            <form action="/profile" id="profile_form" method="POST" id="makeProfile">               
+                <div>
+                    <input name="user-Type" type="button" class="button_slide slide_down" value="Mentor" onclick="setForm(this.value)">
+                    <input name="user-Type" type="button" class="button_slide slide_down" value="Mentee" onclick="setForm(this.value)">
+                </div>
                 <!-- Mentee Input Form -->
                 <div id="Mentee">
                 <!-- full name input -->
                     <div>
                         <label style="color:black;" name="name-input"> Full Name:
-                            <input type="text" name="name-input" class="form-control">
+                            <input type="text" name="name-input" class="form-control" required>
                         </label>
                     </div>
                     <!-- School input -->
                     <div>
                         <label style="color:black;" name="school-input"> School:
-                            <input type="text" name="school-input" class="form-control"  placeholder="School">
+                            <input type="text" name="school-input" class="form-control"  placeholder="School" required>
                         </label>
                     </div>
                     <!-- Major input -->
                     <div>
                         <label style="color:black;" name="major-input"> Major:
-                            <input type="text" name="major-input" class="form-control"  placeholder="Major">
+                            <input type="text" name="major-input" class="form-control"  placeholder="Major" required>
                         </label>
                     </div>
 
@@ -78,26 +78,26 @@
                 <!-- full name -->
                     <div>
                         <label style="color:black;" name="profName-input"> Full Name:
-                            <input type="text" name="profName-input" class="form-control">
+                            <input type="text" name="profName-input" class="form-control" required>
                         </label>
                     </div>
                     <!-- Company input -->
                     <div>
                         <label style="color:black;" name="company-input"> Company:
-                            <input type="text" name="company-input" class="form-control" placeholder="Company">
+                            <input type="text" name="company-input" class="form-control" placeholder="Company" required>
                         </label>
                     </div>
                     <!-- Career Title input -->
                     <div>
                         <label style="color:black;" name="careerTitle-input"> Career Title:
-                            <input type="text" name="careerTitle-input" class="form-control"  placeholder="Career Title">
+                            <input type="text" name="careerTitle-input" class="form-control"  placeholder="Career Title" required>
                         </label>
                     </div>
                     
                     <!-- Specialty Input  -->
                     <label style= "color: black;"> Specialty:
                         <br>
-                        <select placeholder={{specialty}} name="specialty-Input" multiple>
+                        <select placeholder={{specialty}} name="specialty-input" required>
                             <option value="Machine Learning">Maching Learning</option>
                             <option value="Artificial Intelligence">Artificial Intelligence</option>
                             <option value="Systems">Systems</option>

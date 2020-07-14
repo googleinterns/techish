@@ -41,20 +41,27 @@ public class PersistentUserRepository implements UserRepository {
   }
 
   public void addUserToDatabase(User user) {
+      // if for mentee, mentor
     String name = user.getName();
-    Collection<String> specialties = user.getSpecialties();
-    String company = user.getCompany();
 
     Entity userEntity = new Entity("User");
     userEntity.setProperty("name", name);
-    
-    if(!specialties.isEmpty()) {
-        userEntity.setProperty("specialties", specialties);
-    }
-    if(company != null) {
-        userEntity.setProperty("company", company);
-    }
 
+    String school = user.getSchool();
+    String major = user.getMajor();
+    String company = user.getCompany();
+    Collection<String> specialties = user.getSpecialties();
+
+    if(school != null && major != null) {
+        userEntity.setProperty("school", school);  
+        userEntity.setProperty("major", major);
+    }
+    
+    if(company != null && !specialties.isEmpty()) {
+        userEntity.setProperty("company", company);
+        userEntity.setProperty("specialties", specialties); 
+    }
+    
     datastore.put(userEntity);
   }
 
@@ -63,10 +70,19 @@ public class PersistentUserRepository implements UserRepository {
 
     for (Entity entity : results.asIterable()) {
         String name = (String) entity.getProperty("name");
-        Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
+        String school = (String) entity.getProperty("school");
+        String major = (String) entity.getProperty("major");
         String company = (String) entity.getProperty("company");
+        Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
 
         User userObject = new User(name);
+        if(school != null) {
+            userObject.setSchool(school);
+        }
+        if(major != null) {
+            userObject.setMajor(major);
+        }
+
         if(specialties != null) {
             for (String specialty : specialties) {
                 userObject.addSpecialty(specialty);

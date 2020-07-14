@@ -50,7 +50,7 @@ public final class UserTest {
   @Test
   public void setProfileTypeANDGetProfileType(){
       User userA = new User("Tom");
-      String input ="student";
+      String input ="Mentee";
       ProfileType expected = userA.toEnum(input);
       userA.setProfileType(expected);
       ProfileType result = userA.getProfileType();
