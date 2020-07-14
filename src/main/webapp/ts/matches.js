@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,18 +34,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-var login_1 = require("./login");
-// type authInfo = {
-//     loginUrl: string;
-//     logoutUrl: string;
-// };
 function loadMatches() {
     return __awaiter(this, void 0, void 0, function () {
         var logStatus;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, login_1.getLogStatus()];
+                case 0: return [4 /*yield*/, getLogStatus()];
                 case 1:
                     logStatus = _a.sent();
                     fetch('/matches')
@@ -70,12 +63,23 @@ function loadMatches() {
         });
     });
 }
-// async function getLogStatus(): Promise<authInfo> {
-//     const response = await fetch('/userapi');
-//     const currentStatus = await response.json();
-//     let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
-//     return authStatus;
-// }
+function getLogStatus() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, currentStatus, authStatus;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch('/userapi')];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    currentStatus = _a.sent();
+                    authStatus = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+                    return [2 /*return*/, authStatus];
+            }
+        });
+    });
+}
 function createMatchElement(match) {
     var matchElement = document.createElement('li');
     matchElement.className = 'match';

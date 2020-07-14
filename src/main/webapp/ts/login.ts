@@ -24,7 +24,7 @@ async function loadHome() {
     }
 }
 
-export async function getLogStatus(): Promise<authInfo> {
+async function getLogStatus(): Promise<authInfo> {
     const response = await fetch('/userapi');
     const currentStatus = await response.json();
     let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
