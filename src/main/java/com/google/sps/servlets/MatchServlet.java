@@ -90,9 +90,6 @@ public class MatchServlet extends HttpServlet {
       System.err.println("new-matches is null in MatchServlet doPost()");
     }
 
-    //update global matchRepo
-    servletContext.setAttribute("matchRepository", matchRepository);
-
     response.sendRedirect("/logged_in_homepage.html");
   }
 
