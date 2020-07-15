@@ -1,6 +1,7 @@
 html {
   scroll-behavior: smooth;
 }
+
 .techish-logo {
     width: 110px;
     height: 100%;
@@ -10,14 +11,14 @@ html {
     background-color:#6b63ff;
     border-color:#6b63ff;
     margin-right: 81%;
+    color: #ffff;
 }
 
 .btn-learnmore:active,.btn-learnmore:focus,.btn-learnmore:hover{
     background-color:#6b63ff!important;
     border-color:#6b63ff!important;
-
 }
 
 .btn-learnmore:focus{
-    box-shadow:0 0 0 .2rem #37034D
+    box-shadow:0 0 0 .2rem #38044F
 }
