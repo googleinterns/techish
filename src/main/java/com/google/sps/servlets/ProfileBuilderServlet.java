@@ -48,7 +48,7 @@ public class ProfileBuilderServlet extends HttpServlet {
                 PersistentUserRepository.getInstance().addUser(currentUser);
             }
         }
-        else if(userType.contains("Mentor")){
+        else if(userType.equals("Mentor")){
             //TODO: add the GoogleUserID
             String userName = request.getParameter("profName-input");
             User currentUser = new User(userName);
