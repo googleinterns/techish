@@ -45,7 +45,6 @@ function getProfile() {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
-                    console.log(data);
                     return [2 /*return*/];
             }
         });
