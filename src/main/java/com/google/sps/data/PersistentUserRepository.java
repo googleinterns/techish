@@ -137,13 +137,32 @@ public class PersistentUserRepository implements UserRepository {
     PreparedQuery results = datastore.prepare(query);
     return results;
   }
-
-    // function that fetches a single user, collection of users, filter on that user for name?
+   // function that sets a query filter for the results in the datastore
+  public PreparedQuery getQueryFilterForId(String id) {
+    Filter userNameFilter = new FilterPredicate("id", FilterOperator.EQUAL, id);
+    Query query = new Query("User").setFilter(userNameFilter);
+    PreparedQuery results = datastore.prepare(query);
+    return results;
+  }
+  
+  // function that fetches a single user, collection of users, filter on that user for name
   public Collection<User> fetchUsersWithName(String userName) {
     PreparedQuery results = getQueryFilterForName(userName);
     Collection<User> userProfiles = fetchUserEntities(results);
-
     return userProfiles;
+  }
+  
+  // function that fetches a single user, collection of users, filter on that user for id
+  public User fetchUserWithId(String userId) {
+    PreparedQuery results = getQueryFilterForId(userId);
+    Collection<User> userProfiles = fetchUserEntities(results);
+    if(userProfiles.size() == 1){
+        for (User userProfile : userProfiles) {
+            return userProfile;
+        }
+    }
+    User fake = new User(userId);
+    return fake; 
   }
 
   // function that adds user to the database if it does not exist already
