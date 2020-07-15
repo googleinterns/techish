@@ -26,6 +26,7 @@ import com.google.sps.servlets.ProfileBuilderServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.NullPointerException;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,24 @@ public class ProfileBuilderServletTest {
 
     verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
    }
+
+  @Test
+  public void doPostHasMissingUserInformation() throws IOException, ServletException {
+    DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
+    addMenteeProfile();
+    String userType = null;
+    when(request.getParameter("user-Type")).thenReturn(userType);
+    String mentorName = null;
+    when(request.getParameter("profName-input")).thenReturn(mentorName);
+    String company = null;
+    when(request.getParameter("company-input")).thenReturn(company);
+    String specialty = null;
+    when(request.getParameter("specialty-input")).thenReturn(specialty);
+
+    profileBuilderServlet.doPost(request, response);
+    verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+    Assert.assertEquals(0, dataService.prepare(new Query("User")).countEntities(withLimit(10)));
+   }
   
   @Test
   public void addMentorProfileThenCheckSize() throws IOException, ServletException {
@@ -133,7 +152,7 @@ public class ProfileBuilderServletTest {
   }
 
   @Test
-  public void checkMenteeSchoolInfoIsSame() throws IOException, ServletException {
+  public void checkMenteeInfoIsSame() throws IOException, ServletException {
     DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
     String userType = "Mentee";
     when(request.getParameter("user-Type")).thenReturn(userType);
@@ -145,14 +164,19 @@ public class ProfileBuilderServletTest {
     when(request.getParameter("major-input")).thenReturn(major);
 
     profileBuilderServlet.doPost(request, response);
-    Filter schoolFilter = new FilterPredicate("school", FilterOperator.EQUAL, school);
-    PreparedQuery results = ds.prepare(new Query("User").setFilter(schoolFilter));
-    String result = "";
+    // Filter schoolFilter = new FilterPredicate("school", FilterOperator.EQUAL, school);
+    PreparedQuery results = ds.prepare(new Query("User"));
+    String nameResult = "";
+    String schoolResult = "";
+    String majorResult = "";
     for (Entity entity : results.asIterable()) {
-        result = (String) entity.getProperty("school");
+        nameResult = (String) entity.getProperty("name");
+        schoolResult = (String) entity.getProperty("school");
+        majorResult = (String) entity.getProperty("major");
     }
- 
-    Assert.assertEquals(school, result);
+    Assert.assertEquals(menteeName, nameResult);
+    Assert.assertEquals(school, schoolResult);
+    Assert.assertEquals(major, majorResult);
   }
     
   @Test

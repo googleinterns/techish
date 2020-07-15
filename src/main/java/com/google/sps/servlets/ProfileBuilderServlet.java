@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
+import java.lang.NullPointerException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,33 +29,51 @@ public class ProfileBuilderServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userType = request.getParameter("user-Type");
-    
-    if(userType.equals("Mentee")){
-        //TODO: add the GoogleUserID
-        String userName = request.getParameter("name-input");
-        User currentUser = new User(userName);
 
-        String userSchool = request.getParameter("school-input");
-        currentUser.setSchool(userSchool);
-        String userMajor = request.getParameter("major-input");
-        currentUser.setMajor(userMajor);
-        
-        PersistentUserRepository.getInstance().addUser(currentUser);
-    }
-    else if(userType.contains("Mentor")){
-        //TODO: add the GoogleUserID
-        String userName = request.getParameter("profName-input");
-        User currentUser = new User(userName);
+    if(userType != null) {
+        if(userType.equals("Mentee")){
+            //TODO: add the GoogleUserID
+            String userName = request.getParameter("name-input");
+            User currentUser = new User(userName);
 
-        String userCompany = request.getParameter("company-input");
-        currentUser.setCompany(userCompany);
-        String userSpecialty = request.getParameter("specialty-input");
-        currentUser.addSpecialty(userSpecialty);
+            String userSchool = request.getParameter("school-input");
+            String userMajor = request.getParameter("major-input");
+            if(userSchool != null ) {
+                currentUser.setSchool(userSchool);
+            }
+            if(userMajor != null) {
+                currentUser.setMajor(userMajor);
+            }
+            if(userName != null) {
+                PersistentUserRepository.getInstance().addUser(currentUser);
+            }
+        }
+        else if(userType.contains("Mentor")){
+            //TODO: add the GoogleUserID
+            String userName = request.getParameter("profName-input");
+            User currentUser = new User(userName);
 
-        PersistentUserRepository.getInstance().addUser(currentUser);
-    }
-    else{
-        throw new IOException("Error invalid usertype");
+            String userCompany = request.getParameter("company-input");
+            String userOccupation = request.getParameter("careeerTitle-input");
+            String userSpecialty = request.getParameter("specialty-input");
+
+            if(userCompany != null) {
+                currentUser.setCompany(userCompany);
+            }
+            if(userOccupation != null) {
+                currentUser.setOccupation(userOccupation);
+            }
+            if(userSpecialty != null) {
+                currentUser.addSpecialty(userSpecialty);
+            }
+
+            if(userName != null) {
+                PersistentUserRepository.getInstance().addUser(currentUser);
+            } 
+        }
+        else{
+            throw new IOException("Error invalid usertype");
+        }
     }
 
     response.sendRedirect("/logged_in_homepage.html");
