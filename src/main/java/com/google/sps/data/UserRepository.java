@@ -12,6 +12,5 @@ public interface UserRepository {
   public Collection<User> getAllUsers();
 
   public String toString();
-
-//   public User getUser(com.google.appengine.api.users.User googleUser);
+  
 }

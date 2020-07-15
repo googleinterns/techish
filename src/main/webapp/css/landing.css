@@ -1,0 +1,29 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.techish-logo {
+    width: 110px;
+    height: 100%;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: 350px;
+}
+
+.btn-learnmore{
+    background-color:#6b63ff;
+    border-color:#6b63ff;
+    margin-right: 81%;
+    color: #ffff;
+}
+
+.btn-learnmore:active,.btn-learnmore:focus,.btn-learnmore:hover{
+    background-color:#6b63ff!important;
+    border-color:#6b63ff!important;
+}
+
+.btn-learnmore:focus{
+    box-shadow:0 0 0 .2rem #38044F
+}
