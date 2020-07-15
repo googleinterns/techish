@@ -59,7 +59,7 @@ public final class UserTest {
   }
 
   @Test
-  public void setIDAndGetID(){
+  public void setIdAndGetId(){
       User userA = new User("Jeff");
       String expected = "82129102381L";
       userA.setId(expected);

@@ -62,4 +62,23 @@ import java.util.Map;
          }
          return toReturn.toString();
      }
+
+     //return a User object from a google User
+     //if user is not in repository, it creates a new one
+     public User getUser(com.google.appengine.api.users.User googleUser) {
+         String userEmail = googleUser.getEmail();
+
+        for(User user : allUsers) {
+            if (user.getEmail() == userEmail) {
+                return user;
+            }
+        }
+
+        User newUser = new User(googleUser.getNickname());
+        newUser.setEmail(userEmail);
+        newUser.setId(googleUser.getUserId());
+
+        allUsers.add(newUser);
+        return newUser;
+     }
  }

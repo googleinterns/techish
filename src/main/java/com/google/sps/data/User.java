@@ -125,5 +125,5 @@ public final class User {
   public String getEmail() {
       return email;
   }
-  
+
 }

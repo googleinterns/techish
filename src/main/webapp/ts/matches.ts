@@ -1,14 +1,34 @@
-function loadMatches() {
+type authInfo = {
+    loginUrl: string;
+    logoutUrl: string;
+};
+
+async function loadMatches() {
+    const logStatus = await getLogStatus();
+
     fetch('/matches')
         .then(response => response.json())
         .then((matches) => {
+            if((logStatus.loginUrl === "") && (matches != null)) {
             const matchListElement = document.getElementById('match-history')!;
             matchListElement.innerHTML = "";
 
             matches.forEach((match: User) => {
                 matchListElement.appendChild(createMatchElement(match));
             })
+            } else {
+                //redirect to log in page from servlet because user is not logged in
+                document.location.href = logStatus.loginUrl;
+                alert("Please login or create an account.");
+            }
         });
+}
+
+async function getLogStatus(): Promise<authInfo> {
+    const response = await fetch('/userapi');
+    const currentStatus = await response.json();
+    let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+    return authStatus;
 }
 
 function createMatchElement(match: User) {
