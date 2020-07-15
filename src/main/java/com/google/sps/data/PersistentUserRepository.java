@@ -42,7 +42,7 @@ public class PersistentUserRepository implements UserRepository {
 
   //for Sam TODO
   public User getUser(com.google.appengine.api.users.User googleUser) {
-      return new User("mock");
+    throw new java.lang.UnsupportedOperationException("getUser is unimplemented in persistent repository.");
   }
 
   public void addUserToDatabase(User user) {
