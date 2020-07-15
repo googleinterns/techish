@@ -66,13 +66,12 @@ public class ProfileBuilderServlet extends HttpServlet {
             if(userSpecialty != null) {
                 currentUser.addSpecialty(userSpecialty);
             }
-
             if(userName != null) {
                 PersistentUserRepository.getInstance().addUser(currentUser);
             } 
         }
         else{
-            throw new IOException("Error invalid usertype");
+            throw new IOException("Error invalid usertype"+ userType);
         }
     }
 
