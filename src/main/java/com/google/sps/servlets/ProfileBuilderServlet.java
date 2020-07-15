@@ -34,41 +34,41 @@ public class ProfileBuilderServlet extends HttpServlet {
         if(userType.equals("Mentee")){
             //TODO: add the GoogleUserID
             String userName = request.getParameter("name-input");
-            User currentUser = new User(userName);
-
-            String userSchool = request.getParameter("school-input");
-            String userMajor = request.getParameter("major-input");
-            if(userSchool != null ) {
-                currentUser.setSchool(userSchool);
-            }
-            if(userMajor != null) {
-                currentUser.setMajor(userMajor);
-            }
             if(userName != null) {
+                User currentUser = new User(userName);
+                
+                String userSchool = request.getParameter("school-input");
+                String userMajor = request.getParameter("major-input");
+                if(userSchool != null ) {
+                    currentUser.setSchool(userSchool);
+                }
+                if(userMajor != null) {
+                    currentUser.setMajor(userMajor);
+                }
                 PersistentUserRepository.getInstance().addUser(currentUser);
             }
         }
         else if(userType.equals("Mentor")){
             //TODO: add the GoogleUserID
             String userName = request.getParameter("profName-input");
-            User currentUser = new User(userName);
-
-            String userCompany = request.getParameter("company-input");
-            String userOccupation = request.getParameter("careerTitle-input");
-            String[] userSpecialties = request.getParameterValues("specialty-input");
-
-            if(userCompany != null) {
-                currentUser.setCompany(userCompany);
-            }
-            if(userOccupation != null) {
-                currentUser.setOccupation(userOccupation);
-            }
-            if(userSpecialties != null) {
-                for(String specialty: userSpecialties) {
-                    currentUser.addSpecialty(specialty);
-                }
-            }
             if(userName != null) {
+                User currentUser = new User(userName);
+
+                String userCompany = request.getParameter("company-input");
+                String userOccupation = request.getParameter("careerTitle-input");
+                String[] userSpecialties = request.getParameterValues("specialty-input");
+
+                if(userCompany != null) {
+                    currentUser.setCompany(userCompany);
+                }
+                if(userOccupation != null) {
+                    currentUser.setOccupation(userOccupation);
+                }
+                if(userSpecialties != null) {
+                    for(String specialty: userSpecialties) {
+                        currentUser.addSpecialty(specialty);
+                    }
+                }
                 PersistentUserRepository.getInstance().addUser(currentUser);
             } 
         }
