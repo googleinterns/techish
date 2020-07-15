@@ -41,7 +41,6 @@ public class PersistentUserRepository implements UserRepository {
   }
 
   public void addUserToDatabase(User user) {
-      // if for mentee, mentor
     String name = user.getName();
 
     Entity userEntity = new Entity("User");
