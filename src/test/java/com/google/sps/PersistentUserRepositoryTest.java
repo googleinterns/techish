@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -97,21 +98,74 @@ public final class PersistentUserRepositoryTest {
     userA.addSpecialty("UI / UX Design");
     userA.addSpecialty("Front-end Development");
     emptyRepo.addUser(userA);
-    int result = userA.getSpecialties().size();
-    Assert.assertEquals(2, result);
+
+    Collection<String> expected = new HashSet<>();
+    expected.add("Front-end Development");
+    expected.add("UI / UX Design");
+    
+    Collection<User> allUsers = emptyRepo.getAllUsers();
+    Collection<String> specialtiesResult = new HashSet<>();
+
+    for (User allUser : allUsers) {
+        int len = allUser.getSpecialties().size();
+        if(len > 0){
+            specialtiesResult = allUser.getSpecialties(); 
+        }
+    }
+    Assert.assertEquals(expected, specialtiesResult);
   }
 
   @Test
-  public void userFieldsWrittenBack() {
+  public void userIDWrittenBack() {
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    User userA = new User("Sergey");
+    String userID = "82129102381L";
+    userA.setId(userID);
+    emptyRepo.addUser(userA);
+
+    Collection<User> allUsers = emptyRepo.getAllUsers();
+    String resultID = "";
+
+    for (User allUser : allUsers) {
+        resultID = allUser.getId();
+    }
+
+    Assert.assertEquals(userID, resultID);
+  }
+
+  @Test
+  public void userCompanyWrittenBack() {
     PersistentUserRepository emptyRepo = new PersistentUserRepository();
     User userA = new User("Sergey");
     String company = "Google";
     userA.setCompany(company);
     emptyRepo.addUser(userA);
-    String result = userA.getCompany();
+
+    Collection<User> allUsers = emptyRepo.getAllUsers();
+    String result = "";
+     for (User allUser : allUsers) {
+        result = allUser.getCompany();
+    }
+    
     Assert.assertEquals(company, result);
   }
+  
+  @Test
+  public void userOccupationWrittenBack() {
+    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    User userA = new User("Larry");
+    String occupation = "Security Engineer";
+    userA.setOccupation(occupation);
+    emptyRepo.addUser(userA);
 
+    Collection<User> allUsers = emptyRepo.getAllUsers();
+    String resultOccupation = "";
+    for (User allUser : allUsers) {
+        resultOccupation = allUser.getOccupation();
+    }
+
+    Assert.assertEquals(occupation, resultOccupation);
+  }
   @Test
   public void removeUserThatExists() {
     PersistentUserRepository emptyRepo = new PersistentUserRepository();
