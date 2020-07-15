@@ -22,16 +22,13 @@ public class SessionContext {
   * no user is logged in
   */
   public User getLoggedInUser() {
-    User currentUser;
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
     
     if(currentGoogleUser == null) {
-      currentUser = null;
+      return null;
     } else {
-      currentUser = userRepository.getUser(currentGoogleUser);
+      return userRepository.getUser(currentGoogleUser);
     }
-
-    return currentUser;
   }
 
   /**
