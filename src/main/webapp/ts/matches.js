@@ -35,13 +35,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 function loadMatches() {
-    fetch('/matches')
-        .then(function (response) { return response.json(); })
-        .then(function (matches) {
-        var matchListElement = document.getElementById('match-history');
-        matchListElement.innerHTML = "";
-        matches.forEach(function (match) {
-            matchListElement.appendChild(createMatchElement(match));
+    return __awaiter(this, void 0, void 0, function () {
+        var logStatus;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getLogStatus()];
+                case 1:
+                    logStatus = _a.sent();
+                    fetch('/matches')
+                        .then(function (response) { return response.json(); })
+                        .then(function (matches) {
+                        if ((logStatus.loginUrl === "") && (matches != null)) {
+                            var matchListElement_1 = document.getElementById('match-history');
+                            matchListElement_1.innerHTML = "";
+                            matches.forEach(function (match) {
+                                matchListElement_1.appendChild(createMatchElement(match));
+                            });
+                        }
+                        else {
+                            //redirect to log in page from servlet because user is not logged in
+                            document.location.href = logStatus.loginUrl;
+                            alert("Please login or create an account.");
+                        }
+                    });
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function getLogStatus() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, currentStatus, authStatus;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch('/userapi')];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    currentStatus = _a.sent();
+                    authStatus = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+                    return [2 /*return*/, authStatus];
+            }
         });
     });
 }

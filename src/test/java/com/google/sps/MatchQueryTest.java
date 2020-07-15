@@ -30,7 +30,7 @@ public final class MatchQueryTest {
   public void setup() {
     matchRepo = new NonPersistentMatchRepository();
     testUser = matchRepo.addTestData();
-    userSavedMatches = matchRepo.getMatchesForUser(testUser);
+    userSavedMatches = matchRepo.getMatchesForUser(testUser.getId());
   }
 
   @Test
