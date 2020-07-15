@@ -52,7 +52,8 @@ public class ProfileBuilderServletTest {
   private HttpServletResponse response;
 
 
-  private ProfileBuilderServlet userServlet;
+  private final ProfileBuilderServlet profileBuilderServlet =
+    new ProfileBuilderServlet();
 
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -60,7 +61,6 @@ public class ProfileBuilderServletTest {
     
   @Before
   public void setUp() throws Exception {
-    userServlet = new ProfileBuilderServlet(); 
     request = Mockito.mock(HttpServletRequest.class);       
     response = Mockito.mock(HttpServletResponse.class);
 
@@ -97,7 +97,7 @@ public class ProfileBuilderServletTest {
   @Test
   public void doPostRedirectsUrl() throws IOException, ServletException {
     addMentorProfile();
-    userServlet.doPost(request, response);
+    profileBuilderServlet.doPost(request, response);
 
     verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
    }
@@ -106,7 +106,7 @@ public class ProfileBuilderServletTest {
   public void addMentorProfileThenCheckSize() throws IOException, ServletException {
     DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
     addMentorProfile();
-    userServlet.doPost(request, response);
+    profileBuilderServlet.doPost(request, response);
 
     Assert.assertEquals(1, dataService.prepare(new Query("User")).countEntities(withLimit(10)));
   }
@@ -115,7 +115,7 @@ public class ProfileBuilderServletTest {
   public void addMenteeProfileThenCheckSize() throws IOException, ServletException {
     DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
     addMenteeProfile();
-    userServlet.doPost(request, response);
+    profileBuilderServlet.doPost(request, response);
 
     Assert.assertEquals(1, ds.prepare(new Query("User")).countEntities(withLimit(10)));
   }
@@ -132,7 +132,7 @@ public class ProfileBuilderServletTest {
     String major = "Computer Science";
     when(request.getParameter("major-input")).thenReturn(major);
 
-    userServlet.doPost(request, response);
+    profileBuilderServlet.doPost(request, response);
     Filter schoolFilter = new FilterPredicate("school", FilterOperator.EQUAL, school);
     PreparedQuery results = ds.prepare(new Query("User").setFilter(schoolFilter));
     String result = "";
@@ -155,7 +155,7 @@ public class ProfileBuilderServletTest {
     String specialty = "Algorithmic Design";
     when(request.getParameter("specialty-input")).thenReturn(specialty);
 
-    userServlet.doPost(request, response);
+    profileBuilderServlet.doPost(request, response);
 
     Filter specialtyFilter = new FilterPredicate("specialties", FilterOperator.EQUAL, specialty);
     PreparedQuery results = ds.prepare( new Query("User").setFilter(specialtyFilter));
@@ -179,7 +179,7 @@ public class ProfileBuilderServletTest {
     String specialty = "Artificial Intelligence";
     when(request.getParameter("specialty-input")).thenReturn(specialty);
 
-    userServlet.doPost(request, response);
+    profileBuilderServlet.doPost(request, response);
 
     Filter nameFilter = new FilterPredicate("name", FilterOperator.EQUAL, mentorName);
     PreparedQuery results = ds.prepare(new Query("User").setFilter(nameFilter));
@@ -189,8 +189,4 @@ public class ProfileBuilderServletTest {
     }
     Assert.assertEquals(mentorName, nameResult);
   }
-
-// test to filter based on the name
-
-// test that checks profile data is same as inputted.
 }
