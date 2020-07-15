@@ -35,10 +35,10 @@ public final class User {
   } 
 
   public ProfileType toEnum(String input) {
-      if(input == "Mentee" || input == "MENTEE") {
+      if(input.equalsIgnoreCase("MENTEE")) {
           input = "MENTEE";
       }
-      else if(input == "Mentor" || input == "MENTOR") {
+      else if(input.equalsIgnoreCase("MENTOR")) {
           input = "MENTOR";
       }
       else {
