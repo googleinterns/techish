@@ -44,17 +44,18 @@ public class MatchServletTest {
 
         //mock ServletContext
         servletContext = Mockito.mock(ServletContext.class);
+        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
 
-        //override getServletContext
+        // override getServletContext and getLoggedInUser
         matchServlet = new MatchServlet() {
             public ServletContext getServletContext() {
                 return servletContext;
             }
+            public User getLoggedInUser() {
+                return testUser;
+            }
         };
-        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
-        when(servletContext.getAttribute("currentUser")).thenReturn(testUser);
     }
-
 
     @Test
     public void doGet_returnMatches() throws IOException, ServletException {
@@ -102,6 +103,48 @@ public class MatchServletTest {
         verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
     }
     
+    @Test
+    public void nullUser_doGet() throws IOException, ServletException {
+        User nullUser = null;
+
+        matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+            public User getLoggedInUser() {
+                return nullUser;
+            }
+        };
+
+        String expected = gson.toJson(null);
+
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+        Assert.assertEquals(expected, result);
+    }
+
+     @Test
+    public void nullUser_doPost() throws IOException, ServletException {
+        User nullUser = null;
+
+        matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+            public User getLoggedInUser() {
+                return nullUser;
+            }
+        };
+
+        try {
+            //call doPost
+            matchServlet.doPost(request, response);
+            Assert.fail("Exception not caught");
+        } catch (IOException e) {
+            //nothing to do if exception is caught
+        }
+    }
+
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
      {

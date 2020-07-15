@@ -3,6 +3,7 @@ package com.google.sps;
 import com.google.sps.data.NonPersistentMatchRepository;
 import com.google.sps.data.User;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -13,6 +14,11 @@ public final class NonPersistentMatchRepositoryTest {
 
   private static final User USER_A = new User("User A");
   private static final User MATCH_A = new User("Match A");
+
+  @Before
+  public void init() {
+    USER_A.setId("123");
+  }
 
   @Test
   public void addTestDataTest() {
