@@ -65,11 +65,8 @@ public final class User {
   }
 
   public void setProfileType(ProfileType input) {
-      if(input == ProfileType.MENTEE) {
-        this.userType = ProfileType.MENTEE;
-      }
-      else if (input == ProfileType.MENTOR){
-        this.userType = ProfileType.MENTOR;
+      if(input == ProfileType.MENTEE || input == ProfileType.MENTOR){
+        this.userType = input;
       }
       else {
           System.err.println("Invalid profile type");
