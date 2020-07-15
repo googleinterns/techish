@@ -1,19 +1,94 @@
 
 .button_slide {
-  color: #3a3a3a;
-  border: 2px solid #ee0979;
+  color: #a6a6a6;
+  border: 2px solid #6b63ff;
   border-radius: 0px;
   padding: 10px 10px;
   display: inline-block;
   font-size: 16px;
   letter-spacing: 1px;
   cursor: pointer;
-  box-shadow: inset 0 0 0 0 #ee0979;
+  box-shadow: inset 0 0 0 0 #6b63ff;
   -webkit-transition: ease-out 0.4s;
   -moz-transition: ease-out 0.4s;
   transition: ease-out 0.4s;
 }
 
 .slide_down:hover {
-  box-shadow: inset 0 100px 0 0 #ee0979;
+  box-shadow: inset 0 100px 0 0 #6b63ff;
+}
+
+header.headsection{
+    position:relative;
+    overflow:hidden;
+    padding-top:calc(7rem + 72px);
+    padding-bottom:7rem;
+    background:linear-gradient(0deg,#6b63ff 0,#38044F 100%);
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-attachment:scroll;
+    background-size:cover
+}
+
+header.headsection .headsection-content{
+    z-index:1;
+    position:relative
+}
+
+header.headsection .headsection-content .masthead-heading{
+    font-size:4rem
+}
+
+header.headsection .headsection-content .masthead-subheading{
+    font-size:2rem
+}
+
+header.headsection .bg-circle{
+    z-index:0;
+    position:absolute;
+    border-radius:100%;
+    background:linear-gradient(0deg,#38044F 0,#6b63ff 100%)
+}
+
+header.headsection .bg-circle-1{
+    height:90rem;
+    width:90rem;
+    bottom:-55rem;
+    left:-55rem
+}
+
+header.headsection .bg-circle-2{
+    height:50rem;
+    width:50rem;
+    top:-25rem;
+    right:-25rem
+}
+
+header.headsection .bg-circle-3{
+    height:20rem;
+    width:20rem;
+    bottom:-10rem;
+    right:5%
+}
+
+header.headsection .bg-circle-4{
+    height:30rem;
+    width:30rem;
+    top:-5rem;
+    right:35%
+}
+
+@media (min-width:992px){
+    header.headsection{
+        padding-top:calc(10rem + 55px);
+        padding-bottom:10rem
+    }
+    
+    header.headsection .headsection-content .headsection-heading{
+        font-size:6rem
+    }
+    
+    header.headsection .headsection-content .headsection-subheading{
+        font-size:4rem
+    }
 }
