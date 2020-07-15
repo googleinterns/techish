@@ -73,7 +73,7 @@ public class ProfileBuilderServletTest {
     localHelper.tearDown();
   }
     
-  public void addMentorProfile() {
+  public void setRequestAsMentor() {
     String userType = "Mentor";
     when(request.getParameter("user-Type")).thenReturn(userType);
     String mentorName = "Jeff";
@@ -84,7 +84,7 @@ public class ProfileBuilderServletTest {
     when(request.getParameter("specialty-input")).thenReturn(specialty);
   }
 
-  public void addMenteeProfile() {
+  public void setRequestAsMentee() {
     String userType = "Mentee";
     when(request.getParameter("user-Type")).thenReturn(userType);
     String menteeName = "Bobby";
@@ -97,7 +97,7 @@ public class ProfileBuilderServletTest {
 
   @Test
   public void doPostRedirectsUrl() throws IOException, ServletException {
-    addMentorProfile();
+    setRequestAsMentor();
     profileBuilderServlet.doPost(request, response);
 
     verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
@@ -106,7 +106,7 @@ public class ProfileBuilderServletTest {
   @Test
   public void doPostHasMissingUserInformation() throws IOException, ServletException {
     DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
-    addMenteeProfile();
+ 
     String userType = null;
     when(request.getParameter("user-Type")).thenReturn(userType);
     String mentorName = null;
@@ -124,7 +124,7 @@ public class ProfileBuilderServletTest {
   @Test
   public void addMentorProfileThenCheckSize() throws IOException, ServletException {
     DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
-    addMentorProfile();
+    setRequestAsMentor();
     profileBuilderServlet.doPost(request, response);
 
     Assert.assertEquals(1, dataService.prepare(new Query("User")).countEntities(withLimit(10)));
@@ -133,10 +133,10 @@ public class ProfileBuilderServletTest {
   @Test
   public void addingMultipleProfiles() throws IOException, ServletException {
     DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
-    addMenteeProfile();
+    setRequestAsMentee();
     profileBuilderServlet.doPost(request, response);
 
-    addMentorProfile();
+    setRequestAsMentor();
     profileBuilderServlet.doPost(request, response);
 
     Assert.assertEquals(2, dataService.prepare(new Query("User")).countEntities(withLimit(10)));
@@ -145,7 +145,7 @@ public class ProfileBuilderServletTest {
   @Test
   public void addMenteeProfileThenCheckSize() throws IOException, ServletException {
     DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-    addMenteeProfile();
+    setRequestAsMentee();
     profileBuilderServlet.doPost(request, response);
 
     Assert.assertEquals(1, ds.prepare(new Query("User")).countEntities(withLimit(10)));
