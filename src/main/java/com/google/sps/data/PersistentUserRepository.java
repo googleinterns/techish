@@ -105,8 +105,8 @@ public class PersistentUserRepository implements UserRepository {
   }
 
   public User fetchUserWithId(String userId) {
-      //TODO
-      User fake = new User("");
+      //TODO by sam
+      User fake = new User(userId);
       return fake;
 
   }

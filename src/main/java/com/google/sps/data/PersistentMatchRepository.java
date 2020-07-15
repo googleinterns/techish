@@ -23,11 +23,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.*;
 
@@ -38,66 +40,49 @@ import java.util.*;
 public class PersistentMatchRepository implements MatchRepository {
   
   private final DatastoreService datastore;
+  private final Gson gson;
+  private final PersistentUserRepository userRepository;
   
   public PersistentMatchRepository() {
       datastore = DatastoreServiceFactory.getDatastoreService();
+      gson = new Gson();
+      userRepository = new PersistentUserRepository();
   }
 
-  public void addUserMatchPairToDatabase(String userId, String matchId) {
-    Entity userEntity = new Entity("User");
+  public void addNewEntity(String userId, String matchString) {
+    Entity userEntity = new Entity("User", userId);
+
     userEntity.setProperty("userId", userId);
-    userEntity.setProperty("matchIds", matchId);
+    userEntity.setProperty("matchIds", matchString);
     datastore.put(userEntity);
   }
 
-  public void addMatchToAlreadyExistingUser(String userId, String matchId)  {
-    Map<String, String> matchMap = fetchUserWithId(userId);
-    String matchString = matchMap.get(userId);
-    String[] matchArray = matchString.split(" ");
-
-    //make sure match isn't already saved for user
-    boolean matchAlreadySaved = false;
-    for(String matchIdSaved : matchArray) {
-        if(matchIdSaved.equals(matchId)) {
-            matchAlreadySaved = true;
-            break;
-        }
-    }
-
-    if(!matchAlreadySaved) {
-        matchString += " ";
-        matchString += matchId;
-    }
-
-    //TODO EDIT OR DELETE OLD ENTITY
-    //delete old entity
-    // removeUser(userId);
-
-    addUserMatchPairToDatabase(userId, matchString);
+  public void addMatchToExistingUser(String userId, String matchId)  {
+    Collection<String> currentMatches = getMatchIdsForUser(userId);
+    currentMatches.add(matchId);
+    String matchString = gson.toJson(currentMatches);
+    addNewEntity(userId, matchString);
   }
 
-
-//   public Collection<User> getMatchesAsCollection(String userId) {
-
-//   }
-
-  public Map<String, String> fetchMatchMap(PreparedQuery results) {
-    Map<String, String> idMap = new HashMap<String, String>();
+  public Map<String, Collection<String>> fetchMapFromQuery(PreparedQuery results) {
+    Map<String, Collection<String>> idMap = new HashMap<String, Collection<String>>();
 
     for (Entity entity : results.asIterable()) {
         String userId = (String) entity.getProperty("userId");
         String matchIds = (String) entity.getProperty("matchIds");
+        Collection<String> matchCollection = gson.fromJson(matchIds, HashSet.class);
 
-        idMap.put(userId, matchIds);
+        idMap.put(userId, matchCollection);
     }
+
     return idMap;
   }
 
   // function to fetch the ID Map from the database
-  public Map<String, String> fetchUserProfiles() {
+  public Map<String, Collection<String>> fetchFullMap() {
     Query query = new Query("User");
     PreparedQuery results = datastore.prepare(query);
-    Map<String, String> idMap = fetchMatchMap(results);
+    Map<String, Collection<String>> idMap = fetchMapFromQuery(results);
     return idMap;
   }
 
@@ -110,9 +95,11 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
     // function that fetches a single user, collection of users, filter on that user for name
-  public Map<String, String> fetchUserWithId(String userId) {
+  public Map<String, Collection<String>> fetchMapFromId(String userId) {
     PreparedQuery results = getQueryFilterForId(userId);
-    Map<String, String> userMap = fetchMatchMap(results);
+    Map<String, Collection<String>> userMap = fetchMapFromQuery(results);
+
+    // System.out.println("USER MAP: " + userMap);
 
     return userMap;
   }
@@ -121,16 +108,19 @@ public class PersistentMatchRepository implements MatchRepository {
   public void addMatch(User user, User match) {
     String userId = user.getId();
     String matchId = match.getId();
-    Map<String, String> userMap = fetchUserWithId(userId);
+    Map<String, Collection<String>> userMap = fetchMapFromId(userId);
 
     if(userMap.size() == 0) { //user is not already saved
-        addUserMatchPairToDatabase(userId, matchId);
+        Collection<String> matchCollection = new HashSet<String>();
+        matchCollection.add(matchId);
+        String jsonMatch = gson.toJson(matchCollection);
+        addNewEntity(userId, jsonMatch);
     } else { //user is already saved
-        addMatchToAlreadyExistingUser(userId, matchId);
+        addMatchToExistingUser(userId, matchId);
     }
   }
 
-  public void removeUserProfile(String userId) throws Exception{
+  public void removeUser(String userId) throws Exception {
     PreparedQuery results = getQueryFilterForId(userId);
     int size = results.countEntities();
 
@@ -148,54 +138,39 @@ public class PersistentMatchRepository implements MatchRepository {
     }   
   }
 
-
-  public void removeUser(String userId) throws Exception {
-        removeUserProfile(userId);
-  }
-
   public void removeMatch(User user, User match) throws Exception {
-      //todo
+    String userId = user.getId();
+    String matchId = match.getId();
+    Collection<String> currentMatches = getMatchIdsForUser(userId);
 
+    if(!currentMatches.contains(matchId)) {
+      throw new Exception("Cannot remove match that doesn't exist.");
+    }
+
+    currentMatches.remove(matchId);
+    String matchString = gson.toJson(currentMatches);
+    addNewEntity(userId, matchString);
   }
 
-  public String getMatchesForUserAsString(User user) {
-    String userId = user.getId();
-    Map<String, String> userEntry = fetchUserWithId(userId);
+  public Collection<String> getMatchIdsForUser(String userId) {
+    Map<String, Collection<String>> userEntry = fetchMapFromId(userId);
     return userEntry.get(userId);
+    // return gson.fromJson(jsonString, HashSet.class);
   }
 
   //gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
   public Collection<User> getMatchesForUser(User user) {
-      String matchesAsString = getMatchesForUserAsString(user);
-      String[] matchArray = matchesAsString.split(" ");
-      Collection<User> toReturn = new ArrayList<User>();
-      PersistentUserRepository userRepository = new PersistentUserRepository();
+      Collection<String> matches = getMatchIdsForUser(user.getId());
+      Collection<User> toReturn = new HashSet<User>();
 
-      for(String userId : matchArray) {
+      for(String userId : matches) {
           User newMatch = userRepository.fetchUserWithId(userId);
           toReturn.add(newMatch);
       }
-
       return toReturn;
   }
 
   public String toString() {
       return "todo: toString method for PersistentMatchRepository.";
   }
-
-//   public Collection<User> getAllUsers() {
-//     Collection<User> results = fetchUserProfiles();
-//     return results;
-//   }
-
-//   public String toString() {
-//     StringBuilder toReturn = new StringBuilder();
-//     Collection <User> allUsers = getAllUsers();
-//     for(User user : allUsers) {
-//         toReturn.append(user.toString());
-//         toReturn.append(" ");
-//     }
-//     return toReturn.toString();
-//   }
-
 }
