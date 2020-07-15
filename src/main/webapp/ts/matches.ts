@@ -17,7 +17,7 @@ async function loadMatches() {
                 matchListElement.appendChild(createMatchElement(match));
             })
             } else {
-                //redirect to logged out homepage because user is not logged in
+                //redirect to log in page from servlet because user is not logged in
                 document.location.href = logStatus.loginUrl;
                 alert("Please login or create an account.");
             }
