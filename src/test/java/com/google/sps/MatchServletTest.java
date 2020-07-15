@@ -104,7 +104,7 @@ public class MatchServletTest {
     }
     
     @Test
-    public void nullUser_ShouldReturnNull() throws IOException, ServletException {
+    public void nullUser_doGet() throws IOException, ServletException {
         User nullUser = null;
 
         matchServlet = new MatchServlet() {
@@ -121,6 +121,28 @@ public class MatchServletTest {
         //call doGet
         String result = doGetHelper(request, response, matchServlet);
         Assert.assertEquals(expected, result);
+    }
+
+     @Test
+    public void nullUser_doPost() throws IOException, ServletException {
+        User nullUser = null;
+
+        matchServlet = new MatchServlet() {
+            public ServletContext getServletContext() {
+                return servletContext;
+            }
+            public User getLoggedInUser() {
+                return nullUser;
+            }
+        };
+
+        try {
+            //call doPost
+            matchServlet.doPost(request, response);
+            Assert.fail("Exception not caught");
+        } catch (IOException e) {
+            //nothing to do if exception is caught
+        }
     }
 
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
