@@ -25,9 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/profile")
 public class ProfileBuilderServlet extends HttpServlet {
 
-  private static PersistentUserRepository repository = 
-    new PersistentUserRepository();
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userType = request.getParameter("user-Type");
@@ -41,7 +38,8 @@ public class ProfileBuilderServlet extends HttpServlet {
         currentUser.setSchool(userSchool);
         String userMajor = request.getParameter("major-input");
         currentUser.setMajor(userMajor);
-        repository.addUser(currentUser);
+        
+        PersistentUserRepository.getInstance().addUser(currentUser);
     }
     else if(userType.contains("Mentor")){
         //TODO: add the GoogleUserID
@@ -53,7 +51,7 @@ public class ProfileBuilderServlet extends HttpServlet {
         String userSpecialty = request.getParameter("specialty-input");
         currentUser.addSpecialty(userSpecialty);
 
-        repository.addUser(currentUser);
+        PersistentUserRepository.getInstance().addUser(currentUser);
     }
     else{
         throw new IOException("Error invalid usertype");

@@ -35,9 +35,16 @@ import java.util.stream.Collectors;
 public class PersistentUserRepository implements UserRepository {
   
   private final DatastoreService datastore;
-  
+
+  private static PersistentUserRepository instance =
+     new PersistentUserRepository();
+
   public PersistentUserRepository() {
       datastore = DatastoreServiceFactory.getDatastoreService();
+  }
+
+  public static PersistentUserRepository getInstance() {
+      return instance;
   }
 
   public void addUserToDatabase(User user) {
