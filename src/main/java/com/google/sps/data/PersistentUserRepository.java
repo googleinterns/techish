@@ -46,14 +46,33 @@ public class PersistentUserRepository implements UserRepository {
   public static PersistentUserRepository getInstance() {
       return instance;
   }
+   
+  public User getUser(com.google.appengine.api.users.User googleUser) {
+    String userEmail = googleUser.getEmail();
+
+    Collection<User> allUsers = fetchUserProfiles();
+    for(User user : allUsers) {
+        if (user.getEmail() == userEmail) {
+            return user;
+        }
+    }
+    User newUser = new User(googleUser.getNickname());
+    newUser.setEmail(userEmail);
+    newUser.setId(googleUser.getUserId());
+    addUser(newUser);
+    
+    return newUser;
+  }
 
   public void addUserToDatabase(User user) {
     String name = user.getName();
     String id = user.getId();
+    String email = user.getEmail();
 
     Entity userEntity = new Entity("User");
     userEntity.setProperty("name", name);
     userEntity.setProperty("id", id);  
+    userEntity.setProperty("email", email); 
 
     String school = user.getSchool();
     String major = user.getMajor();
@@ -89,6 +108,7 @@ public class PersistentUserRepository implements UserRepository {
     for (Entity entity : results.asIterable()) {
         String name = (String) entity.getProperty("name");
         String id = (String) entity.getProperty("id");
+        String email = (String) entity.getProperty("email");
         String school = (String) entity.getProperty("school");
         String major = (String) entity.getProperty("major");
         String company = (String) entity.getProperty("company");
@@ -98,6 +118,9 @@ public class PersistentUserRepository implements UserRepository {
         User userObject = new User(name);
         if(id != null) {
             userObject.setId(id);
+        }
+        if(email != null) {
+            userObject.setEmail(email);
         }
         if(school != null) {
             userObject.setSchool(school);
