@@ -2,8 +2,8 @@ package com.google.sps.data;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.sps.data.User;
 import com.google.sps.data.NonPersistentUserRepository;
+import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import java.lang.Exception;
 
@@ -12,9 +12,20 @@ public class SessionContext {
   private final UserService userService;
   private final UserRepository userRepository;
 
+  /**
+  * Constructor that initializes the user repository.
+  */
   public SessionContext(UserRepository userRepository) {
     userService = UserServiceFactory.getUserService();
     this.userRepository = userRepository;
+  }
+
+  /**
+  * Overload constructor with UserService for testing.
+  */
+  public SessionContext(UserRepository userRepository, UserService userService) {
+      this.userService = userService;
+      this.userRepository = userRepository;
   }
 
   /**
