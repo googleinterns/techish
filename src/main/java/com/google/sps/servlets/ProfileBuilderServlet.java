@@ -54,8 +54,8 @@ public class ProfileBuilderServlet extends HttpServlet {
             User currentUser = new User(userName);
 
             String userCompany = request.getParameter("company-input");
-            String userOccupation = request.getParameter("careeerTitle-input");
-            String userSpecialty = request.getParameter("specialty-input");
+            String userOccupation = request.getParameter("careerTitle-input");
+            String[] userSpecialties = request.getParameterValues("specialty-input");
 
             if(userCompany != null) {
                 currentUser.setCompany(userCompany);
@@ -63,8 +63,10 @@ public class ProfileBuilderServlet extends HttpServlet {
             if(userOccupation != null) {
                 currentUser.setOccupation(userOccupation);
             }
-            if(userSpecialty != null) {
-                currentUser.addSpecialty(userSpecialty);
+            if(userSpecialties != null) {
+                for(String specialty: userSpecialties) {
+                    currentUser.addSpecialty(specialty);
+                }
             }
             if(userName != null) {
                 PersistentUserRepository.getInstance().addUser(currentUser);

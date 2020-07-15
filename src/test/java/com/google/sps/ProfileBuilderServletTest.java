@@ -177,6 +177,44 @@ public class ProfileBuilderServletTest {
     Assert.assertEquals(school, schoolResult);
     Assert.assertEquals(major, majorResult);
   }
+
+  @Test
+  public void checkMentorInfoIsSame() throws IOException, ServletException {
+    DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+    String userType = "Mentor";
+    when(request.getParameter("user-Type")).thenReturn(userType);
+    String mentorName = "Jose Martinez";
+    when(request.getParameter("profName-input")).thenReturn(mentorName);
+    String company = "Google";
+    when(request.getParameter("company-input")).thenReturn(company);
+    String occupation = "Site Reliability Engineer";
+    when(request.getParameter("careerTitle-input")).thenReturn(occupation);
+    String[] specialties = new String[2];
+    specialties[0] = "Cloud Computing";
+    specialties[1] = "Infrastructure";
+    when(request.getParameterValues("specialty-input")).thenReturn(specialties);
+
+    profileBuilderServlet.doPost(request, response);
+    PreparedQuery results = ds.prepare(new Query("User"));
+    String nameResult = "";
+    String companyResult = "";
+    String occupationResult = "";
+    Collection<String> specialtiesCollection = new ArrayList<String>();
+    for (Entity entity : results.asIterable()) {
+        nameResult = (String) entity.getProperty("name");
+        companyResult = (String) entity.getProperty("company");
+        occupationResult = (String) entity.getProperty("occupation");  
+        specialtiesCollection = (Collection<String>) entity.getProperty("specialties");
+    }
+    String[] specialtiesResult = new String[specialtiesCollection.size()];
+    specialtiesResult = specialtiesCollection.toArray(specialtiesResult);
+    
+    Assert.assertEquals(mentorName, nameResult);
+    Assert.assertEquals(company, companyResult);
+    Assert.assertEquals(occupation, occupationResult);
+    Assert.assertArrayEquals(specialties, specialtiesResult);
+  }
+    
     
   @Test
   public void checkMentorSpecialityIsSame() throws IOException, ServletException {
@@ -187,12 +225,13 @@ public class ProfileBuilderServletTest {
     when(request.getParameter("profName-input")).thenReturn(mentorName);
     String company = "Google";
     when(request.getParameter("company-input")).thenReturn(company);
-    String specialty = "Algorithmic Design";
-    when(request.getParameter("specialty-input")).thenReturn(specialty);
+    String[] specialties = new String[1];
+    specialties[0] = "Algorithmic Design";
+    when(request.getParameterValues("specialty-input")).thenReturn(specialties);
 
     profileBuilderServlet.doPost(request, response);
-
-    Filter specialtyFilter = new FilterPredicate("specialties", FilterOperator.EQUAL, specialty);
+    
+    Filter specialtyFilter = new FilterPredicate("specialties", FilterOperator.EQUAL, specialties[0]);
     PreparedQuery results = ds.prepare( new Query("User").setFilter(specialtyFilter));
     Collection<String> specialtiesResult = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
