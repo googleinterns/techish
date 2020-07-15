@@ -27,6 +27,8 @@ public final class PersistentMatchRepositoryTest {
 
   private static final User USER_A = new User("User A");
   private static final User MATCH_A = new User("Match A");
+  private static final User MATCH_B = new User("Match B");
+  private static final User MATCH_C = new User("Match C");
 
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -39,6 +41,8 @@ public final class PersistentMatchRepositoryTest {
   public void setUp() throws Exception {
     USER_A.setId("123");
     MATCH_A.setId("456");
+    MATCH_B.setId("789");
+    MATCH_C.setId("101111");
     localHelper.setUp();
     MockitoAnnotations.initMocks(this);
   }
@@ -48,21 +52,22 @@ public final class PersistentMatchRepositoryTest {
     localHelper.tearDown();
   }
 
-
-//   @Test
-//   public void addTestDataTest() {
-//     NonPersistentMatchRepository testDataRepo = new NonPersistentMatchRepository();
-//     User testUser = testDataRepo.addTestData();
-//     int expected = 4;
-
-//     Assert.assertEquals(expected, testDataRepo.getMatchesForUser(testUser).size());
-//   }
-
   @Test
   public void addMatchTest() {
     PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
     emptyRepo.addMatch(USER_A, MATCH_A);
     int expected = 1;
+
+    Assert.assertEquals(expected, emptyRepo.getMatchesForUser(USER_A).size());
+  }
+
+   @Test
+  public void addMultipleMatches() {
+    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    emptyRepo.addMatch(USER_A, MATCH_A);
+    emptyRepo.addMatch(USER_A, MATCH_B);
+    emptyRepo.addMatch(USER_A, MATCH_C);
+    int expected = 3;
 
     Assert.assertEquals(expected, emptyRepo.getMatchesForUser(USER_A).size());
   }
