@@ -50,6 +50,7 @@ public class PersistentUserRepository implements UserRepository {
     String major = user.getMajor();
     String company = user.getCompany();
     Collection<String> specialties = user.getSpecialties();
+    String careerTitle = user.getOccupation();
 
     if(school != null) {
         userEntity.setProperty("school", school);  
@@ -58,9 +59,14 @@ public class PersistentUserRepository implements UserRepository {
         userEntity.setProperty("major", major);
     }
 
-    if(company != null ) {
+    if(company != null) {
         userEntity.setProperty("company", company);
     }
+
+    if(careerTitle != null) {
+        userEntity.setProperty("occupation", careerTitle);
+    }
+
     if(!specialties.isEmpty()) {
         userEntity.setProperty("specialties", specialties); 
     }
@@ -76,6 +82,7 @@ public class PersistentUserRepository implements UserRepository {
         String school = (String) entity.getProperty("school");
         String major = (String) entity.getProperty("major");
         String company = (String) entity.getProperty("company");
+        String occupation = (String) entity.getProperty("occupation");
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
 
         User userObject = new User(name);
@@ -93,6 +100,9 @@ public class PersistentUserRepository implements UserRepository {
         }
         if(company != null) {
             userObject.setCompany(company);
+        }
+        if(occupation != null) {
+            userObject.setOccupation(occupation);
         }
         userEntities.add(userObject);
     }
