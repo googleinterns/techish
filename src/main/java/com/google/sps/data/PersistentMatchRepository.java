@@ -29,8 +29,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.*;
+
 /**
- * This class implements the user repository using the datastore 
+ * This class saves User IDs of every User and their matches, to get the 
+ * specific User, query the User Database with the ID
  */
 public class PersistentMatchRepository implements MatchRepository {
   
@@ -40,91 +43,95 @@ public class PersistentMatchRepository implements MatchRepository {
       datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  public void addMatchToDatabase(User user, User match) {
-    String userId = user.getId();
-
-    //make embedded entity for match
-    EmbeddedEntity matchEntity = new EmbeddedEntity("Match");
-    matchEntity.setProperty("id", match.getId());
-    matchEntity.setProperty("email", match.getEmail());
-    matchEntity.setProperty("specialties", match.getSpecialties());
-
-    //see if user ID is already saved
-
-    //if yes: add match onto that
-
-    //if no: make new User entity
-
-    //make new user entity
-    //userEntity.setProperty(
-
-    
-
+  public void addUserMatchPairToDatabase(String userId, String matchId) {
+    Entity userEntity = new Entity("User");
+    userEntity.setProperty("userId", userId);
+    userEntity.setProperty("matchIds", matchId);
     datastore.put(userEntity);
   }
 
-  public Collection<User> fetchUserEntities(PreparedQuery results) {
-    Collection<User> userEntities = new ArrayList<>();
+  public void addMatchToAlreadyExistingUser(String userId, String matchId)  {
+    Map<String, String> matchMap = fetchUserWithId(userId);
+    String matchString = matchMap.get(userId);
+    String[] matchArray = matchString.split(" ");
+
+    //make sure match isn't already saved for user
+    boolean matchAlreadySaved = false;
+    for(String matchIdSaved : matchArray) {
+        if(matchIdSaved.equals(matchId)) {
+            matchAlreadySaved = true;
+            break;
+        }
+    }
+
+    if(!matchAlreadySaved) {
+        matchString += " ";
+        matchString += matchId;
+    }
+
+    //TODO EDIT OR DELETE OLD ENTITY
+    //delete old entity
+    // removeUser(userId);
+
+    addUserMatchPairToDatabase(userId, matchString);
+  }
+
+
+//   public Collection<User> getMatchesAsCollection(String userId) {
+
+//   }
+
+  public Map<String, String> fetchMatchMap(PreparedQuery results) {
+    Map<String, String> idMap = new HashMap<String, String>();
 
     for (Entity entity : results.asIterable()) {
-        String name = (String) entity.getProperty("name");
-        Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
-        String company = (String) entity.getProperty("company");
+        String userId = (String) entity.getProperty("userId");
+        String matchIds = (String) entity.getProperty("matchIds");
 
-        User userObject = new User(name);
-        if(specialties != null) {
-            for (String specialty : specialties) {
-                userObject.addSpecialty(specialty);
-            }
-        }
-        if(company != null) {
-            userObject.setCompany(company);
-        }
-        userEntities.add(userObject);
+        idMap.put(userId, matchIds);
     }
-    return userEntities;
+    return idMap;
   }
 
-  // function to fetch the user from the database
-  public Collection<User> fetchUserProfiles() {
+  // function to fetch the ID Map from the database
+  public Map<String, String> fetchUserProfiles() {
     Query query = new Query("User");
     PreparedQuery results = datastore.prepare(query);
-    Collection<User> userProfiles = fetchUserEntities(results);
-    return userProfiles;
+    Map<String, String> idMap = fetchMatchMap(results);
+    return idMap;
   }
 
-  // function that sets a query filter for the results in the datastore
-  public PreparedQuery getQueryFilterForName(String name) {
-    Filter userNameFilter = new FilterPredicate("name", FilterOperator.EQUAL, name);
+//   function that sets a query filter for the results in the datastore
+  public PreparedQuery getQueryFilterForId(String userId) {
+    Filter userNameFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
     Query query = new Query("User").setFilter(userNameFilter);
     PreparedQuery results = datastore.prepare(query);
     return results;
   }
 
-    // function that fetches a single user, collection of users, filter on that user for name?
-  public Collection<User> fetchUsersWithName(String userName) {
-    PreparedQuery results = getQueryFilterForName(userName);
-    Collection<User> userProfiles = fetchUserEntities(results);
+    // function that fetches a single user, collection of users, filter on that user for name
+  public Map<String, String> fetchUserWithId(String userId) {
+    PreparedQuery results = getQueryFilterForId(userId);
+    Map<String, String> userMap = fetchMatchMap(results);
 
-    return userProfiles;
+    return userMap;
   }
 
-  // function that adds user to the database if it does not exist already
-  public void addUser(User user) {
-    String userName = user.getName();
-    Collection<User> userProfiles = fetchUsersWithName(userName);
-    /*
-     * if the userProfiles is larger than 1, that means the 
-     * if it doesnt exist then it gets added
-    */
-    if(userProfiles.size() == 0) {
-        addUserToDatabase(user);
+  // function that adds user and match to the database if it does not exist already
+  public void addMatch(User user, User match) {
+    String userId = user.getId();
+    String matchId = match.getId();
+    Map<String, String> userMap = fetchUserWithId(userId);
+
+    if(userMap.size() == 0) { //user is not already saved
+        addUserMatchPairToDatabase(userId, matchId);
+    } else { //user is already saved
+        addMatchToAlreadyExistingUser(userId, matchId);
     }
   }
 
-  public void removeUserProfile(User user) throws Exception{
-    String inputUserName = user.getName();
-    PreparedQuery results = getQueryFilterForName(inputUserName);
+  public void removeUserProfile(String userId) throws Exception{
+    PreparedQuery results = getQueryFilterForId(userId);
     int size = results.countEntities();
 
     /*
@@ -133,35 +140,62 @@ public class PersistentMatchRepository implements MatchRepository {
     */
     if(size > 0){
         for (Entity entity : results.asIterable()) {
-            String currentName = (String) entity.getProperty("name");
-            if(inputUserName.equals(currentName)) {
-                Key current = entity.getKey();
-                datastore.delete(current);
-            }
-
+          Key current = entity.getKey();
+          datastore.delete(current);
         }
     } else {
-        throw new Exception("Can't remove " + inputUserName + " not found in datastore.");
-    }
-      
-  }
-  public void removeUser(User user) throws Exception {
-        removeUserProfile(user);
+        throw new Exception("Can't remove " + userId + " not found in datastore.");
+    }   
   }
 
-  public Collection<User> getAllUsers() {
-    Collection<User> results = fetchUserProfiles();
-    return results;
+
+  public void removeUser(String userId) throws Exception {
+        removeUserProfile(userId);
+  }
+
+  public void removeMatch(User user, User match) throws Exception {
+      //todo
+
+  }
+
+  public String getMatchesForUserAsString(User user) {
+    String userId = user.getId();
+    Map<String, String> userEntry = fetchUserWithId(userId);
+    return userEntry.get(userId);
+  }
+
+  //gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
+  public Collection<User> getMatchesForUser(User user) {
+      String matchesAsString = getMatchesForUserAsString(user);
+      String[] matchArray = matchesAsString.split(" ");
+      Collection<User> toReturn = new ArrayList<User>();
+      PersistentUserRepository userRepository = new PersistentUserRepository();
+
+      for(String userId : matchArray) {
+          User newMatch = userRepository.fetchUserWithId(userId);
+          toReturn.add(newMatch);
+      }
+
+      return toReturn;
   }
 
   public String toString() {
-    StringBuilder toReturn = new StringBuilder();
-    Collection <User> allUsers = getAllUsers();
-    for(User user : allUsers) {
-        toReturn.append(user.toString());
-        toReturn.append(" ");
-    }
-    return toReturn.toString();
+      return "todo: toString method for PersistentMatchRepository.";
   }
+
+//   public Collection<User> getAllUsers() {
+//     Collection<User> results = fetchUserProfiles();
+//     return results;
+//   }
+
+//   public String toString() {
+//     StringBuilder toReturn = new StringBuilder();
+//     Collection <User> allUsers = getAllUsers();
+//     for(User user : allUsers) {
+//         toReturn.append(user.toString());
+//         toReturn.append(" ");
+//     }
+//     return toReturn.toString();
+//   }
 
 }

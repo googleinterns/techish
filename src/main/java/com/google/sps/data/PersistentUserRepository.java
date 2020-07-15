@@ -104,6 +104,13 @@ public class PersistentUserRepository implements UserRepository {
     return userProfiles;
   }
 
+  public User fetchUserWithId(String userId) {
+      //TODO
+      User fake = new User("");
+      return fake;
+
+  }
+
   // function that adds user to the database if it does not exist already
   public void addUser(User user) {
     String userName = user.getName();
