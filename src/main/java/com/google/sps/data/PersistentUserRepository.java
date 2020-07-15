@@ -51,13 +51,17 @@ public class PersistentUserRepository implements UserRepository {
     String company = user.getCompany();
     Collection<String> specialties = user.getSpecialties();
 
-    if(school != null && major != null) {
+    if(school != null) {
         userEntity.setProperty("school", school);  
+    }
+    if(major != null) {
         userEntity.setProperty("major", major);
     }
-    
-    if(company != null && !specialties.isEmpty()) {
+
+    if(company != null ) {
         userEntity.setProperty("company", company);
+    }
+    if(!specialties.isEmpty()) {
         userEntity.setProperty("specialties", specialties); 
     }
     
