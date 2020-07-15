@@ -17,6 +17,9 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import java.util.HashSet;
+import java.util.Collection;
+
 
 /** */
 @RunWith(JUnit4.class)
@@ -87,5 +90,36 @@ public final class PersistentMatchRepositoryTest {
     } catch (Exception e) {
       // don't need to do anything here because test should catch exception
     }
+  }
+
+  @Test
+  public void addSameMatchMultipleTimes_ShouldNotRepeat() {
+    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    emptyRepo.addMatch(USER_A, MATCH_A);
+    emptyRepo.addMatch(USER_A, MATCH_A);
+    emptyRepo.addMatch(USER_A, MATCH_A);
+    int expected = 1;
+
+    Assert.assertEquals(expected, emptyRepo.getMatchesForUser(USER_A).size());
+  }
+
+  @Test
+  public void getMatchesForUserThatExists() {
+    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    emptyRepo.addMatch(USER_A, MATCH_A);
+    Collection<User> expected = new HashSet<User>();
+    expected.add(MATCH_A);
+
+    Collection<User> actual = emptyRepo.getMatchesForUser(USER_A);
+    Assert.assertEquals(expected.size(), actual.size());
+  }
+
+  @Test
+  public void getMatchesForUserThatDoesNotExist() {
+    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    Collection<User> expected = new HashSet<User>();
+
+    Collection<User> actual = emptyRepo.getMatchesForUser(USER_A);
+    Assert.assertEquals(expected.size(), actual.size());
   }
 }
