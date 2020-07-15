@@ -164,7 +164,6 @@ public class ProfileBuilderServletTest {
     when(request.getParameter("major-input")).thenReturn(major);
 
     profileBuilderServlet.doPost(request, response);
-    // Filter schoolFilter = new FilterPredicate("school", FilterOperator.EQUAL, school);
     PreparedQuery results = ds.prepare(new Query("User"));
     String nameResult = "";
     String schoolResult = "";
