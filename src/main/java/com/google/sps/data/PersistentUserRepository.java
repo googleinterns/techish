@@ -49,9 +49,11 @@ public class PersistentUserRepository implements UserRepository {
 
   public void addUserToDatabase(User user) {
     String name = user.getName();
+    String id = user.getId();
 
     Entity userEntity = new Entity("User");
     userEntity.setProperty("name", name);
+    userEntity.setProperty("id", id);  
 
     String school = user.getSchool();
     String major = user.getMajor();
@@ -86,6 +88,7 @@ public class PersistentUserRepository implements UserRepository {
 
     for (Entity entity : results.asIterable()) {
         String name = (String) entity.getProperty("name");
+        String id = (String) entity.getProperty("id");
         String school = (String) entity.getProperty("school");
         String major = (String) entity.getProperty("major");
         String company = (String) entity.getProperty("company");
@@ -93,6 +96,9 @@ public class PersistentUserRepository implements UserRepository {
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
 
         User userObject = new User(name);
+        if(id != null) {
+            userObject.setId(id);
+        }
         if(school != null) {
             userObject.setSchool(school);
         }

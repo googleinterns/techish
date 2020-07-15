@@ -61,9 +61,9 @@ public final class UserTest {
   @Test
   public void setIDAndGetID(){
       User userA = new User("Jeff");
-      long expected = 82129102381L;
-      userA.setID(expected);
-      long result = userA.getID();
+      String expected = "82129102381L";
+      userA.setId(expected);
+      String result = userA.getId();
 
       Assert.assertEquals(expected, result);
   }
