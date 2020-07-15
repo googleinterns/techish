@@ -112,6 +112,18 @@ public class ProfileBuilderServletTest {
   }
 
   @Test
+  public void addingMultipleProfiles() throws IOException, ServletException {
+    DatastoreService dataService = DatastoreServiceFactory.getDatastoreService();
+    addMenteeProfile();
+    profileBuilderServlet.doPost(request, response);
+
+    addMentorProfile();
+    profileBuilderServlet.doPost(request, response);
+
+    Assert.assertEquals(2, dataService.prepare(new Query("User")).countEntities(withLimit(10)));
+  }
+
+  @Test
   public void addMenteeProfileThenCheckSize() throws IOException, ServletException {
     DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
     addMenteeProfile();
