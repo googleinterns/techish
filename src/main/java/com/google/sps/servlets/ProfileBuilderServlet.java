@@ -31,6 +31,7 @@ public class ProfileBuilderServlet extends HttpServlet {
     String userType = request.getParameter("user-Type");
     
     if(userType.equals("Mentee")){
+        //TODO: add the GoogleUserID
         String userName = request.getParameter("name-input");
         User currentUser = new User(userName);
 
@@ -41,6 +42,7 @@ public class ProfileBuilderServlet extends HttpServlet {
         emptyRepo.addUser(currentUser);
     }
     else if(userType.contains("Mentor")){
+        //TODO: add the GoogleUserID
         String userName = request.getParameter("profName-input");
         User currentUser = new User(userName);
 
