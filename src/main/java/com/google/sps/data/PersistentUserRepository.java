@@ -40,6 +40,11 @@ public class PersistentUserRepository implements UserRepository {
       datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+  //for Sam TODO
+  public User getUser(com.google.appengine.api.users.User googleUser) {
+    throw new java.lang.UnsupportedOperationException("getUser is unimplemented in persistent repository.");
+  }
+
   public void addUserToDatabase(User user) {
     String name = user.getName();
     Collection<String> specialties = user.getSpecialties();
