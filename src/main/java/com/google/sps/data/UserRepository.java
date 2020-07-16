@@ -12,5 +12,7 @@ public interface UserRepository {
   public Collection<User> getAllUsers();
 
   public String toString();
-  
+
+  //creates a User from 'googleUser' if one doesn't exist, otherwise returns existing User with same ID
+  public User getUser(com.google.appengine.api.users.User googleUser);
 }
