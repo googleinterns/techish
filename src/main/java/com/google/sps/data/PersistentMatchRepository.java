@@ -42,9 +42,6 @@ public class PersistentMatchRepository implements MatchRepository {
   private final Gson gson;
   private final PersistentUserRepository userRepository;
   
-  /**
-  * Constructor initializes private variables.
-  */
   public PersistentMatchRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
     gson = new Gson();
@@ -81,7 +78,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
   /**
-  * Method that gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
+  * Gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
   */
   public Collection<User> getMatchesForUser(User user)  {
     Collection<String> matches = getMatchIdsForUser(user.getId());
@@ -105,7 +102,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
  /**
-  * Private method to add an entity to the datastore, or to override an existing 
+  * Adds an entity to the datastore, or overrides an existing 
   * entity when new matches are added.
   */
   private void addNewEntity(String userId, String matchString) {
@@ -117,7 +114,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
  /**
-  * Private method to modify the json string and add a match to an existing user.
+  * Modifies the json string and adds a match to an existing user.
   */
   private void addMatchToExistingUser(String userId, String matchId) {
     Collection<String> currentMatches = getMatchIdsForUser(userId);
@@ -127,7 +124,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
   /**
-  * Private method that returns a Map of all the users and saved matches fitting 
+  * Returns a Map of all the users and saved matches fitting 
   * PreparedQuery results.
   */
   private Map<String, Collection<String>> fetchMapFromQuery(PreparedQuery results) {
@@ -145,7 +142,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
   /**
-  * Private method to fetch the full ID Map from the database.
+  * Fetches the full ID Map from the database.
   */
   private Map<String, Collection<String>> fetchFullMap() {
     Query query = new Query("UserMatch");
@@ -155,7 +152,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
   /**
-  * Private method that sets a query filter based on User ID for the results in the datastore.
+  * Sets a query filter based on User ID for the results in the datastore.
   */
   private PreparedQuery getQueryFilterForId(String userId) {
     Filter userNameFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
@@ -165,7 +162,7 @@ public class PersistentMatchRepository implements MatchRepository {
   }
 
   /**
-  * Private method that fetches a single user's match map given their User ID.
+  * Fetches a single user's match map given their User ID.
   */
   private Map<String, Collection<String>> fetchMapFromId(String userId) {
     PreparedQuery results = getQueryFilterForId(userId);
