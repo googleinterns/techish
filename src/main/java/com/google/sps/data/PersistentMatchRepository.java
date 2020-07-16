@@ -56,8 +56,7 @@ public class PersistentMatchRepository implements MatchRepository {
     if(userMatches.isEmpty()) { //user is not already saved
       Collection<String> matchCollection = new HashSet<String>();
       matchCollection.add(matchId);
-      String jsonMatch = gson.toJson(matchCollection);
-      addNewEntity(userId, jsonMatch);
+      addNewEntity(userId, matchCollection);
     } else { //user is already saved
       addMatchToExistingUser(userId, matchId);
     }
@@ -71,10 +70,8 @@ public class PersistentMatchRepository implements MatchRepository {
     if(!currentMatches.contains(matchId)) {
       throw new Exception("Cannot remove match that doesn't exist.");
     }
-
     currentMatches.remove(matchId);
-    String matchString = gson.toJson(currentMatches);
-    addNewEntity(userId, matchString);
+    addNewEntity(userId, currentMatches);
   }
 
   /**
@@ -105,9 +102,10 @@ public class PersistentMatchRepository implements MatchRepository {
   * Adds an entity to the datastore, or overrides an existing 
   * entity when new matches are added.
   */
-  private void addNewEntity(String userId, String matchString) {
-    Entity userEntity = new Entity("UserMatch", userId);
+  private void addNewEntity(String userId, Collection<String> matchCollection) {
+    String matchString = gson.toJson(matchCollection);
 
+    Entity userEntity = new Entity("UserMatch", userId);
     userEntity.setProperty("userId", userId);
     userEntity.setProperty("matchIds", matchString);
     datastore.put(userEntity);
@@ -119,8 +117,7 @@ public class PersistentMatchRepository implements MatchRepository {
   private void addMatchToExistingUser(String userId, String matchId) {
     Collection<String> currentMatches = getMatchIdsForUser(userId);
     currentMatches.add(matchId);
-    String matchString = gson.toJson(currentMatches);
-    addNewEntity(userId, matchString);
+    addNewEntity(userId, currentMatches);
   }
 
   /**
