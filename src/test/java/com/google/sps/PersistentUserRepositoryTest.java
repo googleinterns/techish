@@ -106,10 +106,10 @@ public final class PersistentUserRepositoryTest {
     Collection<User> allUsers = emptyRepo.getAllUsers();
     Collection<String> specialtiesResult = new HashSet<>();
 
-    for (User allUser : allUsers) {
-        int len = allUser.getSpecialties().size();
+    for (User user : allUsers) {
+        int len = user.getSpecialties().size();
         if(len > 0){
-            specialtiesResult = allUser.getSpecialties(); 
+            specialtiesResult = user.getSpecialties(); 
         }
     }
     Assert.assertEquals(expected, specialtiesResult);
