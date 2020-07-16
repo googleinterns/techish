@@ -56,7 +56,7 @@ public class PersistentMatchRepository implements MatchRepository {
     String matchId = match.getId();
     Map<String, Collection<String>> userMap = fetchMapFromId(userId);
 
-    if(userMap.size() == 0) { //user is not already saved
+    if(userMap.isEmpty()) { //user is not already saved
       Collection<String> matchCollection = new HashSet<String>();
       matchCollection.add(matchId);
       String jsonMatch = gson.toJson(matchCollection);
