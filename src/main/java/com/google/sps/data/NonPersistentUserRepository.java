@@ -22,14 +22,17 @@ import java.util.Map;
         User mentorA = new User("Andre Harder");
         mentorA.addSpecialty("Machine Learning");
         mentorA.addSpecialty("DoS");
+        mentorA.setEmail("andre@gmail.com");
 
         User mentorB = new User("Jerry Chang");
         mentorB.addSpecialty("Electrical Engineering");
         mentorB.addSpecialty("DoS");
+        mentorB.setEmail("jerry@gmail.com");
 
         User mentorC = new User("Julie Johnson");
         mentorC.addSpecialty("Machine Learning");
         mentorC.addSpecialty("Security");
+        mentorC.setEmail("julie@gmail.com");
 
         addUser(mentorA);
         addUser(mentorB);

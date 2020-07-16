@@ -38,7 +38,6 @@ function createMatchElement(match: User) {
     const nameElement = document.createElement('span');
     nameElement.innerText = JSON.stringify(match);
 
-
     matchElement.appendChild(nameElement);
 
     return matchElement;
@@ -104,10 +103,12 @@ class MatchRequest {
 class User {
     id: number;
     name: string;
+    email: string;
     specialties: string[];
-    constructor(id: number, name: string, specialties: string[]) {
+    constructor(id: number, name: string, email:string, specialties: string[]) {
         this.id = id;
         this.name = name;
+        this.email = email;
         this.specialties = specialties;
     }
 }

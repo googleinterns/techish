@@ -145,9 +145,10 @@ var MatchRequest = /** @class */ (function () {
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(id, name, specialties) {
+    function User(id, name, email, specialties) {
         this.id = id;
         this.name = name;
+        this.email = email;
         this.specialties = specialties;
     }
     return User;
