@@ -84,26 +84,26 @@ public final class PersistentUserRepositoryTest {
 
   @Test
   public void addUserTest() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
-    emptyRepo.addUser(USER_A);
+    PersistentUserRepository repository = new PersistentUserRepository();
+    repository.addUser(USER_A);
     int expected = 1;
-    int result = emptyRepo.getAllUsers().size();
+    int result = repository.getAllUsers().size();
     Assert.assertEquals(expected, result);
   }
 
   @Test
   public void userSpecialtyWrittenBack() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Bobby");
     userA.addSpecialty("UI / UX Design");
     userA.addSpecialty("Front-end Development");
-    emptyRepo.addUser(userA);
+    repository.addUser(userA);
 
     Collection<String> expected = new HashSet<>();
     expected.add("Front-end Development");
     expected.add("UI / UX Design");
     
-    Collection<User> allUsers = emptyRepo.getAllUsers();
+    Collection<User> allUsers = repository.getAllUsers();
     Collection<String> specialtiesResult = new HashSet<>();
 
     for (User user : allUsers) {
@@ -117,17 +117,17 @@ public final class PersistentUserRepositoryTest {
 
   @Test
   public void userIDWrittenBack() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Sergey");
     String userID = "82129102381L";
     userA.setId(userID);
-    emptyRepo.addUser(userA);
+    repository.addUser(userA);
 
-    Collection<User> allUsers = emptyRepo.getAllUsers();
+    Collection<User> allUsers = repository.getAllUsers();
     String resultID = "";
 
-    for (User allUser : allUsers) {
-        resultID = allUser.getId();
+    for (User user : allUsers) {
+        resultID = user.getId();
     }
 
     Assert.assertEquals(userID, resultID);
@@ -135,16 +135,16 @@ public final class PersistentUserRepositoryTest {
 
   @Test
   public void userCompanyWrittenBack() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Sergey");
     String company = "Google";
     userA.setCompany(company);
-    emptyRepo.addUser(userA);
+    repository.addUser(userA);
 
-    Collection<User> allUsers = emptyRepo.getAllUsers();
+    Collection<User> allUsers = repository.getAllUsers();
     String result = "";
-     for (User allUser : allUsers) {
-        result = allUser.getCompany();
+     for (User user : allUsers) {
+        result = user.getCompany();
     }
     
     Assert.assertEquals(company, result);
@@ -152,28 +152,28 @@ public final class PersistentUserRepositoryTest {
   
   @Test
   public void userOccupationWrittenBack() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Larry");
     String occupation = "Security Engineer";
     userA.setOccupation(occupation);
-    emptyRepo.addUser(userA);
+    repository.addUser(userA);
 
-    Collection<User> allUsers = emptyRepo.getAllUsers();
+    Collection<User> allUsers = repository.getAllUsers();
     String resultOccupation = "";
-    for (User allUser : allUsers) {
-        resultOccupation = allUser.getOccupation();
+    for (User user : allUsers) {
+        resultOccupation = user.getOccupation();
     }
 
     Assert.assertEquals(occupation, resultOccupation);
   }
   @Test
   public void removeUserThatExists() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
-    emptyRepo.addUser(USER_A);
+    PersistentUserRepository repository = new PersistentUserRepository();
+    repository.addUser(USER_A);
     try {
-      emptyRepo.removeUser(USER_A);
+      repository.removeUser(USER_A);
       String expected = "";
-      String result = emptyRepo.toString();
+      String result = repository.toString();
       Assert.assertEquals(expected, result);
     } catch (Exception e) {
       Assert.fail("Exception should not be thrown in removeUserThatExists");
@@ -182,9 +182,9 @@ public final class PersistentUserRepositoryTest {
 
   @Test
   public void removeUserThatDoesNotExist() {
-    PersistentUserRepository emptyRepo = new PersistentUserRepository();
+    PersistentUserRepository repository = new PersistentUserRepository();
     try {
-      emptyRepo.removeUser(USER_A);
+      repository.removeUser(USER_A);
       Assert.fail("Exception should be thrown in removeUserThatDoesNotExist()");
     } catch (Exception e) {
       // don't need to do anything here because test should catch exception
