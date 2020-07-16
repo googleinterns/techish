@@ -62,7 +62,7 @@ public class MatchServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(null));
     } else {
         MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-        Collection<User> matches = matchRepository.getMatchesForUser(currentUser.getId());
+        Collection<User> matches = matchRepository.getMatchesForUser(currentUser);
 
         response.getWriter().println(gson.toJson(matches));
     }
@@ -84,7 +84,7 @@ public class MatchServlet extends HttpServlet {
 
       for (String matchName : matchesToSave) {
         User newMatch = new Gson().fromJson(matchName, User.class);
-        matchRepository.addMatch(currentUser.getId(), newMatch);
+        matchRepository.addMatch(currentUser, newMatch);
       }
     } else {
       System.err.println("new-matches is null in MatchServlet doPost()");

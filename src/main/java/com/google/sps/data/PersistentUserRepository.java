@@ -188,6 +188,13 @@ public class PersistentUserRepository implements UserRepository {
     return userProfiles.iterator().next();
   }
 
+  public User fetchUserWithId(String userId) {
+      //TODO by sam
+      User fake = new User(userId);
+      return fake;
+
+  }
+
   // function that adds user to the database if it does not exist already
   public void addUser(User user) {
     String userName = user.getName();
