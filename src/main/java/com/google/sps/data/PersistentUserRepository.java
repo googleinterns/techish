@@ -62,6 +62,7 @@ public class PersistentUserRepository implements UserRepository {
     addUser(newUser);
     
     return newUser;
+  }
     
   public void addUserToDatabase(User user) {
     String name = user.getName();
