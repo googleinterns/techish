@@ -176,14 +176,16 @@ public class PersistentUserRepository implements UserRepository {
   }
   
   // function that fetches a single user, collection of users, filter on that user for id
-  public User fetchUserWithId(String userId) {
+  public User fetchUserWithId(String userId) throws Exception{
     PreparedQuery results = getQueryFilterForId(userId);
     Collection<User> userProfiles = fetchUserEntities(results);
     if(userProfiles.size() == 1){
         return userProfiles.iterator().next();
     }
-    User fake = new User(userId);
-    return fake; 
+    if(userProfiles.size() != 1) {
+        throw new Exception("User with this ID#" + userId + " does not exist");  
+    }
+    return userProfiles.iterator().next();
   }
 
   // function that adds user to the database if it does not exist already

@@ -303,9 +303,15 @@ public final class PersistentUserRepositoryTest {
     String userID = "82129102381L";
     userA.setId(userID);
     repository.addUser(userA);
- 
-    User userMatch = repository.fetchUserWithId(userID);
-    String resultName = userMatch.getName();
+    String resultName = "";
+    
+    try{
+        User userMatch = repository.fetchUserWithId(userID);
+        resultName = userMatch.getName();
+    } catch(Exception e) {
+        Assert.fail("User with that ID does not exist");
+    }
+    // String resultName = 
  
     Assert.assertEquals("Bobby", resultName);
   }
