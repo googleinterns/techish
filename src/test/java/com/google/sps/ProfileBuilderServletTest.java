@@ -159,17 +159,12 @@ public class ProfileBuilderServletTest {
 
     profileBuilderServlet.doPost(request, response);
     PreparedQuery results = ds.prepare(new Query("User"));
-    String nameResult = "";
-    String schoolResult = "";
-    String majorResult = "";
-    for (Entity entity : results.asIterable()) {
-        nameResult = (String) entity.getProperty("name");
-        schoolResult = (String) entity.getProperty("school");
-        majorResult = (String) entity.getProperty("major");
-    }
-    Assert.assertEquals(menteeName, nameResult);
-    Assert.assertEquals(school, schoolResult);
-    Assert.assertEquals(major, majorResult);
+    
+    Entity entity = results.asIterable().iterator().next();
+
+    Assert.assertEquals(menteeName, (String) entity.getProperty("name"));
+    Assert.assertEquals(school, (String) entity.getProperty("school"));
+    Assert.assertEquals(major, (String) entity.getProperty("major"));
   }
 
   @Test
@@ -190,23 +185,15 @@ public class ProfileBuilderServletTest {
 
     profileBuilderServlet.doPost(request, response);
     PreparedQuery results = ds.prepare(new Query("User"));
-    String nameResult = "";
-    String companyResult = "";
-    String occupationResult = "";
-    Collection<String> specialtiesCollection = new ArrayList<String>();
-    for (Entity entity : results.asIterable()) {
-        nameResult = (String) entity.getProperty("name");
-        companyResult = (String) entity.getProperty("company");
-        occupationResult = (String) entity.getProperty("occupation");  
-        specialtiesCollection = (Collection<String>) entity.getProperty("specialties");
-    }
+    Entity entity = results.asIterable().iterator().next();
+    
+    Assert.assertEquals(mentorName, (String) entity.getProperty("name"));
+    Assert.assertEquals(company, (String) entity.getProperty("company"));
+    Assert.assertEquals(occupation, (String) entity.getProperty("occupation"));
+    Collection<String>  specialtiesCollection = (Collection<String>) entity.getProperty("specialties");
     String[] specialtiesResult = new String[specialtiesCollection.size()];
     specialtiesResult = specialtiesCollection.toArray(specialtiesResult);
-    
-    Assert.assertEquals(mentorName, nameResult);
-    Assert.assertEquals(company, companyResult);
-    Assert.assertEquals(occupation, occupationResult);
-    Assert.assertArrayEquals(specialties, specialtiesResult);
+    Assert.assertArrayEquals(specialties, specialtiesCollection.toArray(specialtiesResult));
   }
 
 }
