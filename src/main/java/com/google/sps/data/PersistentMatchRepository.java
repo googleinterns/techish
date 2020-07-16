@@ -77,7 +77,7 @@ public class PersistentMatchRepository implements MatchRepository {
   /**
   * Gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
   */
-  public Collection<User> getMatchesForUser(User user)  {
+  public Collection<User> getMatchesForUser(User user) {
     Collection<String> matches = getMatchIdsForUser(user.getId());
     Collection<User> toReturn = new HashSet<User>();
 
@@ -87,8 +87,14 @@ public class PersistentMatchRepository implements MatchRepository {
     }
 
     for(String userId : matches) {
-      User newMatch = userRepository.fetchUserWithId(userId);
-      toReturn.add(newMatch);
+      try {
+        User newMatch = userRepository.fetchUserWithId(userId);
+        toReturn.add(newMatch);
+      //catch exception if user is not in persistent repository
+      } catch (Exception e) {
+          System.err.println("User was not found in Persistent Repository.");
+      }
+      
     }
     return toReturn;
   }

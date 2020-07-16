@@ -3,6 +3,8 @@ package com.google.sps;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
+import com.google.sps.data.UserRepository;
 import com.google.sps.data.User;
 import java.util.Collection;
 import java.util.HashSet;
@@ -29,6 +31,7 @@ public final class PersistentMatchRepositoryTest {
   private static final User MATCH_A = new User("Match A");
   private static final User MATCH_B = new User("Match B");
   private static final User MATCH_C = new User("Match C");
+  private UserRepository userRepository = new PersistentUserRepository().getInstance();
 
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -45,6 +48,12 @@ public final class PersistentMatchRepositoryTest {
     MATCH_C.setId("101111");
     localHelper.setUp();
     MockitoAnnotations.initMocks(this);
+
+    //add users to userRepository
+    userRepository.addUser(USER_A);
+    userRepository.addUser(MATCH_A);
+    userRepository.addUser(MATCH_B);
+    userRepository.addUser(MATCH_C);
   }
 
   @After

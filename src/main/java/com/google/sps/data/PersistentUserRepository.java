@@ -41,7 +41,7 @@ public class PersistentUserRepository implements UserRepository {
 
   public PersistentUserRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
-    addFakeMentors();
+    // addFakeMentors();
   }
 
   public void addFakeMentors() {
@@ -224,13 +224,6 @@ public class PersistentUserRepository implements UserRepository {
     return userProfiles.iterator().next();
   }
 
-  public User fetchUserWithId(String userId) {
-      //TODO by sam
-      User fake = new User(userId);
-      return fake;
-
-  }
-
   // function that adds user to the database if it does not exist already
   public void addUser(User user) {
     String userName = user.getName();
@@ -244,7 +237,7 @@ public class PersistentUserRepository implements UserRepository {
     }
   }
 
-  public void removeUserProfile(User user) throws Exception{
+  public void removeUserProfile(User user) throws Exception {
     String inputUserName = user.getName();
     PreparedQuery results = getQueryFilterForName(inputUserName);
     int size = results.countEntities();
