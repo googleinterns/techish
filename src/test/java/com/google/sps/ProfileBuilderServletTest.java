@@ -74,25 +74,19 @@ public class ProfileBuilderServletTest {
   }
     
   public void setRequestAsMentor() {
-    String userType = "Mentor";
-    when(request.getParameter("user-Type")).thenReturn(userType);
-    String mentorName = "Jeff";
-    when(request.getParameter("profName-input")).thenReturn(mentorName);
-    String company = "Google";
-    when(request.getParameter("company-input")).thenReturn(company);
-    String specialty = "Security";
-    when(request.getParameter("specialty-input")).thenReturn(specialty);
+
+    when(request.getParameter("user-Type")).thenReturn("Mentor");
+    when(request.getParameter("profName-input")).thenReturn("Jeff");
+    when(request.getParameter("company-input")).thenReturn("Google");
+    when(request.getParameter("specialty-input")).thenReturn("Security");
   }
 
   public void setRequestAsMentee() {
-    String userType = "Mentee";
-    when(request.getParameter("user-Type")).thenReturn(userType);
-    String menteeName = "Bobby";
-    when(request.getParameter("name-input")).thenReturn(menteeName);
-    String school = "University of California Berkeley";
-    when(request.getParameter("school-input")).thenReturn(school);
-    String major = "Computer Science";
-    when(request.getParameter("major-input")).thenReturn(major);
+
+    when(request.getParameter("user-Type")).thenReturn("Mentee");
+    when(request.getParameter("name-input")).thenReturn("Bobby");
+    when(request.getParameter("school-input")).thenReturn( "University of California Berkeley");
+    when(request.getParameter("major-input")).thenReturn("Computer Science");
   }
 
   @Test
