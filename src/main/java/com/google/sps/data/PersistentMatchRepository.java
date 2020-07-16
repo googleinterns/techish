@@ -46,9 +46,62 @@ public class PersistentMatchRepository implements MatchRepository {
   * Constructor initializes private variables.
   */
   public PersistentMatchRepository() {
-      datastore = DatastoreServiceFactory.getDatastoreService();
-      gson = new Gson();
-      userRepository = new PersistentUserRepository();
+    datastore = DatastoreServiceFactory.getDatastoreService();
+    gson = new Gson();
+    userRepository = new PersistentUserRepository();
+  }
+
+  public void addMatch(User user, User match) {
+    String userId = user.getId();
+    String matchId = match.getId();
+    Map<String, Collection<String>> userMap = fetchMapFromId(userId);
+
+    if(userMap.size() == 0) { //user is not already saved
+      Collection<String> matchCollection = new HashSet<String>();
+      matchCollection.add(matchId);
+      String jsonMatch = gson.toJson(matchCollection);
+      addNewEntity(userId, jsonMatch);
+    } else { //user is already saved
+      addMatchToExistingUser(userId, matchId);
+    }
+  }
+
+  public void removeMatch(User user, User match) throws Exception {
+    String userId = user.getId();
+    String matchId = match.getId();
+    Collection<String> currentMatches = getMatchIdsForUser(userId);
+
+    if(!currentMatches.contains(matchId)) {
+      throw new Exception("Cannot remove match that doesn't exist.");
+    }
+
+    currentMatches.remove(matchId);
+    String matchString = gson.toJson(currentMatches);
+    addNewEntity(userId, matchString);
+  }
+
+  /**
+  * Method that gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
+  */
+  public Collection<User> getMatchesForUser(User user)  {
+    Collection<String> matches = getMatchIdsForUser(user.getId());
+    Collection<User> toReturn = new HashSet<User>();
+
+    //return empty collection if user doesn't exist
+    if(matches == null) {
+      return toReturn;
+    }
+
+    for(String userId : matches) {
+      User newMatch = userRepository.fetchUserWithId(userId);
+      toReturn.add(newMatch);
+    }
+    return toReturn;
+  }
+
+  public String toString() {
+    Map<String, Collection<String>> allMatches = fetchFullMap();
+    return allMatches.toString();
   }
 
  /**
@@ -81,11 +134,11 @@ public class PersistentMatchRepository implements MatchRepository {
     Map<String, Collection<String>> idMap = new HashMap<String, Collection<String>>();
 
     for (Entity entity : results.asIterable()) {
-        String userId = (String) entity.getProperty("userId");
-        String matchIds = (String) entity.getProperty("matchIds");
-        Collection<String> matchCollection = gson.fromJson(matchIds, HashSet.class);
+      String userId = (String) entity.getProperty("userId");
+      String matchIds = (String) entity.getProperty("matchIds");
+      Collection<String> matchCollection = gson.fromJson(matchIds, HashSet.class);
 
-        idMap.put(userId, matchCollection);
+      idMap.put(userId, matchCollection);
     }
 
     return idMap;
@@ -121,63 +174,9 @@ public class PersistentMatchRepository implements MatchRepository {
     return userMap;
   }
 
-
-  public void addMatch(User user, User match) {
-    String userId = user.getId();
-    String matchId = match.getId();
-    Map<String, Collection<String>> userMap = fetchMapFromId(userId);
-
-    if(userMap.size() == 0) { //user is not already saved
-        Collection<String> matchCollection = new HashSet<String>();
-        matchCollection.add(matchId);
-        String jsonMatch = gson.toJson(matchCollection);
-        addNewEntity(userId, jsonMatch);
-    } else { //user is already saved
-        addMatchToExistingUser(userId, matchId);
-    }
-  }
-
-  public void removeMatch(User user, User match) throws Exception {
-    String userId = user.getId();
-    String matchId = match.getId();
-    Collection<String> currentMatches = getMatchIdsForUser(userId);
-
-    if(!currentMatches.contains(matchId)) {
-      throw new Exception("Cannot remove match that doesn't exist.");
-    }
-
-    currentMatches.remove(matchId);
-    String matchString = gson.toJson(currentMatches);
-    addNewEntity(userId, matchString);
-  }
-
   private Collection<String> getMatchIdsForUser(String userId) {
     Map<String, Collection<String>> userEntry = fetchMapFromId(userId);
     return userEntry.get(userId);
   }
 
-  /**
-  * Method that gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
-  */
-  public Collection<User> getMatchesForUser(User user)  {
-      Collection<String> matches = getMatchIdsForUser(user.getId());
-      Collection<User> toReturn = new HashSet<User>();
-
-      //return empty collection if user doesn't exist
-      if(matches == null) {
-        return toReturn;
-      }
-
-      for(String userId : matches) {
-        User newMatch = userRepository.fetchUserWithId(userId);
-        toReturn.add(newMatch);
-      }
-      
-      return toReturn;
-  }
-
-  public String toString() {
-    Map<String, Collection<String>> allMatches = fetchFullMap();
-    return allMatches.toString();
-  }
 }
