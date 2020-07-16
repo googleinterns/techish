@@ -43,60 +43,61 @@
     <section>
         <div class="container">
 
-            <form action="/profile" id="profile_form" method="POST" id="makeProfile">               
-                <div>
-                    <input name="user-Type" type="button" class="button_slide slide_down" value="Mentor" onclick="setForm(this.value)">
-                    <input name="user-Type" type="button" class="button_slide slide_down" value="Mentee" onclick="setForm(this.value)">
+            <form action="/profile"  method="POST" name="makeProfile" id="makeProfile">               
+                <div  >
+                    <input type="button" id="mentorButton" class="button_slide slide_down" onclick="setForm(this.value)" value="Mentor">
+                    <input type="hidden" name="user-Type" id="user-input"  class="form-control" value="" >
+                    <input type="button" id="menteeButton" class="button_slide slide_down" onclick="setForm(this.value)" value="Mentee">
                 </div>
+
                 <!-- Mentee Input Form -->
                 <div id="Mentee">
                 <!-- full name input -->
                     <div>
                         <label style="color:black;" name="name-input"> Full Name:
-                            <input type="text" name="name-input" class="form-control" required>
+                            <input type="text" name="name-input" id="name-input"  class="form-control">
                         </label>
                     </div>
                     <!-- School input -->
                     <div>
                         <label style="color:black;" name="school-input"> School:
-                            <input type="text" name="school-input" class="form-control"  placeholder="School" required>
+                            <input type="text" name="school-input" id="school-input" class="form-control"  placeholder="School" >
                         </label>
                     </div>
                     <!-- Major input -->
                     <div>
                         <label style="color:black;" name="major-input"> Major:
-                            <input type="text" name="major-input" class="form-control"  placeholder="Major" required>
+                            <input type="text" name="major-input" id="major-input" class="form-control"  placeholder="Major" >
                         </label>
                     </div>
-
-                        <input type="submit" value="Submit">
-                    </div>
+                    <input type="submit" value="Submit" form="makeProfile">
+                </div> 
 
                 <!-- Mentor Input Form -->
                 <div id="Mentor" style="display: none">
                 <!-- full name -->
                     <div>
                         <label style="color:black;" name="profName-input"> Full Name:
-                            <input type="text" name="profName-input" class="form-control" required>
+                            <input type="text" name="profName-input" id="profName-input" class="form-control" >
                         </label>
                     </div>
                     <!-- Company input -->
                     <div>
                         <label style="color:black;" name="company-input"> Company:
-                            <input type="text" name="company-input" class="form-control" placeholder="Company" required>
+                            <input type="text" name="company-input" id="company-input"  class="form-control" placeholder="Company">
                         </label>
                     </div>
                     <!-- Career Title input -->
                     <div>
                         <label style="color:black;" name="careerTitle-input"> Career Title:
-                            <input type="text" name="careerTitle-input" class="form-control"  placeholder="Career Title" required>
+                            <input type="text" name="careerTitle-input" id="careerTitle-input" class="form-control"  placeholder="Career Title">
                         </label>
                     </div>
                     
                     <!-- Specialty Input  -->
                     <label style= "color: black;"> Specialty:
                         <br>
-                        <select placeholder={{specialty}} name="specialty-input" size="9" required>
+                        <select placeholder={{specialty}} name="specialty-input" id="specialty-input" size="9" multiple>
                             <option value="Machine Learning">Maching Learning</option>
                             <option value="Artificial Intelligence">Artificial Intelligence</option>
                             <option value="Systems">Systems</option>
@@ -109,8 +110,8 @@
                         </select>
                     </label>
                     <p style= "color: black;">Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+                    <input type="submit" value="Submit" form="makeProfile">
 
-                    <input type="submit" value="Submit">
                 </div>
             </form>
         </div>
