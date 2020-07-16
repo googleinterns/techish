@@ -69,6 +69,7 @@ public class ProfileBuilderServlet extends HttpServlet {
                         currentUser.addSpecialty(specialty);
                     }
                 }
+                
                 PersistentUserRepository.getInstance().addUser(currentUser);
             } 
         }
