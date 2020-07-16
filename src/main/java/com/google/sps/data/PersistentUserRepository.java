@@ -35,31 +35,70 @@ import java.util.stream.Collectors;
 public class PersistentUserRepository implements UserRepository {
   
   private final DatastoreService datastore;
-  
+
+  private static PersistentUserRepository instance =
+     new PersistentUserRepository();
+
   public PersistentUserRepository() {
       datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  //for Sam TODO
-  public User getUser(com.google.appengine.api.users.User googleUser) {
-    throw new java.lang.UnsupportedOperationException("getUser is unimplemented in persistent repository.");
+  public static PersistentUserRepository getInstance() {
+      return instance;
   }
+   
+  public User getUser(com.google.appengine.api.users.User googleUser) {
+    String userEmail = googleUser.getEmail();
 
+    Collection<User> allUsers = fetchUserProfiles();
+    for(User user : allUsers) {
+        if (user.getEmail() == userEmail) {
+            return user;
+        }
+    }
+    User newUser = new User(googleUser.getNickname());
+    newUser.setEmail(userEmail);
+    newUser.setId(googleUser.getUserId());
+    addUser(newUser);
+    
+    return newUser;
+  }
+    
   public void addUserToDatabase(User user) {
     String name = user.getName();
-    Collection<String> specialties = user.getSpecialties();
-    String company = user.getCompany();
+    String id = user.getId();
+    String email = user.getEmail();
 
     Entity userEntity = new Entity("User");
     userEntity.setProperty("name", name);
-    
-    if(!specialties.isEmpty()) {
-        userEntity.setProperty("specialties", specialties);
+    userEntity.setProperty("id", id);  
+    userEntity.setProperty("email", email); 
+
+    String school = user.getSchool();
+    String major = user.getMajor();
+    String company = user.getCompany();
+    Collection<String> specialties = user.getSpecialties();
+    String careerTitle = user.getOccupation();
+
+    if(school != null) {
+        userEntity.setProperty("school", school);  
     }
+    if(major != null) {
+        userEntity.setProperty("major", major);
+    }
+
     if(company != null) {
         userEntity.setProperty("company", company);
     }
 
+    if(careerTitle != null) {
+        userEntity.setProperty("occupation", careerTitle);
+    }
+
+    if(!specialties.isEmpty()) {
+        userEntity.setProperty("specialties", specialties); 
+    }
+    
     datastore.put(userEntity);
   }
 
@@ -68,10 +107,28 @@ public class PersistentUserRepository implements UserRepository {
 
     for (Entity entity : results.asIterable()) {
         String name = (String) entity.getProperty("name");
-        Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
+        String id = (String) entity.getProperty("id");
+        String email = (String) entity.getProperty("email");
+        String school = (String) entity.getProperty("school");
+        String major = (String) entity.getProperty("major");
         String company = (String) entity.getProperty("company");
+        String occupation = (String) entity.getProperty("occupation");
+        Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
 
         User userObject = new User(name);
+        if(id != null) {
+            userObject.setId(id);
+        }
+        if(email != null) {
+            userObject.setEmail(email);
+        }
+        if(school != null) {
+            userObject.setSchool(school);
+        }
+        if(major != null) {
+            userObject.setMajor(major);
+        }
+
         if(specialties != null) {
             for (String specialty : specialties) {
                 userObject.addSpecialty(specialty);
@@ -79,6 +136,9 @@ public class PersistentUserRepository implements UserRepository {
         }
         if(company != null) {
             userObject.setCompany(company);
+        }
+        if(occupation != null) {
+            userObject.setOccupation(occupation);
         }
         userEntities.add(userObject);
     }
@@ -100,13 +160,32 @@ public class PersistentUserRepository implements UserRepository {
     PreparedQuery results = datastore.prepare(query);
     return results;
   }
-
-    // function that fetches a single user, collection of users, filter on that user for name?
+   // function that sets a query filter for the results in the datastore
+  public PreparedQuery getQueryFilterForId(String id) {
+    Filter userNameFilter = new FilterPredicate("id", FilterOperator.EQUAL, id);
+    Query query = new Query("User").setFilter(userNameFilter);
+    PreparedQuery results = datastore.prepare(query);
+    return results;
+  }
+  
+  // function that fetches a single user, collection of users, filter on that user for name
   public Collection<User> fetchUsersWithName(String userName) {
     PreparedQuery results = getQueryFilterForName(userName);
     Collection<User> userProfiles = fetchUserEntities(results);
-
     return userProfiles;
+  }
+  
+  // function that fetches a single user, collection of users, filter on that user for id
+  public User fetchUserWithId(String userId) throws Exception{
+    PreparedQuery results = getQueryFilterForId(userId);
+    Collection<User> userProfiles = fetchUserEntities(results);
+    if(userProfiles.size() == 1){
+        return userProfiles.iterator().next();
+    }
+    if(userProfiles.size() != 1) {
+        throw new Exception("User with this ID#" + userId + " does not exist");  
+    }
+    return userProfiles.iterator().next();
   }
 
   // function that adds user to the database if it does not exist already
