@@ -84,9 +84,18 @@ function createMatchElement(match) {
     var matchElement = document.createElement('li');
     matchElement.className = 'match';
     var nameElement = document.createElement('span');
-    nameElement.innerText = JSON.stringify(match);
+    nameElement.innerText = matchToString(match);
     matchElement.appendChild(nameElement);
     return matchElement;
+}
+function matchToString(match) {
+    var toReturn = "";
+    toReturn += match.name;
+    toReturn += " (";
+    toReturn += match.email;
+    toReturn += "): ";
+    toReturn += match.specialties;
+    return toReturn;
 }
 function sendMatchRequest() {
     var specialty = document.getElementById('specialty').value;
@@ -110,8 +119,9 @@ function displayNewMatchPopup(matches) {
     // add results to the page
     for (var _i = 0, matches_1 = matches; _i < matches_1.length; _i++) {
         var match = matches_1[_i];
-        var matchString = JSON.stringify(match);
-        var newOption = new Option(matchString, matchString);
+        var matchString = matchToString(match);
+        var jsonString = JSON.stringify(match);
+        var newOption = new Option(matchString, jsonString);
         newMatchContainer.add(newOption, undefined);
     }
 }
@@ -145,8 +155,7 @@ var MatchRequest = /** @class */ (function () {
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(id, name, email, specialties) {
-        this.id = id;
+    function User(name, email, specialties) {
         this.name = name;
         this.email = email;
         this.specialties = specialties;

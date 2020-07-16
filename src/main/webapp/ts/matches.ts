@@ -36,11 +36,21 @@ function createMatchElement(match: User) {
     matchElement.className = 'match';
 
     const nameElement = document.createElement('span');
-    nameElement.innerText = JSON.stringify(match);
+    nameElement.innerText = matchToString(match);
 
     matchElement.appendChild(nameElement);
 
     return matchElement;
+}
+
+function matchToString(match: User) {
+    let toReturn : string = "";
+    toReturn += match.name;
+    toReturn += " (";
+    toReturn += match.email;
+    toReturn += "): ";
+    toReturn += match.specialties;
+    return toReturn;
 }
 
 function sendMatchRequest() {
@@ -68,8 +78,9 @@ function displayNewMatchPopup(matches : Array<User>) {
 
   // add results to the page
   for (const match of matches) {
-    const matchString : string = JSON.stringify(match);
-    let newOption = new Option(matchString, matchString);
+    const matchString : string = matchToString(match);
+    const jsonString : string = JSON.stringify(match);
+    let newOption = new Option(matchString, jsonString);
     newMatchContainer.add(newOption, undefined);
   }
 }
@@ -101,12 +112,10 @@ class MatchRequest {
 }
 
 class User {
-    id: number;
     name: string;
     email: string;
     specialties: string[];
-    constructor(id: number, name: string, email:string, specialties: string[]) {
-        this.id = id;
+    constructor(name: string, email: string, specialties: string[]) {
         this.name = name;
         this.email = email;
         this.specialties = specialties;
