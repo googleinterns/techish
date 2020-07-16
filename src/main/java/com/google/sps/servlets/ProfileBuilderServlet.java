@@ -73,7 +73,7 @@ public class ProfileBuilderServlet extends HttpServlet {
             } 
         }
         else{
-            throw new IOException("Error invalid usertype"+ userType);
+            throw new IOException("Error invalid usertype '"+ userType + "' ");
         }
     }
 
