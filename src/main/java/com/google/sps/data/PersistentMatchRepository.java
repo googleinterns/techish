@@ -109,7 +109,7 @@ public class PersistentMatchRepository implements MatchRepository {
   * entity when new matches are added.
   */
   private void addNewEntity(String userId, String matchString) {
-    Entity userEntity = new Entity("User", userId);
+    Entity userEntity = new Entity("UserMatch", userId);
 
     userEntity.setProperty("userId", userId);
     userEntity.setProperty("matchIds", matchString);
@@ -148,7 +148,7 @@ public class PersistentMatchRepository implements MatchRepository {
   * Private method to fetch the full ID Map from the database.
   */
   private Map<String, Collection<String>> fetchFullMap() {
-    Query query = new Query("User");
+    Query query = new Query("UserMatch");
     PreparedQuery results = datastore.prepare(query);
     Map<String, Collection<String>> idMap = fetchMapFromQuery(results);
     return idMap;
@@ -159,7 +159,7 @@ public class PersistentMatchRepository implements MatchRepository {
   */
   private PreparedQuery getQueryFilterForId(String userId) {
     Filter userNameFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
-    Query query = new Query("User").setFilter(userNameFilter);
+    Query query = new Query("UserMatch").setFilter(userNameFilter);
     PreparedQuery results = datastore.prepare(query);
     return results;
   }
