@@ -104,15 +104,8 @@ public final class PersistentUserRepositoryTest {
     expected.add("UI / UX Design");
     
     Collection<User> allUsers = repository.getAllUsers();
-    Collection<String> specialtiesResult = new HashSet<>();
 
-    for (User user : allUsers) {
-        int len = user.getSpecialties().size();
-        if(len > 0){
-            specialtiesResult = user.getSpecialties(); 
-        }
-    }
-    Assert.assertEquals(expected, specialtiesResult);
+    Assert.assertEquals(expected, repository.getAllUsers().iterator().next().getSpecialties());
   }
 
   @Test
@@ -124,13 +117,8 @@ public final class PersistentUserRepositoryTest {
     repository.addUser(userA);
 
     Collection<User> allUsers = repository.getAllUsers();
-    String resultID = "";
-
-    for (User user : allUsers) {
-        resultID = user.getId();
-    }
-
-    Assert.assertEquals(userID, resultID);
+   
+    Assert.assertEquals(userID, repository.getAllUsers().iterator().next().getId());
   }
 
   @Test
@@ -142,12 +130,8 @@ public final class PersistentUserRepositoryTest {
     repository.addUser(userA);
 
     Collection<User> allUsers = repository.getAllUsers();
-    String result = "";
-     for (User user : allUsers) {
-        result = user.getCompany();
-    }
     
-    Assert.assertEquals(company, result);
+    Assert.assertEquals(company, repository.getAllUsers().iterator().next().getCompany());
   }
   
   @Test
@@ -159,12 +143,8 @@ public final class PersistentUserRepositoryTest {
     repository.addUser(userA);
 
     Collection<User> allUsers = repository.getAllUsers();
-    String resultOccupation = "";
-    for (User user : allUsers) {
-        resultOccupation = user.getOccupation();
-    }
 
-    Assert.assertEquals(occupation, resultOccupation);
+    Assert.assertEquals(occupation, repository.getAllUsers().iterator().next().getOccupation());
   }
   @Test
   public void removeUserThatExists() {
