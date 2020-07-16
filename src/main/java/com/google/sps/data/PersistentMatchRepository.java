@@ -41,11 +41,16 @@ public class PersistentMatchRepository implements MatchRepository {
   private final DatastoreService datastore;
   private final Gson gson;
   private final PersistentUserRepository userRepository;
+  private static PersistentMatchRepository instance = new PersistentMatchRepository();
   
   public PersistentMatchRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
     gson = new Gson();
-    userRepository = new PersistentUserRepository();
+    userRepository = new PersistentUserRepository().getInstance();
+  }
+
+  public static PersistentMatchRepository getInstance() {
+      return instance;
   }
 
   public void addMatch(User user, User match) {
@@ -92,7 +97,7 @@ public class PersistentMatchRepository implements MatchRepository {
         toReturn.add(newMatch);
       //catch exception if user is not in persistent repository
       } catch (Exception e) {
-          System.err.println("User was not found in Persistent Repository.");
+          System.err.println("UserID was not found in Persistent Repository: " + userId);
       }
       
     }
