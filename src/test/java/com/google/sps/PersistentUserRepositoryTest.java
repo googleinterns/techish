@@ -318,5 +318,18 @@ public final class PersistentUserRepositoryTest {
       Assert.assertEquals(1, currentSize);
   }
 
+  @Test
+  public void userFetchIdMethodTest() {
+    PersistentUserRepository repository = new PersistentUserRepository();
+    User userA = new User("Bobby");
+    String userID = "82129102381L";
+    userA.setId(userID);
+    repository.addUser(userA);
+ 
+    User userMatch = repository.fetchUserWithId(userID);
+    String resultName = userMatch.getName();
+ 
+    Assert.assertEquals("Bobby", resultName);
+  }
 
 }
