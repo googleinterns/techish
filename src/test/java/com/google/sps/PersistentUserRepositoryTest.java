@@ -103,8 +103,6 @@ public final class PersistentUserRepositoryTest {
     expected.add("Front-end Development");
     expected.add("UI / UX Design");
     
-    Collection<User> allUsers = repository.getAllUsers();
-
     Assert.assertEquals(expected, repository.getAllUsers().iterator().next().getSpecialties());
   }
 
