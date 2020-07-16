@@ -2,7 +2,9 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.sps.data.SessionContext;
 import com.google.gson.JsonObject;
+import java.lang.Exception;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
     description = "UserAPI: Login / Logout with UserService",
     urlPatterns = "/userapi")
 public class UserLoginServlet extends HttpServlet {
+
 
   /*This method uses the UsersAPI to send a Get Request and see if the user is logged in,
   and is expected to return a string with the url and boolean value all in a Json string */
@@ -36,7 +39,23 @@ public class UserLoginServlet extends HttpServlet {
       loginInfo.addProperty("LogInUrl", "");
 
     } else {
-      String loggedInUrl = userService.createLoginURL("/index.html");
+      String loggedInUrl = "";
+      com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
+    
+      try {
+        boolean isUserInDatabase = SessionContext.getInstance().isUserExistingInDatastore(currentGoogleUser);
+        if(isUserInDatabase) {
+            loggedInUrl = userService.createLoginURL("/logged_in_homepage.html");
+        }
+      } catch(Exception e) {
+        System.err.println(e);
+        loggedInUrl = userService.createLoginURL("/profileBuilder.html");
+      }
+      
+   
+        // loggedInUrl = userService.createLoginURL("/index.html");
+   
+    
       loginInfo.addProperty("LogInUrl", loggedInUrl);
       loginInfo.addProperty("LogOutUrl", "");
     }

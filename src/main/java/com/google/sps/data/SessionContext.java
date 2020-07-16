@@ -3,6 +3,7 @@ package com.google.sps.data;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.NonPersistentUserRepository;
+import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import java.lang.Exception;
@@ -10,7 +11,9 @@ import java.lang.Exception;
 public class SessionContext {
 
   private final UserService userService;
-  private final UserRepository userRepository;
+  private static UserRepository userRepository;
+  private static SessionContext instance =
+     new SessionContext(userRepository);
 
   /**
   * Constructor that initializes the user repository.
@@ -19,7 +22,14 @@ public class SessionContext {
     userService = UserServiceFactory.getUserService();
     this.userRepository = userRepository;
   }
+  /**
+  * Getter method for getting the instanfce
+  */
 
+  public static SessionContext getInstance() {
+      return instance;
+  }
+  
   /**
   * Overload constructor with UserService for testing.
   */
@@ -56,4 +66,20 @@ public class SessionContext {
   public boolean isUserLoggedIn() {
     return userService.isUserLoggedIn();
   }
+
+  public boolean isUserExistingInDatastore(com.google.appengine.api.users.User currentGoogleUser) throws Exception {
+    String id = currentGoogleUser.getUserId();
+    System.out.println(id);
+    try {
+        User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
+        if(userExists.getId().equals(id)){
+            return true;
+        }
+    } catch (Exception e){
+        System.err.println(e);
+        return false;
+    }
+    return false;
+  }
+
 }
