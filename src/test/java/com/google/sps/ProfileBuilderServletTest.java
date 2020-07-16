@@ -208,53 +208,5 @@ public class ProfileBuilderServletTest {
     Assert.assertEquals(occupation, occupationResult);
     Assert.assertArrayEquals(specialties, specialtiesResult);
   }
-    
-    
-  @Test
-  public void checkMentorSpecialityIsSame() throws IOException, ServletException {
-    DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-    String userType = "Mentor";
-    when(request.getParameter("user-Type")).thenReturn(userType);
-    String mentorName = "Sergey Page";
-    when(request.getParameter("profName-input")).thenReturn(mentorName);
-    String company = "Google";
-    when(request.getParameter("company-input")).thenReturn(company);
-    String[] specialties = new String[1];
-    specialties[0] = "Algorithmic Design";
-    when(request.getParameterValues("specialty-input")).thenReturn(specialties);
 
-    profileBuilderServlet.doPost(request, response);
-    
-    Filter specialtyFilter = new FilterPredicate("specialties", FilterOperator.EQUAL, specialties[0]);
-    PreparedQuery results = ds.prepare( new Query("User").setFilter(specialtyFilter));
-    Collection<String> specialtiesResult = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
-        specialtiesResult = (Collection<String>) entity.getProperty("specialties");
-    }
-    int resultSize = specialtiesResult.size();
-    Assert.assertEquals(1, resultSize);
-  }
-  
-  @Test
-  public void sendUserCheckIfNameMatches() throws IOException, ServletException {
-    DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-    String userType = "Mentor";
-    when(request.getParameter("user-Type")).thenReturn(userType);
-    String mentorName = "John Person";
-    when(request.getParameter("profName-input")).thenReturn(mentorName);
-    String company = "Google";
-    when(request.getParameter("company-input")).thenReturn(company);
-    String specialty = "Artificial Intelligence";
-    when(request.getParameter("specialty-input")).thenReturn(specialty);
-
-    profileBuilderServlet.doPost(request, response);
-
-    Filter nameFilter = new FilterPredicate("name", FilterOperator.EQUAL, mentorName);
-    PreparedQuery results = ds.prepare(new Query("User").setFilter(nameFilter));
-    String nameResult = "";
-    for (Entity entity : results.asIterable()) {
-        nameResult = (String) entity.getProperty("name");
-    }
-    Assert.assertEquals(mentorName, nameResult);
-  }
 }
