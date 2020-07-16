@@ -37,7 +37,42 @@ public class PersistentUserRepository implements UserRepository {
   private final DatastoreService datastore;
   
   public PersistentUserRepository() {
-      datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore = DatastoreServiceFactory.getDatastoreService();
+  }
+
+  public void addFakeMentors() {
+    User mentorA = new User("Kevin Dowling");
+    mentorA.addSpecialty("Machine Learning");
+    mentorA.addSpecialty("Systems");
+    mentorA.setEmail("kevin@gmail.com");
+
+    User mentorB = new User("Mabel Mccabe");
+    mentorB.addSpecialty("Electrical Engineering");
+    mentorB.addSpecialty("Graphics");
+    mentorB.setEmail("mabel@gmail.com");
+
+    User mentorC = new User("Julie Johnson");
+    mentorC.addSpecialty("Machine Learning");
+    mentorC.addSpecialty("Security");
+    mentorC.setEmail("julie@gmail.com");
+
+    User mentorD = new User("John Smith");
+    mentorD.addSpecialty("Artificial Intelligence");
+    mentorD.addSpecialty("DoS");
+    mentorD.addSpecialty("Database");
+    mentorD.setEmail("john@gmail.com");
+
+    User mentorE = new User("Bret Burton");
+    mentorD.addSpecialty("Machine Learning");
+    mentorD.addSpecialty("Network");
+    mentorD.addSpecialty("Graphics");
+    mentorD.setEmail("Bret@gmail.com");
+
+    addUser(mentorA);
+    addUser(mentorB);
+    addUser(mentorC);
+    addUser(mentorD);
+    addUser(mentorE);
   }
 
   //for Sam TODO
