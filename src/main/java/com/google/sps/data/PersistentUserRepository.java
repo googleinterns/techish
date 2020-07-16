@@ -180,9 +180,7 @@ public class PersistentUserRepository implements UserRepository {
     PreparedQuery results = getQueryFilterForId(userId);
     Collection<User> userProfiles = fetchUserEntities(results);
     if(userProfiles.size() == 1){
-        for (User userProfile : userProfiles) {
-            return userProfile;
-        }
+        return userProfiles.iterator().next();
     }
     User fake = new User(userId);
     return fake; 
