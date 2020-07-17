@@ -47,7 +47,6 @@ public class SessionContext {
   */
   public String getLoggedInUserId() {
     User loggedInUser = getLoggedInUser();
-
     return loggedInUser.getId();
   }
 
