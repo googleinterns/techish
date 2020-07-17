@@ -1,8 +1,8 @@
 package com.google.sps;
 
 import com.google.gson.Gson;
-import com.google.sps.data.User;
 import com.google.sps.data.User.ProfileType;
+import com.google.sps.data.User;
 import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,6 +15,7 @@ public final class UserTest {
   @Test
   public void userConstructorAndToString() {
     User myUser = new User("user name");
+    myUser.setId("12");
     String expected = new Gson().toJson(myUser);
     
     Assert.assertEquals(expected, myUser.toString());
@@ -23,6 +24,7 @@ public final class UserTest {
   @Test
   public void addSpecialty() {
       User userA = new User("John");
+      userA.setId("22");
       userA.addSpecialty("ML");
       Collection<String> specialties = userA.getSpecialties();
 
@@ -32,7 +34,9 @@ public final class UserTest {
   @Test
   public void userEquals() {
     User userA = new User("John");
+    userA.setId("1");
     User userB = new User("John");
+    userB.setId("1");
     String userA_Name = userA.toString();
     String userB_Name = userB.toString();
 
@@ -42,7 +46,9 @@ public final class UserTest {
   @Test
   public void userNotEquals() {
     User userA = new User("John");
+    userA.setId("1");
     User userB = new User("Not John");
+    userB.setId("2");
 
     Assert.assertNotEquals(userA, userB);
   }
