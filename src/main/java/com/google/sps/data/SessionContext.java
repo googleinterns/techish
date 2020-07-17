@@ -44,7 +44,7 @@ public class SessionContext {
   * method that returns the current logged in User or null if
   * no user is logged in
   */
-  public User getLoggedInUser() throws Exception {
+  public User getLoggedInUser() {
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
 
     if(currentGoogleUser == null) {
@@ -58,7 +58,7 @@ public class SessionContext {
   /**
   * returns user ID.
   */
-  public String getLoggedInUserId() throws Exception {
+  public String getLoggedInUserId() {
     User loggedInUser = getLoggedInUser();
     if(loggedInUser == null) {
         return null;
