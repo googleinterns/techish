@@ -18,7 +18,7 @@ public final class MatchQuery {
   */
   public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches) {
     //Access User Repository
-    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
 
     return query(request, userSavedMatches, userRepository);
   }

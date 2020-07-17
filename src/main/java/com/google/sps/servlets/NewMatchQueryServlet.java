@@ -32,8 +32,8 @@ public class NewMatchQueryServlet extends HttpServlet {
     // Convert the JSON to an instance of MatchRequest.
     MatchRequest matchRequest = getMatchRequest(request, gson);
 
-    PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
-    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    PersistentMatchRepository matchRepository = PersistentMatchRepository.getInstance();
+    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
     SessionContext sessionContext = new SessionContext(userRepository);
     User currentUser = sessionContext.getLoggedInUser();
 

@@ -37,7 +37,7 @@ public class MatchServlet extends HttpServlet {
     Gson gson = new Gson();
     response.setContentType("application/json;");
 
-    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
     SessionContext sessionContext = new SessionContext(userRepository);
 
     //is user logged in?
@@ -45,7 +45,7 @@ public class MatchServlet extends HttpServlet {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
+        PersistentMatchRepository matchRepository = PersistentMatchRepository.getInstance();
         Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
         response.getWriter().println(gson.toJson(matches));
     }
@@ -54,8 +54,8 @@ public class MatchServlet extends HttpServlet {
   @Override
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
-    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    PersistentMatchRepository matchRepository = PersistentMatchRepository.getInstance();
+    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
     SessionContext sessionContext = new SessionContext(userRepository);
 
     if (!sessionContext.isUserLoggedIn()) {
