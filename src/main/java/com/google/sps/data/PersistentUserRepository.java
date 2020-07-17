@@ -41,7 +41,7 @@ public class PersistentUserRepository implements UserRepository {
 
   public PersistentUserRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
-    // addFakeMentors();
+    addFakeMentors();
   }
 
   public void addFakeMentors() {
@@ -49,28 +49,34 @@ public class PersistentUserRepository implements UserRepository {
     mentorA.addSpecialty("Machine Learning");
     mentorA.addSpecialty("Systems");
     mentorA.setEmail("kevin@gmail.com");
+    mentorA.setId("12");
 
     User mentorB = new User("Mabel Mccabe");
     mentorB.addSpecialty("Electrical Engineering");
     mentorB.addSpecialty("Graphics");
     mentorB.setEmail("mabel@gmail.com");
+    mentorB.setId("23");
 
     User mentorC = new User("Julie Johnson");
     mentorC.addSpecialty("Machine Learning");
     mentorC.addSpecialty("Security");
     mentorC.setEmail("julie@gmail.com");
+    mentorC.setId("34");
 
     User mentorD = new User("John Smith");
     mentorD.addSpecialty("Artificial Intelligence");
     mentorD.addSpecialty("DoS");
     mentorD.addSpecialty("Database");
     mentorD.setEmail("john@gmail.com");
+    mentorD.setId("56");
 
     User mentorE = new User("Bret Burton");
-    mentorD.addSpecialty("Machine Learning");
-    mentorD.addSpecialty("Network");
-    mentorD.addSpecialty("Graphics");
-    mentorD.setEmail("Bret@gmail.com");
+    mentorE.addSpecialty("Machine Learning");
+    mentorE.addSpecialty("Network");
+    mentorE.addSpecialty("Graphics");
+    mentorE.setEmail("bret@gmail.com");
+    mentorE.setId("78");
+
 
     addUser(mentorA);
     addUser(mentorB);
@@ -105,7 +111,7 @@ public class PersistentUserRepository implements UserRepository {
     String id = user.getId();
     String email = user.getEmail();
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("User", id);
     userEntity.setProperty("name", name);
     userEntity.setProperty("id", id);  
     userEntity.setProperty("email", email); 
@@ -212,7 +218,7 @@ public class PersistentUserRepository implements UserRepository {
   }
   
   // function that fetches a single user, collection of users, filter on that user for id
-  public User fetchUserWithId(String userId) throws Exception{
+  public User fetchUserWithId(String userId) throws Exception {
     PreparedQuery results = getQueryFilterForId(userId);
     Collection<User> userProfiles = fetchUserEntities(results);
     if(userProfiles.size() == 1){
