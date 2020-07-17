@@ -46,12 +46,7 @@ public class SessionContext {
   */
   public User getLoggedInUser() {
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-
-    if(currentGoogleUser == null) {
-      return null;
-    } else {
-        return userRepository.getUser(currentGoogleUser);
-    }
+    return currentGoogleUser == null ? null : userRepository.getUser(currentGoogleUser);    
   }
 
   /**
@@ -72,13 +67,10 @@ public class SessionContext {
   public boolean userProfileExists() {
     String id = getLoggedInUserId();
     if(id != null) {
-        try {
             User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
-            return userExists.getId().equals(id);
-
-        } catch (Exception e){
-            System.err.println("Caught Exception" + e);
-        }
+            if(userExists != null){
+                return userExists.getId().equals(id);
+            }
     }
     return false;
   }
