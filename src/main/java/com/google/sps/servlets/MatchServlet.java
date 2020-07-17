@@ -26,26 +26,30 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matches")
 public class MatchServlet extends HttpServlet {
 
+  private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
+  private PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
+  private SessionContext sessionContext = new SessionContext(userRepository);
+
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
   }
 
+  //method to override SessionContext with Mock FOR TESTING        
+  public void testOnlySetContext(SessionContext sessionContext) {
+    this.sessionContext = sessionContext;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     Gson gson = new Gson();
     response.setContentType("application/json;");
 
-    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-    SessionContext sessionContext = new SessionContext(userRepository);
-
     //is user logged in?
     if(!sessionContext.isUserLoggedIn()) {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        PersistentMatchRepository matchRepository = PersistentMatchRepository.getInstance();
         Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
         response.getWriter().println(gson.toJson(matches));
     }
@@ -54,25 +58,21 @@ public class MatchServlet extends HttpServlet {
   @Override
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    PersistentMatchRepository matchRepository = PersistentMatchRepository.getInstance();
-    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-    SessionContext sessionContext = new SessionContext(userRepository);
-
     if (!sessionContext.isUserLoggedIn()) {
-        throw new IOException("Logged out user cannot access POST request.");
-    }
-
-    if(request.getParameterValues("new-matches") != null) {
-      String[] matchesToSave = request.getParameterValues("new-matches");
-
-      for (String matchName : matchesToSave) {
-        User newMatch = new Gson().fromJson(matchName, User.class);
-        matchRepository.addMatch(sessionContext.getLoggedInUser(), newMatch);
-      }
+        System.err.println("Logged out user cannot access POST request.");
     } else {
-      System.err.println("new-matches is null in MatchServlet doPost()");
+      if (request.getParameterValues("new-matches") != null) {
+        String[] matchesToSave = request.getParameterValues("new-matches");
+
+        for (String matchName : matchesToSave) {
+          User newMatch = new Gson().fromJson(matchName, User.class);
+          matchRepository.addMatch(sessionContext.getLoggedInUser(), newMatch);
+        }
+      } else {
+        System.err.println("new-matches is null in MatchServlet doPost()");
+      }
+      response.sendRedirect("/logged_in_homepage.html");
     }
-    response.sendRedirect("/logged_in_homepage.html");
   }
 
 }
