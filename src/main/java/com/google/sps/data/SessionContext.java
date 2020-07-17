@@ -79,9 +79,8 @@ public class SessionContext {
         try {
             User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
 
-            if(userExists.getId().equals(id)){
-                return true;
-            }
+            return userExists.getId().equals(id);
+
         } catch (Exception e){
             System.err.println("Caught Exception" + e);
         }
