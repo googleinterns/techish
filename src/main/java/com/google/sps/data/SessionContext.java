@@ -26,7 +26,7 @@ public class SessionContext {
 
   public static SessionContext getInstance() {
       if(instance == null){
-           UserRepository userRepo = new PersistentUserRepository();
+           UserRepository userRepo = PersistentUserRepository.getInstance();
            instance = new SessionContext(userRepo);
       }
       return instance;
