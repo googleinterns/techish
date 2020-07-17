@@ -54,11 +54,8 @@ public class SessionContextTest {
        when(userService.getCurrentUser()).thenReturn(googleUser);
        
        String resultUserName = "";
-        try {
-            User resultUser = sessionContext.getLoggedInUser();
-            if(resultUser == null) {
-                Assert.assertEquals(testUser, resultUser);
-            }
+        try {            
+            Assert.assertEquals(null, sessionContext.getLoggedInUser());
         } catch(Exception e) {
             System.err.println("Exception caught " + e);
         }
