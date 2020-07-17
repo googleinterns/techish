@@ -87,8 +87,13 @@ public class PersistentMatchRepository implements MatchRepository {
     }
 
     for(String userId : matches) {
-      User newMatch = userRepository.fetchUserWithId(userId);
-      toReturn.add(newMatch);
+      try {
+        User newMatch = userRepository.fetchUserWithId(userId);
+        toReturn.add(newMatch);
+      //catch exception if user is not in persistent repository
+      } catch (Exception e) {
+          System.err.println("UserID was not found in Persistent Repository: " + userId);
+       }
     }
     return toReturn;
   }

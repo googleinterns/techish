@@ -175,7 +175,7 @@ public class PersistentUserRepository implements UserRepository {
   }
   
   // function that fetches a single user, collection of users, filter on that user for id
-  public User fetchUserWithId(String userId) throws Exception{
+  public User fetchUserWithId(String userId) throws Exception {
     PreparedQuery results = getQueryFilterForId(userId);
     Collection<User> userProfiles = fetchUserEntities(results);
     if(userProfiles.size() == 1){
@@ -187,12 +187,6 @@ public class PersistentUserRepository implements UserRepository {
     return userProfiles.iterator().next();
   }
 
-  public User fetchUserWithId(String userId) {
-      //TODO by sam
-      User fake = new User(userId);
-      return fake;
-
-  }
 
   // function that adds user to the database if it does not exist already
   public void addUser(User user) {
