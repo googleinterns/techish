@@ -5,9 +5,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
-import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.MatchRequest;
 import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
@@ -25,6 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/new-matches-query")
 public class NewMatchQueryServlet extends HttpServlet {
 
+  private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
+  private PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
+  private SessionContext sessionContext = new SessionContext(userRepository);
+
+  public void testOnlySetContext(SessionContext sessionContext) {
+      this.sessionContext = sessionContext;
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -32,9 +40,6 @@ public class NewMatchQueryServlet extends HttpServlet {
     // Convert the JSON to an instance of MatchRequest.
     MatchRequest matchRequest = getMatchRequest(request, gson);
 
-    PersistentMatchRepository matchRepository = PersistentMatchRepository.getInstance();
-    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-    SessionContext sessionContext = new SessionContext(userRepository);
     User currentUser = sessionContext.getLoggedInUser();
 
     Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
