@@ -2,7 +2,6 @@ package com.google.sps.data;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.sps.data.NonPersistentUserRepository;
 import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
