@@ -39,7 +39,7 @@ public class UserLoginServlet extends HttpServlet {
       loginInfo.addProperty("LogInUrl", "");
       try {
         if(SessionContext.getInstance() != null){
-            boolean value = SessionContext.getInstance().isUserExistingInDatastore();
+            boolean value = SessionContext.getInstance().userProfileExists();
             loginInfo.addProperty("HasProfile", value);
         }
         else {

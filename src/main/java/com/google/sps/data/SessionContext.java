@@ -73,7 +73,7 @@ public class SessionContext {
     return userService.isUserLoggedIn();
   }
 
-  public boolean isUserExistingInDatastore() throws Exception {
+  public boolean userProfileExists() {
     String id = getLoggedInUserId();
     if(id != null) {
         try {
