@@ -6,6 +6,8 @@ type authInfo = {
 async function loadMatches() {
     const logStatus = await getLogStatus();
 
+    console.log("loadMatches IS BEING CALLED");
+
     fetch('/matches')
         .then(response => response.json())
         .then((matches) => {

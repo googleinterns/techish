@@ -42,6 +42,7 @@ function loadMatches() {
                 case 0: return [4 /*yield*/, getLogStatus()];
                 case 1:
                     logStatus = _a.sent();
+                    console.log("loadMatches IS BEING CALLED");
                     fetch('/matches')
                         .then(function (response) { return response.json(); })
                         .then(function (matches) {
