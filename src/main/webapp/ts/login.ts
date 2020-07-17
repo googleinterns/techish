@@ -1,5 +1,5 @@
 
-type authInfo = {
+type authInfoFromServlet = {
     loginUrl: string;
     logoutUrl: string;
     hasProfile: boolean;
@@ -11,7 +11,6 @@ async function loadHome() {
    
     const logStatus = await logStatusMethod();
     if(logStatus.hasProfile == false && logStatus.loginUrl == ""){
-        console.log(1);
         document.location.href = "/profileBuilder.html";
     }
     //set up function to set login/logout link based on which string is non empty
@@ -27,10 +26,10 @@ async function loadHome() {
     }
 }
 
-async function logStatusMethod(): Promise<authInfo> {
+async function logStatusMethod(): Promise<authInfoFromServlet> {
     const response = await fetch('/userapi');
     const currentStatus = await response.json();
-    let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl, hasProfile: currentStatus.HasProfile };
+    let authStatus: authInfoFromServlet = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl, hasProfile: currentStatus.HasProfile };
     return authStatus;
 }
 

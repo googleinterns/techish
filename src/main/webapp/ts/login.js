@@ -47,7 +47,6 @@ function loadHome() {
                 case 1:
                     logStatus = _a.sent();
                     if (logStatus.hasProfile == false && logStatus.loginUrl == "") {
-                        console.log(1);
                         document.location.href = "/profileBuilder.html";
                     }
                     //set up function to set login/logout link based on which string is non empty
