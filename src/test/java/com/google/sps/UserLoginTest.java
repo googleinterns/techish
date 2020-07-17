@@ -2,11 +2,15 @@ package com.google.sps;
 
 import static org.mockito.Mockito.when;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.sps.data.User;
+import com.google.sps.data.UserRepository;
 import com.google.sps.servlets.UserLoginServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,6 +33,9 @@ public class UserLoginTest {
   @Mock private HttpServletRequest request;
 
   @Mock private HttpServletResponse response;
+
+  private UserService userService;
+
 
   private UserLoginServlet userServlet =
     new UserLoginServlet();  
@@ -91,4 +98,6 @@ public class UserLoginTest {
     Assert.assertTrue(logInUrl.contains("login"));
     Assert.assertTrue(logOutUrl.isEmpty());
   }
+
+
 }

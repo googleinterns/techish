@@ -37,27 +37,25 @@ public class UserLoginServlet extends HttpServlet {
       String loggedOutUrl = userService.createLogoutURL("/index.html");
       loginInfo.addProperty("LogOutUrl", loggedOutUrl);
       loginInfo.addProperty("LogInUrl", "");
-
-    } else {
-      String loggedInUrl = "";
-      com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    
       try {
-        boolean isUserInDatabase = SessionContext.getInstance().isUserExistingInDatastore(currentGoogleUser);
-        if(isUserInDatabase) {
-            loggedInUrl = userService.createLoginURL("/logged_in_homepage.html");
+        if(SessionContext.getInstance() != null){
+            boolean value = SessionContext.getInstance().isUserExistingInDatastore();
+            loginInfo.addProperty("HasProfile", value);
         }
-      } catch(Exception e) {
-        System.err.println(e);
-        loggedInUrl = userService.createLoginURL("/profileBuilder.html");
-      }
+        else {
+            loginInfo.addProperty("HasProfile", false);
+        }
       
-   
-        // loggedInUrl = userService.createLoginURL("/index.html");
+      } catch(Exception e) {
+        System.err.println("Exception has been caught " + e);
+      }
+    } else {
+      String loggedInUrl = userService.createLoginURL("/logged_in_homepage.html");
    
     
       loginInfo.addProperty("LogInUrl", loggedInUrl);
       loginInfo.addProperty("LogOutUrl", "");
+      loginInfo.addProperty("HasProfile", false);
     }
 
     response.setContentType("application/json");

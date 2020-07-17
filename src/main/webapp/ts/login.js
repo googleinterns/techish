@@ -43,14 +43,17 @@ function loadHome() {
                 case 0:
                     logging = document.getElementById('navbarResponsive');
                     link = document.getElementById('login-link');
-                    return [4 /*yield*/, getLogStatus()];
+                    return [4 /*yield*/, logStatusMethod()];
                 case 1:
                     logStatus = _a.sent();
+                    if (logStatus.hasProfile == false && logStatus.loginUrl == "") {
+                        console.log(1);
+                        document.location.href = "/profileBuilder.html";
+                    }
                     //set up function to set login/logout link based on which string is non empty
                     if (link && logging) {
                         if (logStatus.loginUrl === "") {
                             link.setAttribute('href', logStatus.logoutUrl);
-                            console.log(logStatus.logoutUrl);
                             link.innerHTML = 'Logout';
                         }
                         else {
@@ -63,7 +66,7 @@ function loadHome() {
         });
     });
 }
-function getLogStatus() {
+function logStatusMethod() {
     return __awaiter(this, void 0, void 0, function () {
         var response, currentStatus, authStatus;
         return __generator(this, function (_a) {
@@ -74,7 +77,7 @@ function getLogStatus() {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     currentStatus = _a.sent();
-                    authStatus = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+                    authStatus = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl, hasProfile: currentStatus.HasProfile };
                     return [2 /*return*/, authStatus];
             }
         });

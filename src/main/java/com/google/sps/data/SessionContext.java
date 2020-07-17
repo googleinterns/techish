@@ -12,8 +12,7 @@ public class SessionContext {
 
   private final UserService userService;
   private static UserRepository userRepository;
-  private static SessionContext instance =
-     new SessionContext(userRepository);
+  private static SessionContext instance;
 
   /**
   * Constructor that initializes the user repository.
@@ -23,10 +22,14 @@ public class SessionContext {
     this.userRepository = userRepository;
   }
   /**
-  * Getter method for getting the instanfce
+  * Getter method for getting the instance
   */
 
   public static SessionContext getInstance() {
+      if(instance == null){
+           UserRepository userRepo = new PersistentUserRepository();
+           instance = new SessionContext(userRepo);
+      }
       return instance;
   }
   
@@ -42,21 +45,25 @@ public class SessionContext {
   * method that returns the current logged in User or null if
   * no user is logged in
   */
-  public User getLoggedInUser() {
+  public User getLoggedInUser() throws Exception {
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    
+
     if(currentGoogleUser == null) {
       return null;
     } else {
-      return userRepository.getUser(currentGoogleUser);
+        return userRepository.getUser(currentGoogleUser);
+    
     }
   }
 
   /**
   * returns user ID.
   */
-  public String getLoggedInUserId() {
+  public String getLoggedInUserId() throws Exception {
     User loggedInUser = getLoggedInUser();
+    if(loggedInUser == null) {
+        return null;
+    }
     return loggedInUser.getId();
   }
 
@@ -67,17 +74,18 @@ public class SessionContext {
     return userService.isUserLoggedIn();
   }
 
-  public boolean isUserExistingInDatastore(com.google.appengine.api.users.User currentGoogleUser) throws Exception {
-    String id = currentGoogleUser.getUserId();
-    System.out.println(id);
-    try {
-        User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
-        if(userExists.getId().equals(id)){
-            return true;
+  public boolean isUserExistingInDatastore() throws Exception {
+    String id = getLoggedInUserId();
+    if(id != null) {
+        try {
+            User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
+
+            if(userExists.getId().equals(id)){
+                return true;
+            }
+        } catch (Exception e){
+            System.err.println("Caught Exception" + e);
         }
-    } catch (Exception e){
-        System.err.println(e);
-        return false;
     }
     return false;
   }

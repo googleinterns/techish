@@ -59,7 +59,7 @@ public class PersistentUserRepository implements UserRepository {
     User newUser = new User(googleUser.getNickname());
     newUser.setEmail(userEmail);
     newUser.setId(googleUser.getUserId());
-    addUser(newUser);
+    // addUser(newUser);
     
     return newUser;
   }
