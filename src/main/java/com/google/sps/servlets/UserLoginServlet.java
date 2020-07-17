@@ -38,8 +38,8 @@ public class UserLoginServlet extends HttpServlet {
       loginInfo.addProperty("LogOutUrl", loggedOutUrl);
       loginInfo.addProperty("LogInUrl", "");
       try {
-        boolean value = SessionContext.getInstance().userProfileExists();
-        loginInfo.addProperty("HasProfile", value);
+        boolean hasProfileInDatastore = SessionContext.getInstance().userProfileExists();
+        loginInfo.addProperty("HasProfile", hasProfileInDatastore);
     
       } catch(Exception e) {
         System.err.println("Exception has been caught " + e);
