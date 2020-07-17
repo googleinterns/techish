@@ -5,8 +5,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.sps.data.MatchRepository;
-import com.google.sps.data.NonPersistentMatchRepository;
-import com.google.sps.data.NonPersistentUserRepository;
+import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
+import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import java.io.IOException;
@@ -28,42 +29,24 @@ public class MatchServlet extends HttpServlet {
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
-
-    //won't need ServletContext once we switch to PersistentMatchRepository
-    MatchRepository matchRepository = new NonPersistentMatchRepository();
-    getServletContext().setAttribute("matchRepository", matchRepository);
   }
 
-  public User getLoggedInUser() {
-    User currentUser;
-    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
-    
-    UserService userService = UserServiceFactory.getUserService();
-    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    if(currentGoogleUser == null) {
-      currentUser = null;
-    } else {
-      currentUser = userRepository.getUser(currentGoogleUser);
-    }
-
-    return currentUser;
-  }
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     Gson gson = new Gson();
     response.setContentType("application/json;");
-    ServletContext servletContext = getServletContext();
-    User currentUser = getLoggedInUser();
+
+    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    SessionContext sessionContext = new SessionContext(userRepository);
 
     //is user logged in?
-    if(currentUser == null) {
+    if(!sessionContext.isUserLoggedIn()) {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-        Collection<User> matches = matchRepository.getMatchesForUser(currentUser);
-
+        PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
+        Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
         response.getWriter().println(gson.toJson(matches));
     }
   }
@@ -71,11 +54,11 @@ public class MatchServlet extends HttpServlet {
   @Override
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    ServletContext servletContext = getServletContext();
-    MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    User currentUser = getLoggedInUser();
+    PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
+    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    SessionContext sessionContext = new SessionContext(userRepository);
 
-    if (currentUser == null) {
+    if (!sessionContext.isUserLoggedIn()) {
         throw new IOException("Logged out user cannot access POST request.");
     }
 
@@ -84,7 +67,7 @@ public class MatchServlet extends HttpServlet {
 
       for (String matchName : matchesToSave) {
         User newMatch = new Gson().fromJson(matchName, User.class);
-        matchRepository.addMatch(currentUser, newMatch);
+        matchRepository.addMatch(sessionContext.getLoggedInUser(), newMatch);
       }
     } else {
       System.err.println("new-matches is null in MatchServlet doPost()");

@@ -5,8 +5,10 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
+import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.MatchRequest;
-import com.google.sps.data.NonPersistentUserRepository;
+import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import com.google.sps.servlets.MatchServlet;
@@ -23,6 +25,20 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/new-matches-query")
 public class NewMatchQueryServlet extends HttpServlet {
 
+//   @Override
+//   public void init(ServletConfig config) throws ServletException {
+//     super.init(config);
+
+//     // MatchRepository matchRepository = new PersistentMatchRepository();
+//     // UserRepository userRepository = new PersistentUserRepository().getInstance();
+//     // SessionContext sessionContext = new SessionContext(userRepository);
+    
+//     // //set servlet context
+//     // getServletContext().setAttribute("matchRepository", matchRepository);
+//     // // getServletContext().setAttribute("userRepository", userRepository);
+//     // getServletContext().setAttribute("sessionContext", sessionContext);
+//   }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -30,11 +46,19 @@ public class NewMatchQueryServlet extends HttpServlet {
     // Convert the JSON to an instance of MatchRequest.
     MatchRequest matchRequest = getMatchRequest(request, gson);
 
-    //get MatchServlet and current user to pass into MatchQuery
-    ServletContext servletContext = getServletContext();
-    MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    User currentUser = getLoggedInUser();
+    // ServletContext servletContext = getServletContext();
+    // MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
+    // UserRepository userRepository = new PersistentUserRepository().getInstance();
+    // SessionContext sessionContext = (SessionContext) servletContext.getAttribute("sessionContext");
+    // SessionContext sessionContext = new SessionContext(userRepository);
+
+    PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
+    PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
+    SessionContext sessionContext = new SessionContext(userRepository);
+    User currentUser = sessionContext.getLoggedInUser();
+
     Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
+    // System.out.println("USER SAVED MATCHES: " + userSavedMatches);
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();
@@ -58,21 +82,6 @@ public class NewMatchQueryServlet extends HttpServlet {
       }
 
       return toReturn;
-  }
-
-  public User getLoggedInUser() {
-    User currentUser;
-    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
-    
-    UserService userService = UserServiceFactory.getUserService();
-    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    if(currentGoogleUser == null) {
-      currentUser = null;
-    } else {
-      currentUser = userRepository.getUser(currentGoogleUser);
-    }
-
-    return currentUser;
   }
 
 }
