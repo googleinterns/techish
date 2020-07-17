@@ -57,7 +57,7 @@ public class SessionContextTest {
         try {            
             Assert.assertEquals(null, sessionContext.getLoggedInUser());
         } catch(Exception e) {
-            System.err.println("Exception caught " + e);
+            Assert.fail("Exception caught " + e);
         }
    }
     @Test
