@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 @RunWith(JUnit4.class)
@@ -33,9 +34,6 @@ public class UserLoginTest {
   @Mock private HttpServletRequest request;
 
   @Mock private HttpServletResponse response;
-
-  private UserService userService;
-
 
   private UserLoginServlet userServlet =
     new UserLoginServlet();  
@@ -67,6 +65,7 @@ public class UserLoginTest {
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     localHelper.setUp();
+
   }
   
   @After
@@ -98,6 +97,5 @@ public class UserLoginTest {
     Assert.assertTrue(logInUrl.contains("login"));
     Assert.assertTrue(logOutUrl.isEmpty());
   }
-
 
 }
