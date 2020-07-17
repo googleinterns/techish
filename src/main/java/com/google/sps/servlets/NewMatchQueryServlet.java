@@ -25,20 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/new-matches-query")
 public class NewMatchQueryServlet extends HttpServlet {
 
-//   @Override
-//   public void init(ServletConfig config) throws ServletException {
-//     super.init(config);
-
-//     // MatchRepository matchRepository = new PersistentMatchRepository();
-//     // UserRepository userRepository = new PersistentUserRepository().getInstance();
-//     // SessionContext sessionContext = new SessionContext(userRepository);
-    
-//     // //set servlet context
-//     // getServletContext().setAttribute("matchRepository", matchRepository);
-//     // // getServletContext().setAttribute("userRepository", userRepository);
-//     // getServletContext().setAttribute("sessionContext", sessionContext);
-//   }
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -46,19 +32,12 @@ public class NewMatchQueryServlet extends HttpServlet {
     // Convert the JSON to an instance of MatchRequest.
     MatchRequest matchRequest = getMatchRequest(request, gson);
 
-    // ServletContext servletContext = getServletContext();
-    // MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    // UserRepository userRepository = new PersistentUserRepository().getInstance();
-    // SessionContext sessionContext = (SessionContext) servletContext.getAttribute("sessionContext");
-    // SessionContext sessionContext = new SessionContext(userRepository);
-
     PersistentMatchRepository matchRepository = new PersistentMatchRepository().getInstance();
     PersistentUserRepository userRepository = new PersistentUserRepository().getInstance();
     SessionContext sessionContext = new SessionContext(userRepository);
     User currentUser = sessionContext.getLoggedInUser();
 
     Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
-    // System.out.println("USER SAVED MATCHES: " + userSavedMatches);
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();
