@@ -59,12 +59,7 @@ public class SessionContext {
   */
   public String getLoggedInUserId() {
     User loggedInUser = getLoggedInUser();
-    if(loggedInUser == null){
-        return null;
-    }
-    else {
-        return loggedInUser.getId();
-    }
+    return loggedInUser == null ? null : loggedInUser.getId();
   }
 
   /**
