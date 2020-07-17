@@ -50,7 +50,6 @@ public class UserLoginServlet extends HttpServlet {
     
       loginInfo.addProperty("LogInUrl", loggedInUrl);
       loginInfo.addProperty("LogOutUrl", "");
-      loginInfo.addProperty("HasProfile", false);
     }
 
     response.setContentType("application/json");

@@ -51,7 +51,6 @@ public class SessionContext {
       return null;
     } else {
         return userRepository.getUser(currentGoogleUser);
-    
     }
   }
 
@@ -78,7 +77,6 @@ public class SessionContext {
     if(id != null) {
         try {
             User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
-
             return userExists.getId().equals(id);
 
         } catch (Exception e){
