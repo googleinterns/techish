@@ -32,6 +32,7 @@ public class SessionContextTest {
     @Test
     public void getLoggedInUser_ReturnUser() {
         User testUser = new User("Bob");
+        testUser.setId("444");
         com.google.appengine.api.users.User googleUser = new com.google.appengine.api.users.User("email", "domain");
         when(userService.getCurrentUser()).thenReturn(googleUser);
         when(userRepository.getUser(googleUser)).thenReturn(testUser);
@@ -95,4 +96,18 @@ public class SessionContextTest {
         Assert.assertEquals(expected, result);
     }
 
+   @Test
+    public void userProfileExistsFalse() throws Exception {
+        User testUser = new User("Bob");
+        String id = "1234";
+        testUser.setId(id);
+        String email = "test@example.com";
+        testUser.setEmail(email);
+        com.google.appengine.api.users.User googleUser = new com.google.appengine.api.users.User(email, "domain");
+        when(userService.getCurrentUser()).thenReturn(googleUser);
+        
+        boolean result = sessionContext.userProfileExists();
+        boolean expected = false;
+        Assert.assertEquals(expected, result);
+    }
 }

@@ -20,10 +20,10 @@ public class SessionContext {
     userService = UserServiceFactory.getUserService();
     this.userRepository = userRepository;
   }
+
   /**
   * Getter method for getting the instance
   */
-
   public static SessionContext getInstance() {
       if(instance == null){
            UserRepository userRepo = PersistentUserRepository.getInstance();
@@ -53,6 +53,7 @@ public class SessionContext {
   * returns user ID.
   */
   public String getLoggedInUserId() {
+
     User loggedInUser = getLoggedInUser();
     return loggedInUser == null ? null : loggedInUser.getId();
   }
@@ -66,6 +67,7 @@ public class SessionContext {
 
   public boolean userProfileExists() {
     String id = getLoggedInUserId();
+    System.out.println("User ID " + id);
     if(id != null) {
             User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
             if(userExists != null){
@@ -74,5 +76,4 @@ public class SessionContext {
     }
     return false;
   }
-
 }

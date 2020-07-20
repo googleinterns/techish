@@ -17,6 +17,15 @@ import javax.servlet.http.HttpServletResponse;
     urlPatterns = "/userapi")
 public class UserLoginServlet extends HttpServlet {
 
+  private SessionContext sessionContext;
+
+  public UserLoginServlet() {
+    this(SessionContext.getInstance());
+  }
+   // test only call the second one
+  public UserLoginServlet(SessionContext var){
+    sessionContext = var;
+  }
 
   /*This method uses the UsersAPI to send a Get Request and see if the user is logged in,
   and is expected to return a string with the url and boolean value all in a Json string */
@@ -38,7 +47,7 @@ public class UserLoginServlet extends HttpServlet {
       loginInfo.addProperty("LogOutUrl", loggedOutUrl);
       loginInfo.addProperty("LogInUrl", "");
       try {
-        boolean hasProfileInDatastore = SessionContext.getInstance().userProfileExists();
+        boolean hasProfileInDatastore = sessionContext.userProfileExists();
         loginInfo.addProperty("HasProfile", hasProfileInDatastore);
     
       } catch(Exception e) {
