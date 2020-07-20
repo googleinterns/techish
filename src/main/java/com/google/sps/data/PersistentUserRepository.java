@@ -36,8 +36,7 @@ public class PersistentUserRepository implements UserRepository {
   
   private final DatastoreService datastore;
 
-  private static PersistentUserRepository instance =
-     new PersistentUserRepository();
+  private static PersistentUserRepository instance = null;
 
   public PersistentUserRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -86,6 +85,11 @@ public class PersistentUserRepository implements UserRepository {
   }
 
   public static PersistentUserRepository getInstance() {
+
+      if(instance == null) {
+          instance = new PersistentUserRepository();
+      }
+
       return instance;
   }
    

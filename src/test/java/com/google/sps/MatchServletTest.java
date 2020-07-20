@@ -34,7 +34,8 @@ public class MatchServletTest {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private UserRepository userRepository = PersistentUserRepository.getInstance();
+    private UserRepository userRepository;
+    //  = PersistentUserRepository.getInstance();
     private User testUser;
     private Gson gson;
     private MatchServlet matchServlet;
@@ -51,6 +52,7 @@ public class MatchServletTest {
         response = Mockito.mock(HttpServletResponse.class);
         sessionContext = Mockito.mock(SessionContext.class);
 
+        userRepository = new PersistentUserRepository();
         matchRepository = new PersistentMatchRepository();
         testUser = matchRepository.addTestData();
 
