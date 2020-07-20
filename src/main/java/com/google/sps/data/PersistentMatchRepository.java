@@ -48,16 +48,14 @@ public class PersistentMatchRepository implements MatchRepository {
     datastore = DatastoreServiceFactory.getDatastoreService();
     gson = new Gson();
     userRepository = PersistentUserRepository.getInstance();
-    // userRepository = new PersistentUserRepository();
     addTestData();
   }
 
   public static PersistentMatchRepository getInstance() {
-        if(instance == null) {
-          instance = new PersistentMatchRepository();
-      }
-
-      return instance;
+    if(instance == null) {
+      instance = new PersistentMatchRepository();
+    }
+    return instance;
   }
 
   public User addTestData() {
@@ -80,11 +78,11 @@ public class PersistentMatchRepository implements MatchRepository {
     List<User> allMatches = new ArrayList<User>(Arrays.asList(matchA, matchB, matchC, matchD));
 
     userRepository.addUser(testUser);
+    
     for(User match : allMatches) {
         addMatch(testUser, match);
         userRepository.addUser(match);
     }
-
     return testUser;
   }
 

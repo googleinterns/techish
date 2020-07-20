@@ -57,7 +57,7 @@ public class NewMatchQueryServletTest {
         testUser.setId("000");
         testUser.setEmail("test@example.com");
 
-        userRepository = new PersistentUserRepository();
+        userRepository = PersistentUserRepository.getInstance();
 
         gson = new Gson();
         newMatchQueryServlet = new NewMatchQueryServlet();

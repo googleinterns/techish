@@ -51,8 +51,10 @@ public class MatchServletTest {
         response = Mockito.mock(HttpServletResponse.class);
         sessionContext = Mockito.mock(SessionContext.class);
 
-        userRepository = new PersistentUserRepository();
-        matchRepository = new PersistentMatchRepository();
+        // userRepository = new PersistentUserRepository();
+        // matchRepository = new PersistentMatchRepository();
+        userRepository = PersistentUserRepository.getInstance();
+        matchRepository = PersistentMatchRepository.getInstance();
         testUser = matchRepository.addTestData();
 
         gson = new Gson();

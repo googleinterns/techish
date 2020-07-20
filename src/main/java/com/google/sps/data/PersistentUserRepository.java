@@ -85,12 +85,10 @@ public class PersistentUserRepository implements UserRepository {
   }
 
   public static PersistentUserRepository getInstance() {
-
-      if(instance == null) {
-          instance = new PersistentUserRepository();
-      }
-
-      return instance;
+    if(instance == null) {
+      instance = new PersistentUserRepository();
+    }
+    return instance;
   }
    
   public User getUser(com.google.appengine.api.users.User googleUser) {
