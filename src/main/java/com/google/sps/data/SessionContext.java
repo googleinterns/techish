@@ -11,7 +11,7 @@ public class SessionContext {
 
   private final UserService userService;
   private final UserRepository userRepository;
-  private static SessionContext instance;
+  private static SessionContext instance = null;
 
   /**
   * Constructor that initializes the user repository.
