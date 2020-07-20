@@ -35,7 +35,6 @@ public class MatchServletTest {
     private HttpServletRequest request;
     private HttpServletResponse response;
     private UserRepository userRepository;
-    //  = PersistentUserRepository.getInstance();
     private User testUser;
     private Gson gson;
     private MatchServlet matchServlet;
@@ -68,71 +67,71 @@ public class MatchServletTest {
 
     @Test
     public void doGet_returnMatches() throws IOException, ServletException {
-        // when(sessionContext.isUserLoggedIn()).thenReturn(true);
-        // when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
 
-        // Collection<User> matches = matchRepository.getMatchesForUser(testUser);
-        // String expected = gson.toJson(matches);
+        Collection<User> matches = matchRepository.getMatchesForUser(testUser);
+        String expected = gson.toJson(matches);
     
-        // //call doGet
-        // String result = doGetHelper(request, response, matchServlet);
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
 
-        // Assert.assertEquals(expected, result);
+        Assert.assertEquals(expected, result);
     }
 
-    // @Test
-    // public void doGet_UserNotLoggedIn() throws IOException, ServletException {
-        // when(sessionContext.isUserLoggedIn()).thenReturn(false);
-        // String expected = gson.toJson(null);
-        // String result = doGetHelper(request, response, matchServlet);
-        // Assert.assertEquals(expected, result);
-    // }
+    @Test
+    public void doGet_UserNotLoggedIn() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(false);
+        String expected = gson.toJson(null);
+        String result = doGetHelper(request, response, matchServlet);
+        Assert.assertEquals(expected, result);
+    }
 
-    // @Test
-    // public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
-    //     when(sessionContext.isUserLoggedIn()).thenReturn(true);
-    //     when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+    @Test
+    public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
 
-    //     //First doGet Call
-    //     String result = doGetHelper(request, response, matchServlet);
-    //     int numMatches = matchesInString(result);
-    //     Assert.assertEquals(4, numMatches);
+        //First doGet Call
+        String result = doGetHelper(request, response, matchServlet);
+        int numMatches = matchesInString(result);
+        Assert.assertEquals(4, numMatches);
 
-    //     //DoPost to add 3 more matches
-    //     User userA = new User("John");
-    //     userA.setId("433");
-    //     User userB = new User("Bob");
-    //     userB.setId("344");
-    //     User userC = new User("Cathy");
-    //     userC.setId("777");
-    //     userB.addSpecialty("Security");
-    //     userB.addSpecialty("DoS");
-    //     userC.addSpecialty("Artificial Intelligence");
-    //     User[] newMatchesArray = {userA, userB, userC};
-    //     for(User user : newMatchesArray) {
-    //         userRepository.addUser(user);
-    //     }
-    //     String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
-    //     when(request.getParameterValues("new-matches")).thenReturn(newMatches);
-    //     matchServlet.doPost(request, response);
-    //     verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+        //DoPost to add 3 more matches
+        User userA = new User("John");
+        userA.setId("433");
+        User userB = new User("Bob");
+        userB.setId("344");
+        User userC = new User("Cathy");
+        userC.setId("777");
+        userB.addSpecialty("Security");
+        userB.addSpecialty("DoS");
+        userC.addSpecialty("Artificial Intelligence");
+        User[] newMatchesArray = {userA, userB, userC};
+        for(User user : newMatchesArray) {
+            userRepository.addUser(user);
+        }
+        String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
+        when(request.getParameterValues("new-matches")).thenReturn(newMatches);
+        matchServlet.doPost(request, response);
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
 
-    //     //doGet again to verify there are now 7 matches
-    //     result = doGetHelper(request, response, matchServlet);
-    //     numMatches = matchesInString(result);
-    //     Assert.assertEquals(7, numMatches);
-    // }
+        //doGet again to verify there are now 7 matches
+        result = doGetHelper(request, response, matchServlet);
+        numMatches = matchesInString(result);
+        Assert.assertEquals(7, numMatches);
+    }
 
-    // @Test
-    // public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
-        // when(sessionContext.isUserLoggedIn()).thenReturn(true);
-        // when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        // String[] nullMatches = null;
-        // when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
-        // matchServlet.doPost(request, response);
+    @Test
+    public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+        String[] nullMatches = null;
+        when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
+        matchServlet.doPost(request, response);
 
-        // verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
-    // }
+        verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+    }
 
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
