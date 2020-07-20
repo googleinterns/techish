@@ -41,7 +41,7 @@ public class PersistentUserRepository implements UserRepository {
 
   public PersistentUserRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
-    addFakeMentors();
+    this.addFakeMentors();
   }
 
   public void addFakeMentors() {
