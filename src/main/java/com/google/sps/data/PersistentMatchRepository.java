@@ -48,7 +48,7 @@ public class PersistentMatchRepository implements MatchRepository {
     datastore = DatastoreServiceFactory.getDatastoreService();
     gson = new Gson();
     userRepository = PersistentUserRepository.getInstance();
-    addTestData();
+    // addTestData();
   }
 
   public static PersistentMatchRepository getInstance() {
