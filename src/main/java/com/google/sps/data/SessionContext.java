@@ -71,7 +71,7 @@ public class SessionContext {
     if(id != null) {
             User user = PersistentUserRepository.getInstance().fetchUserWithId(id);
             if(user != null){
-                return user.getId().equals(id);
+                return true;
             }
     }
     return false;
