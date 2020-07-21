@@ -49,7 +49,7 @@ public final class PersistentMatchRepositoryTest {
     localHelper.setUp();
     MockitoAnnotations.initMocks(this);
 
-    userRepository = new PersistentUserRepository();
+    userRepository = PersistentUserRepository.getInstance();
 
     //add users to userRepository
     userRepository.addUser(USER_A);
@@ -65,7 +65,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void addMatchTest() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     int expected = 1;
 
@@ -74,7 +74,7 @@ public final class PersistentMatchRepositoryTest {
 
    @Test
   public void addMultipleMatches() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     emptyRepo.addMatch(USER_A, MATCH_B);
     emptyRepo.addMatch(USER_A, MATCH_C);
@@ -85,7 +85,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void removeMatchThatExists() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     try {
       emptyRepo.removeMatch(USER_A, MATCH_A);
@@ -99,7 +99,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void removeMatchThatDoesNotExist() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     try {
       emptyRepo.removeMatch(USER_A, MATCH_A);
       Assert.fail("Expected exception in removeMatchThatDoesNotExist()");
@@ -110,7 +110,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void addSameMatchMultipleTimes_ShouldNotRepeat() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     emptyRepo.addMatch(USER_A, MATCH_A);
     emptyRepo.addMatch(USER_A, MATCH_A);
@@ -121,7 +121,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void getMatchesForUserThatExists() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     Collection<User> expected = new HashSet<User>();
     expected.add(MATCH_A);
@@ -132,7 +132,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void getMatchesForUserThatDoesNotExist() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     Collection<User> expected = new HashSet<User>();
 
     Collection<User> actual = emptyRepo.getMatchesForUser(USER_A);

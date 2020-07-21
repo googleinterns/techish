@@ -22,6 +22,7 @@ import com.google.sps.data.User;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,11 +42,48 @@ public class PersistentMatchRepository implements MatchRepository {
   private final DatastoreService datastore;
   private final Gson gson;
   private final PersistentUserRepository userRepository;
+  private static PersistentMatchRepository instance = null;
   
   public PersistentMatchRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
     gson = new Gson();
-    userRepository = new PersistentUserRepository();
+    userRepository = PersistentUserRepository.getInstance();
+    addTestData();
+  }
+
+  public static PersistentMatchRepository getInstance() {
+    if(instance == null) {
+      instance = new PersistentMatchRepository();
+    }
+    return instance;
+  }
+
+  public User addTestData() {
+    User matchA = new User("Scott Miller");
+    matchA.addSpecialty("Database");
+    matchA.setId("11");
+    User matchB = new User("Trevor Morgan");
+    matchB.addSpecialty("Security");
+    matchB.setId("22");
+    User matchC = new User("Twila Singleton");
+    matchC.addSpecialty("Graphics");
+    matchC.setId("33");
+    User matchD = new User("Rhonda Garrett");
+    matchD.addSpecialty("DoS");
+    matchD.addSpecialty("Security");
+    matchD.setId("44");
+    User testUser = new User("Test User");
+    testUser.setId("000");
+    testUser.setEmail("test@example.com");
+    List<User> allMatches = new ArrayList<User>(Arrays.asList(matchA, matchB, matchC, matchD));
+
+    userRepository.addUser(testUser);
+    
+    for(User match : allMatches) {
+        addMatch(testUser, match);
+        userRepository.addUser(match);
+    }
+    return testUser;
   }
 
   public void addMatch(User user, User match) {
@@ -77,7 +115,7 @@ public class PersistentMatchRepository implements MatchRepository {
   /**
   * Gets User IDs of all matches & looks them up in the PersistentUserRepository. Returns Collection of Users.
   */
-  public Collection<User> getMatchesForUser(User user)  {
+  public Collection<User> getMatchesForUser(User user) {
     Collection<String> matches = getMatchIdsForUser(user.getId());
     Collection<User> toReturn = new HashSet<User>();
 
@@ -92,9 +130,9 @@ public class PersistentMatchRepository implements MatchRepository {
         toReturn.add(newMatch);
       //catch exception if user is not in persistent repository
       } catch (Exception e) {
-          System.err.println("UserID was not found in Persistent Repository: " + userId);
-       }
-    }
+
+          System.err.println("UserID was not found in Persistent Repository: " + userId + ". Error: " + e.toString());
+      }
     return toReturn;
   }
 
