@@ -1,11 +1,11 @@
 package com.google.sps.data;
 
 import com.google.gson.Gson;
-import java.util.Collection;
-import java.util.HashSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.Collection;
+import java.util.HashSet;
 
 
 public final class User {
@@ -52,9 +52,14 @@ public final class User {
   public boolean equals(Object user) {
     if (user instanceof User) { 
         User toCompare = (User) user;
-        return this.name.equals(toCompare.name);
+        return this.id.equals(toCompare.id);
     }
     return false;
+  }
+
+  //method to make .contains for HashSet work
+  public int hashCode() {
+      return id.hashCode();
   }
 
   public void addSpecialty(String toAdd) {

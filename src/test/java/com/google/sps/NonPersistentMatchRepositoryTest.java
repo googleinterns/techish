@@ -18,6 +18,7 @@ public final class NonPersistentMatchRepositoryTest {
   @Before
   public void init() {
     USER_A.setId("123");
+    MATCH_A.setId("345");
   }
 
   @Test

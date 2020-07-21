@@ -10,8 +10,9 @@ import java.lang.Exception;
 public class SessionContext {
 
   private final UserService userService;
-  private static UserRepository userRepository;
-  private static SessionContext instance;
+
+  private final UserRepository userRepository;
+  private static SessionContext instance = null;
 
   /**
   * Constructor that initializes the user repository.
@@ -38,6 +39,14 @@ public class SessionContext {
   public SessionContext(UserRepository userRepository, UserService userService) {
       this.userService = userService;
       this.userRepository = userRepository;
+  }
+
+  public static SessionContext getInstance() {
+      if (instance == null) {
+          UserRepository userRepo = PersistentUserRepository.getInstance();
+          instance = new SessionContext(userRepo);
+      }
+      return instance;
   }
 
   /**

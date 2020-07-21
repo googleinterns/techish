@@ -15,4 +15,7 @@ public interface UserRepository {
 
   // Uses 'googleUser' to return a User with same ID
   public User getUser(com.google.appengine.api.users.User googleUser);
+
+  //method to add fake users for testing and for MVP demo
+  public void addFakeMentors();
 }
