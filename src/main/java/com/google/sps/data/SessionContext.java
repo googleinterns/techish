@@ -41,14 +41,6 @@ public class SessionContext {
       this.userRepository = userRepository;
   }
 
-  public static SessionContext getInstance() {
-      if (instance == null) {
-          UserRepository userRepo = PersistentUserRepository.getInstance();
-          instance = new SessionContext(userRepo);
-      }
-      return instance;
-  }
-
   /**
   * method that returns the current logged in User or null if
   * no user is logged in

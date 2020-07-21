@@ -133,6 +133,7 @@ public class PersistentMatchRepository implements MatchRepository {
 
           System.err.println("UserID was not found in Persistent Repository: " + userId + ". Error: " + e.toString());
       }
+    }
     return toReturn;
   }
 
