@@ -50,7 +50,6 @@ public final class PersistentMatchRepositoryTest {
     MockitoAnnotations.initMocks(this);
 
     userRepository = PersistentUserRepository.getInstance();
-    // userRepository = new PersistentUserRepository();
 
     //add users to userRepository
     userRepository.addUser(USER_A);
