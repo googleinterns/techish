@@ -22,6 +22,17 @@ public class SessionContext {
   }
 
   /**
+  * Getter method for getting the instance
+  */
+  public static SessionContext getInstance() {
+    if(instance == null) {
+      UserRepository userRepo = PersistentUserRepository.getInstance();
+      instance = new SessionContext(userRepo);
+    }
+    return instance;
+  }
+  
+  /**
   * Overload constructor with UserService for testing.
   */
   public SessionContext(UserRepository userRepository, UserService userService) {
@@ -43,25 +54,25 @@ public class SessionContext {
   */
   public User getLoggedInUser() {
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    
-    if(currentGoogleUser == null) {
-      return null;
-    } else {
-      return userRepository.getUser(currentGoogleUser);
-    }
+    return currentGoogleUser == null ? null : userRepository.getUser(currentGoogleUser);    
   }
 
   /**
   * returns user ID.
   */
   public String getLoggedInUserId() {
+
     User loggedInUser = getLoggedInUser();
+<<<<<<< HEAD
 
     if(loggedInUser == null) {
         return null;
     }
 
     return loggedInUser.getId();
+=======
+    return loggedInUser == null ? null : loggedInUser.getId();
+>>>>>>> e01b421b9880056d036c3aa6dbcab060f3196d31
   }
 
   /**
@@ -69,5 +80,16 @@ public class SessionContext {
   */
   public boolean isUserLoggedIn() {
     return userService.isUserLoggedIn();
+  }
+
+  public boolean userProfileExists() {
+    String id = getLoggedInUserId();
+    if(id != null) {
+            User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
+            if(userExists != null){
+                return userExists.getId().equals(id);
+            }
+    }
+    return false;
   }
 }

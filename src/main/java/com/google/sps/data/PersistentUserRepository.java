@@ -103,7 +103,6 @@ public class PersistentUserRepository implements UserRepository {
     User newUser = new User(googleUser.getNickname());
     newUser.setEmail(userEmail);
     newUser.setId(googleUser.getUserId());
-    addUser(newUser);
     
     return newUser;
   }
@@ -220,14 +219,14 @@ public class PersistentUserRepository implements UserRepository {
   }
   
   // function that fetches a single user, collection of users, filter on that user for id
-  public User fetchUserWithId(String userId) throws Exception {
+  public User fetchUserWithId(String userId) {
     PreparedQuery results = getQueryFilterForId(userId);
     Collection<User> userProfiles = fetchUserEntities(results);
     if(userProfiles.size() == 1){
         return userProfiles.iterator().next();
     }
     if(userProfiles.size() != 1) {
-        throw new Exception("User with this ID#" + userId + " does not exist");  
+        return null;
     }
     return userProfiles.iterator().next();
   }
