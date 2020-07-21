@@ -120,12 +120,6 @@ public class UserLoginTest {
   public void hasProfileReturnsFalse() throws ServletException, IOException  {
     localHelper.setEnvIsLoggedIn(true);
 
-    User testUser = new User("Bob");
-    String expected = "1234";
-    testUser.setId(expected);
-    String email = "test@example.com";
-    testUser.setEmail(email);
-
     JsonObject responseJsonObject = getLoginServletResponse();
 
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
@@ -133,7 +127,7 @@ public class UserLoginTest {
     Boolean isUserInDatabase = responseJsonObject.get("HasProfile").getAsBoolean();
     
     Assert.assertTrue(logOutUrl.contains("logout"));
-    // Assert.assertEquals(isUserInDatabase, true);
+    Assert.assertEquals(isUserInDatabase, false);
   }
 
   @Test
