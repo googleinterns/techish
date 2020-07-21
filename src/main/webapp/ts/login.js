@@ -37,27 +37,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 //function that loads the home page for logging in and logging out
 function loadHome() {
     return __awaiter(this, void 0, void 0, function () {
-        var logging, link, logStatus;
+        var logging, link, signUpLink, logStatus;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     logging = document.getElementById('navbarResponsive');
                     link = document.getElementById('login-link');
+                    signUpLink = document.getElementById('signup-link');
                     return [4 /*yield*/, logStatusMethod()];
                 case 1:
                     logStatus = _a.sent();
                     if (logStatus.hasProfile == false && logStatus.loginUrl == "") {
                         document.location.href = "/profileBuilder.html";
                     }
+                    console.log("HREF before if: " + logStatus.loginUrl);
                     //set up function to set login/logout link based on which string is non empty
-                    if (link && logging) {
+                    if (link && logging && signUpLink) {
+                        console.log("Inside if statement");
                         if (logStatus.loginUrl === "") {
                             link.setAttribute('href', logStatus.logoutUrl);
                             link.innerHTML = 'Logout';
+                            signUpLink.setAttribute('style', 'display:none;');
                         }
                         else {
                             link.setAttribute('href', logStatus.loginUrl);
                             link.innerHTML = 'Login';
+                            console.log("HREF: " + logStatus.loginUrl);
                         }
                     }
                     return [2 /*return*/];
@@ -76,6 +81,7 @@ function logStatusMethod() {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     currentStatus = _a.sent();
+                    console.log(currentStatus);
                     authStatus = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl, hasProfile: currentStatus.HasProfile };
                     return [2 /*return*/, authStatus];
             }
