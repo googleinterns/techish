@@ -4,19 +4,25 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.gson.Gson;
 import com.google.sps.data.MatchRepository;
-import com.google.sps.data.NonPersistentMatchRepository;
+import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
+import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
+import com.google.sps.data.UserRepository;
 import com.google.sps.servlets.MatchServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,48 +34,64 @@ public class MatchServletTest {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private NonPersistentMatchRepository repository;
+    private UserRepository userRepository;
     private User testUser;
     private Gson gson;
-    private ServletContext servletContext;
     private MatchServlet matchServlet;
+    private SessionContext sessionContext;
+    private PersistentMatchRepository matchRepository;
+
+    private LocalServiceTestHelper localHelper =
+    new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     @Before
     public void setup() {
+        localHelper.setUp();
         request = Mockito.mock(HttpServletRequest.class); 
         response = Mockito.mock(HttpServletResponse.class);
-        repository = new NonPersistentMatchRepository();
-        testUser = repository.addTestData();
+        sessionContext = Mockito.mock(SessionContext.class);
+
+        userRepository = PersistentUserRepository.getInstance();
+        matchRepository = PersistentMatchRepository.getInstance();
+        testUser = matchRepository.addTestData();
+
         gson = new Gson();
+        matchServlet = new MatchServlet();
+        matchServlet.testOnlySetContext(sessionContext);
+    }
 
-        //mock ServletContext
-        servletContext = Mockito.mock(ServletContext.class);
-        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
-
-        // override getServletContext and getLoggedInUser
-        matchServlet = new MatchServlet() {
-            public ServletContext getServletContext() {
-                return servletContext;
-            }
-            public User getLoggedInUser() {
-                return testUser;
-            }
-        };
+    @After
+    public void tearDown() throws Exception {
+      localHelper.tearDown();
     }
 
     @Test
     public void doGet_returnMatches() throws IOException, ServletException {
-        //get expected result
-        Collection<User> matches = repository.getMatchesForUser(testUser);
-        String expected = gson.toJson(matches);
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
 
+        Collection<User> matches = matchRepository.getMatchesForUser(testUser);
+        String expected = gson.toJson(matches);
+    
         //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void doGet_UserNotLoggedIn() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(false);
+        String expected = gson.toJson(null);
         String result = doGetHelper(request, response, matchServlet);
         Assert.assertEquals(expected, result);
     }
 
     @Test
     public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
         //First doGet Call
         String result = doGetHelper(request, response, matchServlet);
         int numMatches = matchesInString(result);
@@ -77,12 +99,18 @@ public class MatchServletTest {
 
         //DoPost to add 3 more matches
         User userA = new User("John");
+        userA.setId("433");
         User userB = new User("Bob");
+        userB.setId("344");
         User userC = new User("Cathy");
+        userC.setId("777");
         userB.addSpecialty("Security");
         userB.addSpecialty("DoS");
         userC.addSpecialty("Artificial Intelligence");
         User[] newMatchesArray = {userA, userB, userC};
+        for(User user : newMatchesArray) {
+            userRepository.addUser(user);
+        }
         String[] newMatches = {gson.toJson(userA), gson.toJson(userB), gson.toJson(userC)};
         when(request.getParameterValues("new-matches")).thenReturn(newMatches);
         matchServlet.doPost(request, response);
@@ -96,53 +124,13 @@ public class MatchServletTest {
 
     @Test
     public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
         String[] nullMatches = null;
         when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
         matchServlet.doPost(request, response);
 
         verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
-    }
-    
-    @Test
-    public void nullUser_doGet() throws IOException, ServletException {
-        User nullUser = null;
-
-        matchServlet = new MatchServlet() {
-            public ServletContext getServletContext() {
-                return servletContext;
-            }
-            public User getLoggedInUser() {
-                return nullUser;
-            }
-        };
-
-        String expected = gson.toJson(null);
-
-        //call doGet
-        String result = doGetHelper(request, response, matchServlet);
-        Assert.assertEquals(expected, result);
-    }
-
-     @Test
-    public void nullUser_doPost() throws IOException, ServletException {
-        User nullUser = null;
-
-        matchServlet = new MatchServlet() {
-            public ServletContext getServletContext() {
-                return servletContext;
-            }
-            public User getLoggedInUser() {
-                return nullUser;
-            }
-        };
-
-        try {
-            //call doPost
-            matchServlet.doPost(request, response);
-            Assert.fail("Exception not caught");
-        } catch (IOException e) {
-            //nothing to do if exception is caught
-        }
     }
 
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)

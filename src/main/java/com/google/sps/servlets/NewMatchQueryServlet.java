@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.MatchRequest;
-import com.google.sps.data.NonPersistentUserRepository;
+import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
+import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import com.google.sps.servlets.MatchServlet;
@@ -23,6 +25,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/new-matches-query")
 public class NewMatchQueryServlet extends HttpServlet {
 
+  private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
+  private SessionContext sessionContext = SessionContext.getInstance();
+
+  public void testOnlySetContext(SessionContext sessionContext) {
+      this.sessionContext = sessionContext;
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
@@ -30,10 +39,8 @@ public class NewMatchQueryServlet extends HttpServlet {
     // Convert the JSON to an instance of MatchRequest.
     MatchRequest matchRequest = getMatchRequest(request, gson);
 
-    //get MatchServlet and current user to pass into MatchQuery
-    ServletContext servletContext = getServletContext();
-    MatchRepository matchRepository = (MatchRepository) servletContext.getAttribute("matchRepository");
-    User currentUser = getLoggedInUser();
+    User currentUser = sessionContext.getLoggedInUser();
+
     Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
 
     // Find the possible matches.
@@ -58,21 +65,6 @@ public class NewMatchQueryServlet extends HttpServlet {
       }
 
       return toReturn;
-  }
-
-  public User getLoggedInUser() {
-    User currentUser;
-    NonPersistentUserRepository userRepository = new NonPersistentUserRepository();
-    
-    UserService userService = UserServiceFactory.getUserService();
-    com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    if(currentGoogleUser == null) {
-      currentUser = null;
-    } else {
-      currentUser = userRepository.getUser(currentGoogleUser);
-    }
-
-    return currentUser;
   }
 
 }

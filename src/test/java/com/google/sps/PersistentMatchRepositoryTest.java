@@ -3,7 +3,9 @@ package com.google.sps;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
+import com.google.sps.data.UserRepository;
 import java.util.Collection;
 import java.util.HashSet;
 import javax.servlet.ServletException;
@@ -29,6 +31,7 @@ public final class PersistentMatchRepositoryTest {
   private static final User MATCH_A = new User("Match A");
   private static final User MATCH_B = new User("Match B");
   private static final User MATCH_C = new User("Match C");
+  private UserRepository userRepository;
 
   private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -45,6 +48,14 @@ public final class PersistentMatchRepositoryTest {
     MATCH_C.setId("101111");
     localHelper.setUp();
     MockitoAnnotations.initMocks(this);
+
+    userRepository = PersistentUserRepository.getInstance();
+
+    //add users to userRepository
+    userRepository.addUser(USER_A);
+    userRepository.addUser(MATCH_A);
+    userRepository.addUser(MATCH_B);
+    userRepository.addUser(MATCH_C);
   }
 
   @After
@@ -54,7 +65,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void addMatchTest() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     int expected = 1;
 
@@ -63,7 +74,7 @@ public final class PersistentMatchRepositoryTest {
 
    @Test
   public void addMultipleMatches() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     emptyRepo.addMatch(USER_A, MATCH_B);
     emptyRepo.addMatch(USER_A, MATCH_C);
@@ -74,7 +85,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void removeMatchThatExists() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     try {
       emptyRepo.removeMatch(USER_A, MATCH_A);
@@ -88,7 +99,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void removeMatchThatDoesNotExist() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     try {
       emptyRepo.removeMatch(USER_A, MATCH_A);
       Assert.fail("Expected exception in removeMatchThatDoesNotExist()");
@@ -99,7 +110,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void addSameMatchMultipleTimes_ShouldNotRepeat() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     emptyRepo.addMatch(USER_A, MATCH_A);
     emptyRepo.addMatch(USER_A, MATCH_A);
@@ -110,7 +121,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void getMatchesForUserThatExists() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     emptyRepo.addMatch(USER_A, MATCH_A);
     Collection<User> expected = new HashSet<User>();
     expected.add(MATCH_A);
@@ -121,7 +132,7 @@ public final class PersistentMatchRepositoryTest {
 
   @Test
   public void getMatchesForUserThatDoesNotExist() {
-    PersistentMatchRepository emptyRepo = new PersistentMatchRepository();
+    PersistentMatchRepository emptyRepo = PersistentMatchRepository.getInstance();
     Collection<User> expected = new HashSet<User>();
 
     Collection<User> actual = emptyRepo.getMatchesForUser(USER_A);

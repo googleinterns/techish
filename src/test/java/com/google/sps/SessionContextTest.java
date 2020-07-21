@@ -32,6 +32,7 @@ public class SessionContextTest {
     @Test
     public void getLoggedInUser_ReturnUser() {
         User testUser = new User("Bob");
+        testUser.setId("444");
         com.google.appengine.api.users.User googleUser = new com.google.appengine.api.users.User("email", "domain");
         when(userService.getCurrentUser()).thenReturn(googleUser);
         when(userRepository.getUser(googleUser)).thenReturn(testUser);

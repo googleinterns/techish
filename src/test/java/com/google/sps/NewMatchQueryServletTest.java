@@ -3,12 +3,17 @@ package com.google.sps;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.gson.Gson;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.MatchRequest;
-import com.google.sps.data.NonPersistentMatchRepository;
+import com.google.sps.data.PersistentMatchRepository;
+import com.google.sps.data.PersistentUserRepository;
+import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
+import com.google.sps.data.UserRepository;
 import com.google.sps.servlets.MatchServlet;
 import com.google.sps.servlets.NewMatchQueryServlet;
 import java.io.IOException;
@@ -21,48 +26,53 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 public class NewMatchQueryServletTest {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private NonPersistentMatchRepository repository;
+    private UserRepository userRepository;
+    // = PersistentUserRepository.getInstance();
     private User testUser;
     private Gson gson;
-    private ServletContext servletContext;
     private NewMatchQueryServlet newMatchQueryServlet;
+    private SessionContext sessionContext;
+
+    private LocalServiceTestHelper localHelper =
+    new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     @Before
     public void setup() {
+        localHelper.setUp();
         request = Mockito.mock(HttpServletRequest.class); 
         response = Mockito.mock(HttpServletResponse.class);
-        repository = new NonPersistentMatchRepository();
-        testUser = repository.addTestData();
+        sessionContext = Mockito.mock(SessionContext.class);
+        testUser = new User("Test User");
+        testUser.setId("000");
+        testUser.setEmail("test@example.com");
+
+        userRepository = PersistentUserRepository.getInstance();
+
         gson = new Gson();
+        newMatchQueryServlet = new NewMatchQueryServlet();
+        newMatchQueryServlet.testOnlySetContext(sessionContext);
+    }
 
-        //mock ServletContext
-        servletContext = Mockito.mock(ServletContext.class);
-        when(servletContext.getAttribute("matchRepository")).thenReturn(repository);
-
-        // override getServletContext and getLoggedInUser
-        newMatchQueryServlet = new NewMatchQueryServlet() {
-            public ServletContext getServletContext() {
-                return servletContext;
-            }
-            public User getLoggedInUser() {
-                return testUser;
-            }
-        };
+    @After
+    public void tearDown() throws Exception {
+        localHelper.tearDown();
     }
 
     @Test
     public void doPost_returnsNewMatches() throws IOException, ServletException {
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
         MatchQuery matchQuery = new MatchQuery();
         Collection<User> userSavedMatches = new ArrayList<User>();
         Collection<User> answer = matchQuery.query(new MatchRequest(), userSavedMatches);
