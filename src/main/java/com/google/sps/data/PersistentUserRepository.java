@@ -59,7 +59,7 @@ public class PersistentUserRepository implements UserRepository {
     User newUser = new User(googleUser.getNickname());
     newUser.setEmail(userEmail);
     newUser.setId(googleUser.getUserId());
-    
+
     return newUser;
   }
     
@@ -181,10 +181,7 @@ public class PersistentUserRepository implements UserRepository {
     if(userProfiles.size() == 1){
         return userProfiles.iterator().next();
     }
-    if(userProfiles.size() != 1) {
-        return null;
-    }
-    return userProfiles.iterator().next();
+    return null;
   }
 
 
