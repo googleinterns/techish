@@ -54,7 +54,6 @@ public class SessionContextTest {
        com.google.appengine.api.users.User googleUser = null;
        when(userService.getCurrentUser()).thenReturn(googleUser);
        
-       String resultUserName = "";
         try {            
             Assert.assertEquals(null, sessionContext.getLoggedInUser());
         } catch(Exception e) {
