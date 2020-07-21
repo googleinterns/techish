@@ -6,6 +6,7 @@ import com.google.sps.data.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -15,6 +16,11 @@ import org.junit.runners.JUnit4;
 public final class NonPersistentUserRepositoryTest {
 
   private static final User USER_A = new User("User A");
+
+  @Before
+  public void init() {
+      USER_A.setId("123");
+  }
 
   @Test
   public void addFakeMentorsTest() {
@@ -61,8 +67,11 @@ public final class NonPersistentUserRepositoryTest {
   @Test
   public void getAllUsersTest() {
       User userA = new User("John");
+      userA.setId("1");
       User userB = new User("Bob");
+      userB.setId("2");
       User userC = new User("Haley");
+      userC.setId("3");
 
       NonPersistentUserRepository myRepo = new NonPersistentUserRepository();
       myRepo.addUser(userA);
@@ -80,6 +89,7 @@ public final class NonPersistentUserRepositoryTest {
   @Test
   public void addSameUserMultipleTimes() {
       User userA = new User("John");
+      userA.setId("55");
 
       NonPersistentUserRepository myRepo = new NonPersistentUserRepository();
       myRepo.addUser(userA);
@@ -95,7 +105,9 @@ public final class NonPersistentUserRepositoryTest {
   @Test
   public void multipleAddAndRemove() {
       User userA = new User("John");
+      userA.setId("123");
       User userB = new User("Bob");
+      userB.setId("345");
 
       NonPersistentUserRepository myRepo = new NonPersistentUserRepository();
       myRepo.addUser(userA);

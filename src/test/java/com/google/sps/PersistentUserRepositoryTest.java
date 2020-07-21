@@ -44,28 +44,13 @@ public final class PersistentUserRepositoryTest {
   private static final User USER_A = new User("User A");
   private static final User MATCH_A = new User("Match A");
 
-  public void addFakeMentors(PersistentUserRepository input) {
-    User mentorA = new User("Andre");
-    mentorA.addSpecialty("Machine Learning");
-    mentorA.addSpecialty("DoS");
-
-    User mentorB = new User("Jerry");
-    mentorB.addSpecialty("Electrical Engineering");
-    mentorB.addSpecialty("DoS");
-
-    User mentorC = new User("Julie");
-    mentorC.addSpecialty("Machine Learning");
-    mentorC.addSpecialty("Security");
-
-    input.addUser(mentorA);
-    input.addUser(mentorB);
-    input.addUser(mentorC);
-    }
-
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     localHelper.setUp();
+
+    USER_A.setId("1");
+    MATCH_A.setId("2");
   }
 
   @After
@@ -76,8 +61,7 @@ public final class PersistentUserRepositoryTest {
   @Test
   public void addFakeMentorsTest() {
     PersistentUserRepository testDataRepo = new PersistentUserRepository();
-    addFakeMentors(testDataRepo);
-    int expected = 3;
+    int expected = 5;
     int result = testDataRepo.getAllUsers().size();
     Assert.assertEquals(expected, result);
   }
@@ -86,7 +70,7 @@ public final class PersistentUserRepositoryTest {
   public void addUserTest() {
     PersistentUserRepository repository = new PersistentUserRepository();
     repository.addUser(USER_A);
-    int expected = 1;
+    int expected = 6;
     int result = repository.getAllUsers().size();
     Assert.assertEquals(expected, result);
   }
@@ -94,20 +78,15 @@ public final class PersistentUserRepositoryTest {
   @Test
   public void userSpecialtyWrittenBack() {
     PersistentUserRepository repository = new PersistentUserRepository();
-    User userA = new User("Bobby");
-    userA.addSpecialty("UI / UX Design");
-    userA.addSpecialty("Front-end Development");
-    repository.addUser(userA);
-
     Collection<String> expected = new HashSet<>();
-    expected.add("Front-end Development");
-    expected.add("UI / UX Design");
+    expected.add("Machine Learning");
+    expected.add("Systems");
     
     Assert.assertEquals(expected, repository.getAllUsers().iterator().next().getSpecialties());
   }
 
   @Test
-  public void userIDWrittenBack() {
+  public void userIDWrittenBack() throws Exception {
     PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Sergey");
     String userID = "82129102381L";
@@ -116,42 +95,45 @@ public final class PersistentUserRepositoryTest {
 
     Collection<User> allUsers = repository.getAllUsers();
    
-    Assert.assertEquals(userID, repository.getAllUsers().iterator().next().getId());
+    Assert.assertEquals(userID, repository.fetchUserWithId("82129102381L").getId());
   }
 
   @Test
-  public void userCompanyWrittenBack() {
+  public void userCompanyWrittenBack() throws Exception {
     PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Sergey");
     String company = "Google";
+    userA.setId("12345");
     userA.setCompany(company);
     repository.addUser(userA);
 
     Collection<User> allUsers = repository.getAllUsers();
     
-    Assert.assertEquals(company, repository.getAllUsers().iterator().next().getCompany());
+    Assert.assertEquals(company, repository.fetchUserWithId("12345").getCompany());
   }
   
   @Test
-  public void userOccupationWrittenBack() {
+  public void userOccupationWrittenBack() throws Exception {
     PersistentUserRepository repository = new PersistentUserRepository();
     User userA = new User("Larry");
+    userA.setId("6655");
     String occupation = "Security Engineer";
     userA.setOccupation(occupation);
     repository.addUser(userA);
 
     Collection<User> allUsers = repository.getAllUsers();
 
-    Assert.assertEquals(occupation, repository.getAllUsers().iterator().next().getOccupation());
+    Assert.assertEquals(occupation, repository.fetchUserWithId("6655").getOccupation());
   }
+
   @Test
   public void removeUserThatExists() {
     PersistentUserRepository repository = new PersistentUserRepository();
     repository.addUser(USER_A);
     try {
       repository.removeUser(USER_A);
-      String expected = "";
-      String result = repository.toString();
+      int expected = 5;
+      int result = repository.getAllUsers().size();
       Assert.assertEquals(expected, result);
     } catch (Exception e) {
       Assert.fail("Exception should not be thrown in removeUserThatExists");
@@ -172,8 +154,11 @@ public final class PersistentUserRepositoryTest {
   @Test
   public void getAllUsersTest() {
       User userA = new User("John");
+      userA.setId("44");
       User userB = new User("Bob");
+      userB.setId("55");
       User userC = new User("Haley");
+      userC.setId("66");
 
       PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
@@ -183,11 +168,7 @@ public final class PersistentUserRepositoryTest {
       Collection<User> results = myRepo.getAllUsers();
       int resultsLength = results.size();
 
-      Collection<User> expected = new ArrayList<User>();
-      expected.add(userA);
-      expected.add(userB);
-      expected.add(userC);
-      int expectedLength = expected.size();
+      int expectedLength = 8;
 
       Assert.assertEquals(resultsLength, expectedLength);
   }
@@ -195,6 +176,7 @@ public final class PersistentUserRepositoryTest {
   @Test
   public void addSameUserMultipleTimes() {
       User userA = new User("John");
+      userA.setId("66788");
 
       PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
@@ -204,14 +186,15 @@ public final class PersistentUserRepositoryTest {
       Collection<User> allUsers = myRepo.getAllUsers();
       int actualSize = allUsers.size();
 
-      //myRepo should only have 1 user stored
-      Assert.assertEquals(1, actualSize);
+      Assert.assertEquals(6, actualSize);
   }
 
   @Test
   public void multipleAddAndRemove() {
       User userA = new User("John");
+      userA.setId("6677");
       User userB = new User("Bob");
+      userB.setId("7766");
 
       PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
@@ -221,8 +204,8 @@ public final class PersistentUserRepositoryTest {
       int currentSize = allUsers.size();
 
 
-      //myRepo should have 2 users stored
-      Assert.assertEquals(2, currentSize);
+      //myRepo should have 7 users stored
+      Assert.assertEquals(7, currentSize);
 
       try {
         myRepo.removeUser(userB);
@@ -230,33 +213,34 @@ public final class PersistentUserRepositoryTest {
           Assert.fail("Can't remove user that does not exist");
       }
       allUsers = myRepo.getAllUsers();
-      //myRepo should now only have 1 user stored
+      //myRepo should now only have 6 users stored
       
       currentSize = allUsers.size();
-      Assert.assertEquals(1, currentSize);
+      Assert.assertEquals(6, currentSize);
 
       myRepo.addUser(userB);
-      //myRepo should have 2 users stored again
-      Assert.assertEquals(2, myRepo.getAllUsers().size());
-
+      //myRepo should have 7 users stored again
+      Assert.assertEquals(7, myRepo.getAllUsers().size());
   }
 
   @Test
   public void singleAddAndGetUser() {
       User userA = new User("Sundar");
+      userA.setId("55555");
 
       PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
       Collection<User> allUsers = myRepo.getAllUsers();
       int currentSize = allUsers.size();
 
-      //myRepo should have 1 user stored
-      Assert.assertEquals(1, currentSize);
+      //myRepo should have 6 users stored
+      Assert.assertEquals(6, currentSize);
   }
 
   @Test
   public void singleAddAndRemoveUser() {
       User userA = new User("Sundar");
+      userA.setId("62221");
 
       PersistentUserRepository myRepo = new PersistentUserRepository();
       myRepo.addUser(userA);
@@ -269,14 +253,16 @@ public final class PersistentUserRepositoryTest {
       Collection<User> allUsers = myRepo.getAllUsers();
       int currentSize = allUsers.size();
 
-      //myRepo should have 0 users stored
-      Assert.assertEquals(0, currentSize);
+      //myRepo should have 5 users stored
+      Assert.assertEquals(5, currentSize);
   }
 
   @Test
   public void addUserNameThatSameAsCompanyName() {
       User userA = new User("Mckinsey");
+      userA.setId("122");
       User userB = new User("John");
+      userB.setId("322");
       userB.setCompany("Mckinsey");
 
       PersistentUserRepository myRepo = new PersistentUserRepository();
@@ -292,8 +278,8 @@ public final class PersistentUserRepositoryTest {
       Collection<User> allUsers = myRepo.getAllUsers();
       int currentSize = allUsers.size();
 
-      //myRepo should have 1 user stored
-      Assert.assertEquals(1, currentSize);
+      //myRepo should have 6 users stored
+      Assert.assertEquals(6, currentSize);
   }
 
   @Test
@@ -311,7 +297,6 @@ public final class PersistentUserRepositoryTest {
     } catch(Exception e) {
         Assert.fail("User with that ID does not exist");
     }
-    // String resultName = 
  
     Assert.assertEquals("Bobby", resultName);
   }
