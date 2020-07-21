@@ -44,7 +44,8 @@
         <div class="container">
 
             <form action="/profile"  method="POST" name="makeProfile" id="makeProfile">               
-                <div  >
+
+                <div>
                     <input type="button" id="mentorButton" class="button_slide slide_down" onclick="setForm(this.value)" value="Mentor">
                     <input type="hidden" name="user-Type" id="user-input"  class="form-control" value="" >
                     <input type="button" id="menteeButton" class="button_slide slide_down" onclick="setForm(this.value)" value="Mentee">
@@ -70,8 +71,9 @@
                             <input type="text" name="major-input" id="major-input" class="form-control"  placeholder="Major" >
                         </label>
                     </div>
+
                     <input type="submit" value="Submit" form="makeProfile">
-                </div> 
+                </div>
 
                 <!-- Mentor Input Form -->
                 <div id="Mentor" style="display: none">
@@ -110,8 +112,8 @@
                         </select>
                     </label>
                     <p style= "color: black;">Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+                    
                     <input type="submit" value="Submit" form="makeProfile">
-
                 </div>
             </form>
         </div>

@@ -13,7 +13,7 @@ public interface UserRepository {
 
   public String toString();
 
-  //creates a User from 'googleUser' if one doesn't exist, otherwise returns existing User with same ID
+  // Uses 'googleUser' to return a User with same ID
   public User getUser(com.google.appengine.api.users.User googleUser);
 
   //method to add fake users for testing and for MVP demo

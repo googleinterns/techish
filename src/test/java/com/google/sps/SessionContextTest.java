@@ -36,24 +36,32 @@ public class SessionContextTest {
         com.google.appengine.api.users.User googleUser = new com.google.appengine.api.users.User("email", "domain");
         when(userService.getCurrentUser()).thenReturn(googleUser);
         when(userRepository.getUser(googleUser)).thenReturn(testUser);
+        
+        String resultUserName = "";
+        try {
+            User resultUser = sessionContext.getLoggedInUser();
+            resultUserName = resultUser.getName();
+        } catch(Exception e) {
+            Assert.fail("Exception caught" + e);
+        }
 
-        User resultUser = sessionContext.getLoggedInUser();
-
-        Assert.assertEquals(testUser, resultUser);
+        Assert.assertEquals(testUser.getName(), resultUserName);
     }
 
+   @Test
+   public void getLoggedInUser_ReturnNull() {
+       User testUser = null;
+       com.google.appengine.api.users.User googleUser = null;
+       when(userService.getCurrentUser()).thenReturn(googleUser);
+       
+        try {            
+            Assert.assertEquals(null, sessionContext.getLoggedInUser());
+        } catch(Exception e) {
+            Assert.fail("Exception caught " + e);
+        }
+   }
     @Test
-    public void getLoggedInUser_ReturnNull() {
-        User testUser = null;
-        com.google.appengine.api.users.User googleUser = null;
-        when(userService.getCurrentUser()).thenReturn(googleUser);
 
-        User resultUser = sessionContext.getLoggedInUser();
-
-        Assert.assertEquals(testUser, resultUser);
-    }
-
-    @Test
     public void isUserLoggedIn_ReturnTrue() {
         boolean expected = true;
         when(userService.isUserLoggedIn()).thenReturn(expected);
@@ -87,4 +95,17 @@ public class SessionContextTest {
         Assert.assertEquals(expected, result);
     }
 
+   @Test
+    public void userProfileExistsFalse() throws Exception {
+        User testUser = new User("Bob");
+        String id = "1234";
+        testUser.setId(id);
+        String email = "test@example.com";
+        testUser.setEmail(email);
+        com.google.appengine.api.users.User googleUser = new com.google.appengine.api.users.User(email, "domain");
+        when(userService.getCurrentUser()).thenReturn(googleUser);
+        
+        boolean result = sessionContext.userProfileExists();
+        Assert.assertEquals(false, result);
+    }
 }

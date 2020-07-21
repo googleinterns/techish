@@ -10,6 +10,7 @@ import java.lang.Exception;
 public class SessionContext {
 
   private final UserService userService;
+
   private final UserRepository userRepository;
   private static SessionContext instance = null;
 
@@ -22,19 +23,22 @@ public class SessionContext {
   }
 
   /**
+  * Getter method for getting the instance
+  */
+  public static SessionContext getInstance() {
+      if(instance == null){
+           UserRepository userRepo = PersistentUserRepository.getInstance();
+           instance = new SessionContext(userRepo);
+      }
+      return instance;
+  }
+  
+  /**
   * Overload constructor with UserService for testing.
   */
   public SessionContext(UserRepository userRepository, UserService userService) {
       this.userService = userService;
       this.userRepository = userRepository;
-  }
-
-  public static SessionContext getInstance() {
-      if (instance == null) {
-          UserRepository userRepo = PersistentUserRepository.getInstance();
-          instance = new SessionContext(userRepo);
-      }
-      return instance;
   }
 
   /**
@@ -43,25 +47,16 @@ public class SessionContext {
   */
   public User getLoggedInUser() {
     com.google.appengine.api.users.User currentGoogleUser = userService.getCurrentUser();
-    
-    if(currentGoogleUser == null) {
-      return null;
-    } else {
-      return userRepository.getUser(currentGoogleUser);
-    }
+    return currentGoogleUser == null ? null : userRepository.getUser(currentGoogleUser);    
   }
 
   /**
   * returns user ID.
   */
   public String getLoggedInUserId() {
+
     User loggedInUser = getLoggedInUser();
-
-    if(loggedInUser == null) {
-        return null;
-    }
-
-    return loggedInUser.getId();
+    return loggedInUser == null ? null : loggedInUser.getId();
   }
 
   /**
@@ -69,5 +64,16 @@ public class SessionContext {
   */
   public boolean isUserLoggedIn() {
     return userService.isUserLoggedIn();
+  }
+
+  public boolean userProfileExists() {
+    String id = getLoggedInUserId();
+    if(id != null) {
+            User user = PersistentUserRepository.getInstance().fetchUserWithId(id);
+            if(user != null){
+                return true;
+            }
+    }
+    return false;
   }
 }

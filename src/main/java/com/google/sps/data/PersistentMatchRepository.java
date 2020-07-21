@@ -130,9 +130,9 @@ public class PersistentMatchRepository implements MatchRepository {
         toReturn.add(newMatch);
       //catch exception if user is not in persistent repository
       } catch (Exception e) {
+
           System.err.println("UserID was not found in Persistent Repository: " + userId + ". Error: " + e.toString());
       }
-      
     }
     return toReturn;
   }

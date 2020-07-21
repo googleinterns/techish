@@ -11,6 +11,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.PersistentUserRepository;
+import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.lang.NullPointerException;
@@ -32,13 +33,22 @@ public class ProfileBuilderServlet extends HttpServlet {
 
     if(userType != null) {
         if(userType.equals("Mentee")){
-            //TODO: add the GoogleUserID
+
             String userName = request.getParameter("name-input");
             if(userName != null) {
                 User currentUser = new User(userName);
                 
+                User user = SessionContext.getInstance().getLoggedInUser();
+                String email = user.getEmail();
+                String id = SessionContext.getInstance().getLoggedInUserId();
                 String userSchool = request.getParameter("school-input");
                 String userMajor = request.getParameter("major-input");
+                if(email != null) {
+                    currentUser.setEmail(email);
+                }
+                if(id != null) {
+                    currentUser.setId(id);
+                }
                 if(userSchool != null ) {
                     currentUser.setSchool(userSchool);
                 }
@@ -49,15 +59,23 @@ public class ProfileBuilderServlet extends HttpServlet {
             }
         }
         else if(userType.equals("Mentor")){
-            //TODO: add the GoogleUserID
+
             String userName = request.getParameter("profName-input");
             if(userName != null) {
                 User currentUser = new User(userName);
-
+                
+                User user = SessionContext.getInstance().getLoggedInUser();
+                String email = user.getEmail();
+                String id = SessionContext.getInstance().getLoggedInUserId();
                 String userCompany = request.getParameter("company-input");
                 String userOccupation = request.getParameter("careerTitle-input");
                 String[] userSpecialties = request.getParameterValues("specialty-input");
-
+                if(email != null) {
+                    currentUser.setEmail(email);
+                }
+                if(id != null) {
+                    currentUser.setId(id);
+                }
                 if(userCompany != null) {
                     currentUser.setCompany(userCompany);
                 }
