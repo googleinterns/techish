@@ -27,8 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MatchServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
-  private PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-  private SessionContext sessionContext = new SessionContext(userRepository);
+  private SessionContext sessionContext = SessionContext.getInstance();
 
   @Override
   public void init(ServletConfig config) throws ServletException {

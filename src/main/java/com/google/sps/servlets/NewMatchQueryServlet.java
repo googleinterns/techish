@@ -26,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class NewMatchQueryServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
-  private PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-  private SessionContext sessionContext = new SessionContext(userRepository);
+  private SessionContext sessionContext = SessionContext.getInstance();
 
   public void testOnlySetContext(SessionContext sessionContext) {
       this.sessionContext = sessionContext;
