@@ -10,7 +10,6 @@ import java.lang.Exception;
 public class SessionContext {
 
   private final UserService userService;
-
   private final UserRepository userRepository;
   private static SessionContext instance = null;
 
@@ -26,11 +25,11 @@ public class SessionContext {
   * Getter method for getting the instance
   */
   public static SessionContext getInstance() {
-      if(instance == null){
-           UserRepository userRepo = PersistentUserRepository.getInstance();
-           instance = new SessionContext(userRepo);
-      }
-      return instance;
+    if(instance == null) {
+      UserRepository userRepo = PersistentUserRepository.getInstance();
+      instance = new SessionContext(userRepo);
+    }
+    return instance;
   }
   
   /**
@@ -54,7 +53,6 @@ public class SessionContext {
   * returns user ID.
   */
   public String getLoggedInUserId() {
-
     User loggedInUser = getLoggedInUser();
     return loggedInUser == null ? null : loggedInUser.getId();
   }
