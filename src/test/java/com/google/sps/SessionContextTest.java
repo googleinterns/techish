@@ -54,7 +54,6 @@ public class SessionContextTest {
        com.google.appengine.api.users.User googleUser = null;
        when(userService.getCurrentUser()).thenReturn(googleUser);
        
-       String resultUserName = "";
         try {            
             Assert.assertEquals(null, sessionContext.getLoggedInUser());
         } catch(Exception e) {
@@ -107,7 +106,6 @@ public class SessionContextTest {
         when(userService.getCurrentUser()).thenReturn(googleUser);
         
         boolean result = sessionContext.userProfileExists();
-        boolean expected = false;
-        Assert.assertEquals(expected, result);
+        Assert.assertEquals(false, result);
     }
 }

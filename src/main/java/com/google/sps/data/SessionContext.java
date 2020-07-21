@@ -67,9 +67,9 @@ public class SessionContext {
   public boolean userProfileExists() {
     String id = getLoggedInUserId();
     if(id != null) {
-            User userExists = PersistentUserRepository.getInstance().fetchUserWithId(id);
-            if(userExists != null){
-                return userExists.getId().equals(id);
+            User user = PersistentUserRepository.getInstance().fetchUserWithId(id);
+            if(user != null){
+                return true;
             }
     }
     return false;

@@ -23,8 +23,8 @@ public class UserLoginServlet extends HttpServlet {
     this(SessionContext.getInstance());
   }
    // test only call the second one
-  public UserLoginServlet(SessionContext var){
-    sessionContext = var;
+  public UserLoginServlet(SessionContext passedVariable){
+    sessionContext = passedVariable;
   }
 
   /*This method uses the UsersAPI to send a Get Request and see if the user is logged in,

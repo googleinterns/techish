@@ -66,15 +66,15 @@ public class UserLoginTest {
     return responseJsonObject;
   }
 
-  public void addTestData() {
+  public User makeAndAddTestUser() {
     User testUser = new User("Bob");
     String expected = "1234";
     testUser.setId(expected);
     String email = "test@example.com";
     testUser.setEmail(email);
     userRepository.addUser(testUser);
+    return testUser;
   }
-
 
   @Before
   public void setUp() throws Exception {
@@ -120,12 +120,6 @@ public class UserLoginTest {
   public void hasProfileReturnsFalse() throws ServletException, IOException  {
     localHelper.setEnvIsLoggedIn(true);
 
-    User testUser = new User("Bob");
-    String expected = "1234";
-    testUser.setId(expected);
-    String email = "test@example.com";
-    testUser.setEmail(email);
-
     JsonObject responseJsonObject = getLoginServletResponse();
 
     String logInUrl = responseJsonObject.get("LogInUrl").getAsString();
@@ -140,7 +134,7 @@ public class UserLoginTest {
   public void hasProfileReturnTrue() throws ServletException, IOException  {
     localHelper.setEnvIsLoggedIn(true);
 
-    addTestData();
+    User firstUser = makeAndAddTestUser();
     User testUser = new User("Bob");
     String expected = "1234";
     testUser.setId(expected);

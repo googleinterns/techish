@@ -38,10 +38,14 @@ public class ProfileBuilderServlet extends HttpServlet {
             if(userName != null) {
                 User currentUser = new User(userName);
                 
+                User user = SessionContext.getInstance().getLoggedInUser();
+                String email = user.getEmail();
                 String id = SessionContext.getInstance().getLoggedInUserId();
                 String userSchool = request.getParameter("school-input");
                 String userMajor = request.getParameter("major-input");
-
+                if(email != null) {
+                    currentUser.setEmail(email);
+                }
                 if(id != null) {
                     currentUser.setId(id);
                 }
@@ -60,10 +64,15 @@ public class ProfileBuilderServlet extends HttpServlet {
             if(userName != null) {
                 User currentUser = new User(userName);
                 
+                User user = SessionContext.getInstance().getLoggedInUser();
+                String email = user.getEmail();
                 String id = SessionContext.getInstance().getLoggedInUserId();
                 String userCompany = request.getParameter("company-input");
                 String userOccupation = request.getParameter("careerTitle-input");
                 String[] userSpecialties = request.getParameterValues("specialty-input");
+                if(email != null) {
+                    currentUser.setEmail(email);
+                }
                 if(id != null) {
                     currentUser.setId(id);
                 }
