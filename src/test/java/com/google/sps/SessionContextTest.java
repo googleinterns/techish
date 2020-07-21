@@ -106,7 +106,6 @@ public class SessionContextTest {
         when(userService.getCurrentUser()).thenReturn(googleUser);
         
         boolean result = sessionContext.userProfileExists();
-        boolean expected = false;
-        Assert.assertEquals(expected, result);
+        Assert.assertEquals(false, result);
     }
 }
