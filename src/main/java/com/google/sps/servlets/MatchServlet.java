@@ -62,10 +62,11 @@ public class MatchServlet extends HttpServlet {
     } else {
       if (request.getParameterValues("new-matches") != null) {
         String[] matchesToSave = request.getParameterValues("new-matches");
+        User userToAdd = sessionContext.getLoggedInUser();
 
         for (String matchName : matchesToSave) {
           User newMatch = new Gson().fromJson(matchName, User.class);
-          matchRepository.addMatch(sessionContext.getLoggedInUser(), newMatch);
+          matchRepository.addMatch(userToAdd, newMatch);
         }
       } else {
         System.err.println("new-matches is null in MatchServlet doPost()");
