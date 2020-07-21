@@ -40,14 +40,6 @@ public class SessionContext {
       this.userRepository = userRepository;
   }
 
-  public static SessionContext getInstance() {
-      if (instance == null) {
-          UserRepository userRepo = PersistentUserRepository.getInstance();
-          instance = new SessionContext(userRepo);
-      }
-      return instance;
-  }
-
   /**
   * method that returns the current logged in User or null if
   * no user is logged in
@@ -61,18 +53,8 @@ public class SessionContext {
   * returns user ID.
   */
   public String getLoggedInUserId() {
-
     User loggedInUser = getLoggedInUser();
-<<<<<<< HEAD
-
-    if(loggedInUser == null) {
-        return null;
-    }
-
-    return loggedInUser.getId();
-=======
     return loggedInUser == null ? null : loggedInUser.getId();
->>>>>>> e01b421b9880056d036c3aa6dbcab060f3196d31
   }
 
   /**
