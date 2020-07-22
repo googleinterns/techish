@@ -22,7 +22,6 @@ async function loadHome() {
             link.setAttribute('href', logStatus.logoutUrl);
             link.innerHTML = 'Logout';
             signUpLink.setAttribute('style','display:none;');
-
         } else {
             link.setAttribute('href', logStatus.loginUrl);
             link.innerHTML = 'Login';
