@@ -8,7 +8,6 @@ type authInfoFromServlet = {
 async function loadHome() {
     const logging = document.getElementById('navbarResponsive');
     const link = document.getElementById('login-link');
-    const signUpLink = document.getElementById('signup-link');
    
     const logStatus = await logStatusMethod();
 
@@ -17,11 +16,10 @@ async function loadHome() {
     }
 
     //set up function to set login/logout link based on which string is non empty
-    if (link && logging && signUpLink) {
+    if (link && logging) {
         if (logStatus.loginUrl === "") {
             link.setAttribute('href', logStatus.logoutUrl);
             link.innerHTML = 'Logout';
-            signUpLink.setAttribute('style','display:none;');
         } else {
             link.setAttribute('href', logStatus.loginUrl);
             link.innerHTML = 'Login';

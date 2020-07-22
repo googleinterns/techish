@@ -37,13 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 //function that loads the home page for logging in and logging out
 function loadHome() {
     return __awaiter(this, void 0, void 0, function () {
-        var logging, link, signUpLink, logStatus;
+        var logging, link, logStatus;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     logging = document.getElementById('navbarResponsive');
                     link = document.getElementById('login-link');
-                    signUpLink = document.getElementById('signup-link');
                     return [4 /*yield*/, logStatusMethod()];
                 case 1:
                     logStatus = _a.sent();
@@ -51,11 +50,10 @@ function loadHome() {
                         document.location.href = "/profileBuilder.html";
                     }
                     //set up function to set login/logout link based on which string is non empty
-                    if (link && logging && signUpLink) {
+                    if (link && logging) {
                         if (logStatus.loginUrl === "") {
                             link.setAttribute('href', logStatus.logoutUrl);
                             link.innerHTML = 'Logout';
-                            signUpLink.setAttribute('style', 'display:none;');
                         }
                         else {
                             link.setAttribute('href', logStatus.loginUrl);
