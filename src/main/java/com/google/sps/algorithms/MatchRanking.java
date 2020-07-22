@@ -5,8 +5,8 @@ import java.util.*;
 //this is the initial brute-force algorithm to solve the problem. Once this works, I will refine & make the code more efficient.
 public final class MatchRanking {
 
-    public List<String> query() {
-        //todo
+    public List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+        Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
         return sortBiosByScore(newMatchScores);
     }
 
@@ -18,42 +18,46 @@ public final class MatchRanking {
         Map<String, Integer> allUserWordCount = countWordInstances(allUserBios);
 
         //calculate score for each new match bio
-        Map<String, Double> newBioScores = new HashMap<String, Integer>();
+        Map<String, Double> newBioScores = new HashMap<String, Double>();
         for(String newBio : newMatchBios) {
-            Double bioScore = calculateBioScore(newBio, savedMatchesWordCount, allUserWordCount);
-            newBioScores.add(newBio, bioScore);
+            double bioScore = calculateBioScore(newBio, savedMatchesWordCount, allUserWordCount);
+            newBioScores.put(newBio, new Double(bioScore));
         }
 
         return newBioScores;
     }
 
-    public List<String> sortBiosByScore(Map<String, double> newMatchScores) {
-        //todo
+    public List<String> sortBiosByScore(Map<String, Double> newMatchScores) {
+        //TODO: implement this function
+        List<String> orderedBios = new ArrayList<String>();
+        return orderedBios;
     }
 
-    private Double calculateBioScore(String bio, Map<String, Integer> savedMatchesWordCount, Map<String, Integer> allUserWordCount) {
-        Double numerator = 1; 
-        Double denominator = 1; 
+    private double calculateBioScore(String bio, Map<String, Integer> savedMatchesWordCount, Map<String, Integer> allUserWordCount) {
+        double numerator = 1.0; 
+        double denominator = 1.0; 
 
         String[] bioWords = bio.toLowerCase().split("\\W+");
 
         //calculate numerator using savedMatchesWordCount
         for(String word : bioWords) {
-            Double wordCount = savedMatchesWordCount.get(word);
+            Integer wordCount = savedMatchesWordCount.get(word);
 
-            //skip word if it was not in the wordcount
+             //skip word if it was not in the wordcount
             if(wordCount != null) {
-                numerator *= (wordCount / (Double)savedMatchesWordCount.size());
+                double wordCountDouble = wordCount.intValue();
+                numerator *= (wordCountDouble / savedMatchesWordCount.size());
             }
         }
 
         //calculate denominator using allUserWordCount
         for(String word : bioWords) {
-            Double wordCount = allUserWordCount.get(word);
-
+            Integer wordCount = allUserWordCount.get(word);
+            
             //skip word if it was not in the wordcount
             if(wordCount != null) {
-                denominator *= (wordCount / (Double)allUserWordCount.size());
+                double wordCountDouble = wordCount.intValue();
+                denominator *= (wordCountDouble / allUserWordCount.size());
             }
         }
 
