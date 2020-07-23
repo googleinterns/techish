@@ -1,6 +1,12 @@
 package com.google.sps.algorithms;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //this is the initial brute-force algorithm to solve the problem. Once this works, I will refine & make the code more efficient.
 public final class MatchRanking {
@@ -12,13 +18,17 @@ public final class MatchRanking {
     */
     public List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
+
+        //delete after testing
+        System.out.println("\nNEW MATCH SCORES: \n" + newMatchScores.toString() + "\n");
+
         return sortBiosByScore(newMatchScores);
     }
 
     /**
     * Function that takes the three bio collections and returns a map with each new user bio mapped to it's score.
     */
-    private Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+    public Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         //count words in all of the saved matches
         Map<String, Integer> savedMatchesWordCount = countWordInstances(savedMatchBios);
 
@@ -96,7 +106,7 @@ public final class MatchRanking {
         Map<String, Integer> wordCounts = new HashMap<String, Integer>();
 
         for(String bio : allBios) {
-            
+
             String[] bioWords = bio.toLowerCase().split("\\W+");
             
             //add each word in bio to map

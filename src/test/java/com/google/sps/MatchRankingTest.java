@@ -1,13 +1,16 @@
 package com.google.sps;
 
 import com.google.sps.algorithms.MatchRanking;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.util.*;
 
 /** */
 @RunWith(JUnit4.class)
@@ -18,8 +21,20 @@ public final class MatchRankingTest {
   private static final String BIO_C = "Serving frontend pages with low latency";
   private static final String BIO_D = "Android app security";
   private static final String BIO_E = "Frontend security applied to dropbox";
-  private Collection<String> allUserBios;
+  private static final String BIO_LONG = "I was first introduced to CS in fifth grade through the FIRST LEGO League robotic competitions. " +
+  "In high school, I wanted to continue learning about CS, so I co-founded a Girls Who Code club. We met weekly and used tutorials to teach ourselves basic coding, " +
+  "wrote simple apps in Swift, watched TED talks, and invited local women in STEM to speak. I took my first actual coding class in Java freshman year of collegewhile my major was " +
+  "Biomedical Engineering and honestly, I fell in love. I enjoy learning, but for the first time ever, it didn’t feel like school; I enjoyed coding so much that I worked extra to develop my own technical skills, " +
+  "spending vast amounts of personal time reading ahead in the textbook, watching tutorials, and creating my own programs for random small tasks that I thought of. I changed my major to CS before the end of freshman" +
+  " year and I joined Women in Computing to gain exposure to the field. Last summer, during my internship at the Beckman Institute for Advanced Science and Technology, I was chosen as the intern who developed scripts " +
+   "to analyze MRI data for my team’s project.";
+  private static final String BIO_SHORT = "hi";
+  private static final String BIO_EMPTY = "";
+  private static final String BIO_SPANISH = "Soy un ingeniero de software que trabaja en aprendizaje automático, inteligencia artificial y big data.";
+  private static final String BIO_BAD_FORMAT = "haiiiiiiiii,,,,,,!!!    my name          is JOHN AND I LOVE COMPUTERSSSSSSssssssm!!";
+  private static final String BIO_NUMBERS = "12346 234 132dfs 4adslfk92 113224";
   private MatchRanking MATCH_RANKING;
+  private Collection<String> allUserBios;
 
   @Before
   public void setup() {
@@ -29,24 +44,46 @@ public final class MatchRankingTest {
       allUserBios.add(BIO_C);
       allUserBios.add(BIO_D);
       allUserBios.add(BIO_E);
+      allUserBios.add(BIO_LONG);
+      allUserBios.add(BIO_SHORT);
+      allUserBios.add(BIO_EMPTY);
+      allUserBios.add(BIO_SPANISH);
+      allUserBios.add(BIO_BAD_FORMAT);
+      allUserBios.add(BIO_NUMBERS);
 
       MATCH_RANKING = new MatchRanking();
   }
 
   @Test
-  public void incompleteTest() {
+  public void basicRanking() {
       Collection<String> savedMatchBios = new HashSet<String>();
-       savedMatchBios.add(BIO_D);
-       savedMatchBios.add(BIO_E);
+      savedMatchBios.add(BIO_D);
+      savedMatchBios.add(BIO_E);
 
-       Collection<String> newMatchBios = new HashSet<String>();
-       newMatchBios.add(BIO_A);
-       newMatchBios.add(BIO_B);
-       newMatchBios.add(BIO_C);
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_A);
+      newMatchBios.add(BIO_B);
 
-       List<String> results = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
-       System.out.println("results: " + results);
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_A);
+      expected.add(BIO_B);
 
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void scoreCalculation() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_LONG);
+
+      Map<String, Double> scores = MATCH_RANKING.scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
+      System.out.println(scores.toString() + "\n");
   }
 
     //DO TESTS FOR LOTS OF WEIRD BIOS - save them as constants so that they can be reused
