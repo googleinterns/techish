@@ -40,6 +40,7 @@ public class PersistentUserRepository implements UserRepository {
 
   public PersistentUserRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
+    System.out.println("IN CTOR REPO");
     this.addFakeMentors();
   }
 
