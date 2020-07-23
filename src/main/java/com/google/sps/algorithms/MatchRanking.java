@@ -19,9 +19,6 @@ public final class MatchRanking {
     public List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
 
-        //delete after testing
-        System.out.println("\nNEW MATCH SCORES: \n" + newMatchScores.toString() + "\n");
-
         return sortBiosByScore(newMatchScores);
     }
 
