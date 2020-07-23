@@ -33,6 +33,8 @@ public final class MatchRankingTest {
   private static final String BIO_SPANISH = "Soy un ingeniero de software que trabaja en aprendizaje automático, inteligencia artificial y big data.";
   private static final String BIO_BAD_FORMAT = "haiiiiiiiii,,,,,,!!!    my name          is JOHN AND I LOVE COMPUTERSSSSSSssssssm!!";
   private static final String BIO_NUMBERS = "12346 234 132dfs 4adslfk92 113224";
+  private static final String BIO_FORWARD = "security is life";
+  private static final String BIO_BACKWARD = "life is security";
   private MatchRanking MATCH_RANKING;
   private Collection<String> allUserBios;
 
@@ -73,7 +75,7 @@ public final class MatchRankingTest {
   }
 
   @Test
-  public void scoreCalculation() {
+  public void longBioLowerScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
       savedMatchBios.add(BIO_A);
       savedMatchBios.add(BIO_B);
@@ -81,13 +83,145 @@ public final class MatchRankingTest {
 
       Collection<String> newMatchBios = new HashSet<String>();
       newMatchBios.add(BIO_LONG);
+      newMatchBios.add(BIO_E);
 
-      Map<String, Double> scores = MATCH_RANKING.scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
-      System.out.println(scores.toString() + "\n");
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+      expected.add(BIO_LONG);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
   }
 
-    //DO TESTS FOR LOTS OF WEIRD BIOS - save them as constants so that they can be reused
+  @Test
+  public void badBioLowerScore() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
 
-    //test 2 bios with same score
- 
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_BAD_FORMAT);
+      newMatchBios.add(BIO_E);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+      expected.add(BIO_BAD_FORMAT);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void wrongLanguageLowerScore() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_SPANISH);
+      newMatchBios.add(BIO_E);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+      expected.add(BIO_SPANISH);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void bioWithNoWordMatches() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_SHORT);
+      newMatchBios.add(BIO_E);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+      expected.add(BIO_SHORT);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void twoSameBio() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_E);
+      newMatchBios.add(BIO_E);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void emptyBioLast() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_E);
+      newMatchBios.add(BIO_EMPTY);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+      expected.add(BIO_EMPTY);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void numberBioLast() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_E);
+      newMatchBios.add(BIO_NUMBERS);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_E);
+      expected.add(BIO_NUMBERS);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void twoBiosSameScore() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_A);
+      savedMatchBios.add(BIO_B);
+      savedMatchBios.add(BIO_D);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_FORWARD);
+      newMatchBios.add(BIO_BACKWARD);
+
+      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      
+      //just check if contained because order doesn't matter
+      Assert.assertTrue(result.contains(BIO_FORWARD));
+      Assert.assertTrue(result.contains(BIO_BACKWARD));
+  }
+
 }

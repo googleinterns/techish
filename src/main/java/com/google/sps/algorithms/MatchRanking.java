@@ -28,7 +28,7 @@ public final class MatchRanking {
     /**
     * Function that takes the three bio collections and returns a map with each new user bio mapped to it's score.
     */
-    public Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+    private Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         //count words in all of the saved matches
         Map<String, Integer> savedMatchesWordCount = countWordInstances(savedMatchBios);
 
@@ -84,7 +84,7 @@ public final class MatchRanking {
     * Calculate the probability of generating a bio given a certain word count map.
     */
     private double calculateProbabilityGiven(String[] bioWords, Map<String, Integer> givenMap) {
-        double toReturn = 1.0;
+        double toReturn = 0.0;
 
         for(String word : bioWords) {
             Integer wordCount = givenMap.get(word);
@@ -92,7 +92,8 @@ public final class MatchRanking {
             //skip word if it is not in the given map
             if(wordCount != null) {
                 double wordCountDouble = wordCount.intValue();
-                toReturn *= (wordCountDouble / givenMap.size());
+                //take log to make large numbers easier to analyze
+                toReturn += Math.log(wordCountDouble / givenMap.size());
             }
         }
 
