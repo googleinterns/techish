@@ -53,11 +53,11 @@ function loadHome() {
                     if (link && logging) {
                         if (logStatus.loginUrl === "") {
                             link.setAttribute('href', logStatus.logoutUrl);
-                            link.innerHTML = 'Logout';
+                            link.innerHTML = 'Log Out';
                         }
                         else {
                             link.setAttribute('href', logStatus.loginUrl);
-                            link.innerHTML = 'Login';
+                            link.innerHTML = 'Log In';
                         }
                     }
                     return [2 /*return*/];
