@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//this is the initial brute-force algorithm to solve the problem. Once this works, I will refine & make the code more efficient.
 public final class MatchRanking {
 
     /**
@@ -18,7 +17,6 @@ public final class MatchRanking {
     */
     public List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
-
         return sortBiosByScore(newMatchScores);
     }
 
