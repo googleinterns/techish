@@ -44,9 +44,8 @@ public final class MatchRankingTest {
        newMatchBios.add(BIO_B);
        newMatchBios.add(BIO_C);
 
-       Map<String, Double> newBioScores = MATCH_RANKING.scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
-
-       System.out.println("MAP: " + newBioScores.toString());
+       List<String> results = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+       System.out.println("results: " + results);
 
   }
 

@@ -28,8 +28,20 @@ public final class MatchRanking {
     }
 
     public List<String> sortBiosByScore(Map<String, Double> newMatchScores) {
-        //TODO: implement this function
         List<String> orderedBios = new ArrayList<String>();
+        Object[] a = newMatchScores.entrySet().toArray();
+
+        Arrays.sort(a, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Map.Entry<String, Double>) o2).getValue()
+                        .compareTo(((Map.Entry<String, Double>) o1).getValue());
+            }
+        });
+
+        for (Object e : a) {
+        orderedBios.add(((Map.Entry<String, Double>) e).getKey());
+        }
+
         return orderedBios;
     }
 
