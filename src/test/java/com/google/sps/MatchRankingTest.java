@@ -70,7 +70,7 @@ public final class MatchRankingTest {
       expected.add(BIO_A);
       expected.add(BIO_B);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -89,7 +89,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_LONG);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -108,7 +108,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_BAD_FORMAT);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -127,7 +127,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_SPANISH);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -146,7 +146,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_SHORT);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -164,7 +164,7 @@ public final class MatchRankingTest {
       List<String> expected = new ArrayList<String>();
       expected.add(BIO_E);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -183,7 +183,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_EMPTY);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -202,7 +202,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_NUMBERS);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -217,7 +217,7 @@ public final class MatchRankingTest {
       newMatchBios.add(BIO_FORWARD);
       newMatchBios.add(BIO_BACKWARD);
 
-      List<String> result = MATCH_RANKING.query(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       
       //just check if contained because order doesn't matter
       Assert.assertTrue(result.contains(BIO_FORWARD));

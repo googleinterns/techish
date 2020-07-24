@@ -15,7 +15,7 @@ public final class MatchRanking {
     * returns a list of the new match bios in ranked order from highest to lowest score 
     * (higher score = more likely that the user will select it). 
     */
-    public static List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+    public static List<String> rankMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
         return sortBiosByScore(newMatchScores);
     }
