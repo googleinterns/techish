@@ -20,7 +20,7 @@ import java.util.Map;
 
 public final class AbuseDetection {
 
-    private Map <HttpServletRequest, LocalTime> mapOfRequests = new Map<HttpServletRequest, LocalTime>;
+    private HashMap <HttpServletRequest, LocalTime> mapOfRequests = new HashMap<HttpServletRequest, LocalTime>();
     private int requestCounter;
     private LocalTime time1;
     private LocalTime time2;
@@ -39,11 +39,10 @@ public final class AbuseDetection {
   *  10 requests per second then it responds to the user with an error. At the end of the function
   *  it returns a map of filtered requests.   
   */
-   public Collection<HttpServletRequest> AbuseDetection(mapOfRequests) throws IOException {
+   public Collection<HttpServletRequest> query(mapOfRequests) throws IOException {
         Collection<HttpServletRequest> filteredRequests = new ArrayList<>();
         int requestsSize = requests.size();
-        
-
+    
         for (Map.Entry currentRequest : mapOfRequests.entrySet()) {
             if(requestCounter > 9) {
                LocalTime currentTime = currentRequest.getKey();
