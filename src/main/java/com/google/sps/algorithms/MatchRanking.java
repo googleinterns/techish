@@ -15,7 +15,7 @@ public final class MatchRanking {
     * returns a list of the new match bios in ranked order from highest to lowest score 
     * (higher score = more likely that the user will select it). 
     */
-    public List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+    public static List<String> query(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
         return sortBiosByScore(newMatchScores);
     }
@@ -23,7 +23,7 @@ public final class MatchRanking {
     /**
     * Function that takes the three bio collections and returns a map with each new user bio mapped to it's score.
     */
-    private Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+    private static Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         //count words in all of the saved matches
         Map<String, Integer> savedMatchesWordCount = countWordInstances(savedMatchBios);
 
@@ -43,7 +43,7 @@ public final class MatchRanking {
     /**
     * Function that takes the map of bios and their scores and returns a list of the bios in sorted order from highest to lowest score.
     */
-    private List<String> sortBiosByScore(Map<String, Double> newMatchScores) {
+    private static List<String> sortBiosByScore(Map<String, Double> newMatchScores) {
         List<String> orderedBios = new ArrayList<String>();
         Object[] scoresArray = newMatchScores.entrySet().toArray();
 
@@ -65,12 +65,12 @@ public final class MatchRanking {
     * Function that takes a bio and maps of the word counts in saved bios and all bios, and returns the score for the 
     * bio as a double.
     */
-    private double calculateBioScore(String bio, Map<String, Integer> savedMatchesWordCount, Map<String, Integer> allUserWordCount) {
+    private static double calculateBioScore(String bio, Map<String, Integer> savedMatchesWordCount, Map<String, Integer> allUserWordCount) {
         //separate bio words by whitespace and store in an array
         String[] bioWords = bio.toLowerCase().split("\\W+");
 
-        double numerator = calculateProbabilityGiven(bioWords, savedMatchesWordCount);
-        double denominator = calculateProbabilityGiven(bioWords, allUserWordCount);
+        double numerator = calculateBioProbability(bioWords, savedMatchesWordCount);
+        double denominator = calculateBioProbability(bioWords, allUserWordCount);
 
         return (numerator/denominator);
     }
@@ -78,7 +78,7 @@ public final class MatchRanking {
     /**
     * Calculate the probability of generating a bio given a certain word count map.
     */
-    private double calculateProbabilityGiven(String[] bioWords, Map<String, Integer> givenMap) {
+    private static double calculateBioProbability(String[] bioWords, Map<String, Integer> givenMap) {
         double toReturn = 0.0;
 
         for(String word : bioWords) {
@@ -98,7 +98,7 @@ public final class MatchRanking {
     /**
     * Given a collection of bios as strings, return a map with counts of each word in bios.
     */
-    private Map<String, Integer> countWordInstances(Collection<String> allBios) {
+    private static Map<String, Integer> countWordInstances(Collection<String> allBios) {
         Map<String, Integer> wordCounts = new HashMap<String, Integer>();
 
         for(String bio : allBios) {
