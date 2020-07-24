@@ -1,9 +1,9 @@
-
 type authInfoFromServlet = {
     loginUrl: string;
     logoutUrl: string;
     hasProfile: boolean;
 };
+
 //function that loads the home page for logging in and logging out
 async function loadHome() {
     const logging = document.getElementById('navbarResponsive');
@@ -19,10 +19,10 @@ async function loadHome() {
     if (link && logging) {
         if (logStatus.loginUrl === "") {
             link.setAttribute('href', logStatus.logoutUrl);
-            link.innerHTML = 'Logout';
+            link.innerHTML = 'Log Out';
         } else {
             link.setAttribute('href', logStatus.loginUrl);
-            link.innerHTML = 'Login';
+            link.innerHTML = 'Log In';
         }
     }
 }

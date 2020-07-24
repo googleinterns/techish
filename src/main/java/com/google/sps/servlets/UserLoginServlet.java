@@ -54,7 +54,7 @@ public class UserLoginServlet extends HttpServlet {
         System.err.println("Exception has been caught " + e);
       }
     } else {
-      String loggedInUrl = userService.createLoginURL("/logged_in_homepage.html");
+      String loggedInUrl = userService.createLoginURL("/index.html");
    
     
       loginInfo.addProperty("LogInUrl", loggedInUrl);

@@ -1,10 +1,15 @@
-type authInfo = {
+type authInfoFromServlet = {
     loginUrl: string;
     logoutUrl: string;
+    hasProfile: boolean;
 };
 
+window.onload = () => {
+    loadMatches();
+}
+
 async function loadMatches() {
-    const logStatus = await getLogStatus();
+    const logStatus = await logStatusMethod();
 
     fetch('/matches')
         .then(response => response.json())
@@ -24,10 +29,10 @@ async function loadMatches() {
         });
 }
 
-async function getLogStatus(): Promise<authInfo> {
+async function logStatusMethod(): Promise<authInfoFromServlet> {
     const response = await fetch('/userapi');
     const currentStatus = await response.json();
-    let authStatus: authInfo = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl };
+    let authStatus: authInfoFromServlet = { loginUrl: currentStatus.LogInUrl, logoutUrl: currentStatus.LogOutUrl, hasProfile: currentStatus.HasProfile };
     return authStatus;
 }
 
