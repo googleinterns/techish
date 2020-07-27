@@ -146,6 +146,10 @@ function displayNewMatchPopup(matches) {
         var jsonString = JSON.stringify(match);
         var newOption = new Option(matchString, jsonString);
         newMatchContainer.add(newOption, undefined);
+        // const optionElement = document.createElement('option');
+        // optionElement.setAttribute("value", jsonString);
+        // optionElement.appendChild(createMatchElement(match));
+        // newMatchContainer.add(optionElement);
     }
 }
 /**

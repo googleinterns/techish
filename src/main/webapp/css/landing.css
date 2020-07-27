@@ -39,7 +39,7 @@ span.tags
 
 .new-match-select option {
     overflow: scroll;
-    width: 28em;
+    width: 29em;
     height: calc(1.5em + 0.75rem + 2px);
 }
 
