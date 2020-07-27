@@ -35,10 +35,13 @@ public final class AbuseDetection {
   
   /**
   * Constructor that initializes currentNumRequestsAllowed and timePeriod
+  * The timeValue represents the amount of seconds allowed for this interval.
+  * The requestsAllowed is the amount of requests that are being allowed
+  * during that timeValue interval.
   */
-  public AbuseDetection(long timeValue, int currentCounter) { 
+  public AbuseDetection(long timeValue, int requestsAllowed) { 
     this.timePeriod = timeValue;
-    this.currentNumRequestsAllowed = currentCounter;
+    this.currentNumRequestsAllowed = requestsAllowed;
   }
 
   /**
