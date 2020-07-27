@@ -40,25 +40,26 @@ public final class MatchRankingTest {
   private static final String BIO_NUMBERS = "12346 234 132dfs 4adslfk92 113224";
   private static final String BIO_FORWARD = "security is life";
   private static final String BIO_BACKWARD = "life is security";
-  private MatchRanking MATCH_RANKING;
   private Collection<String> allUserBios;
 
   @Before
   public void setup() {
       allUserBios = new HashSet<String>();
       allUserBios.add(BIO_A);
+      allUserBios.add(BIO_A_DOUBLED);
       allUserBios.add(BIO_B);
       allUserBios.add(BIO_C);
       allUserBios.add(BIO_D);
       allUserBios.add(BIO_E);
       allUserBios.add(BIO_LONG);
+      allUserBios.add(BIO_LONG_SECURITY);
       allUserBios.add(BIO_SHORT);
       allUserBios.add(BIO_EMPTY);
       allUserBios.add(BIO_SPANISH);
       allUserBios.add(BIO_BAD_FORMAT);
       allUserBios.add(BIO_NUMBERS);
-
-      MATCH_RANKING = new MatchRanking();
+      allUserBios.add(BIO_FORWARD);
+      allUserBios.add(BIO_BACKWARD);
   }
 
   @Test
@@ -75,12 +76,12 @@ public final class MatchRankingTest {
       expected.add(BIO_A);
       expected.add(BIO_B);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
   @Test
-  public void longBioLowerScore() {
+  public void testLongBio() {
       Collection<String> savedMatchBios = new HashSet<String>();
       savedMatchBios.add(BIO_A);
       savedMatchBios.add(BIO_B);
@@ -94,7 +95,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_LONG);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -113,7 +114,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_BAD_FORMAT);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -132,7 +133,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_SPANISH);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -151,7 +152,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_SHORT);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -169,7 +170,7 @@ public final class MatchRankingTest {
       List<String> expected = new ArrayList<String>();
       expected.add(BIO_E);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -188,7 +189,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_EMPTY);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -207,7 +208,7 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_NUMBERS);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -222,11 +223,10 @@ public final class MatchRankingTest {
       newMatchBios.add(BIO_FORWARD);
       newMatchBios.add(BIO_BACKWARD);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      Map<String, Double> matchScores = MatchRanking.getMatchScores(savedMatchBios, allUserBios, newMatchBios);
       
-      //just check if contained because order doesn't matter
-      Assert.assertTrue(result.contains(BIO_FORWARD));
-      Assert.assertTrue(result.contains(BIO_BACKWARD));
+      Assert.assertTrue(compareDoubles(matchScores.get(BIO_FORWARD), matchScores.get(BIO_BACKWARD)));
+      
   }
 
   @Test
@@ -245,7 +245,7 @@ public final class MatchRankingTest {
       expected.add(BIO_LONG_SECURITY);
       expected.add(BIO_A);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
@@ -259,9 +259,20 @@ public final class MatchRankingTest {
       newMatchBios.add(BIO_A);
       newMatchBios.add(BIO_A_DOUBLED);
 
-      Map<String, Double> matchScores = MATCH_RANKING.getMatchScores(savedMatchBios, allUserBios, newMatchBios);
+      Map<String, Double> matchScores = MatchRanking.getMatchScores(savedMatchBios, allUserBios, newMatchBios);
 
-      Assert.assertEquals(matchScores.get(BIO_A), matchScores.get(BIO_A_DOUBLED));
+      Assert.assertTrue(compareDoubles(matchScores.get(BIO_A), matchScores.get(BIO_A_DOUBLED)));
+  }
+
+  private static boolean compareDoubles(double d1, double d2) {
+    final double THRESHOLD = .0001;
+ 
+    if (Math.abs(d1 - d2) < THRESHOLD) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }
