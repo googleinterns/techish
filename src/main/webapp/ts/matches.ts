@@ -111,11 +111,6 @@ function displayNewMatchPopup(matches : Array<User>) {
     const jsonString : string = JSON.stringify(match);
     let newOption = new Option(matchString, jsonString);
     newMatchContainer.add(newOption, undefined);
-
-    // const optionElement = document.createElement('option');
-    // optionElement.setAttribute("value", jsonString);
-    // optionElement.appendChild(createMatchElement(match));
-    // newMatchContainer.add(optionElement);
   }
 }
 
