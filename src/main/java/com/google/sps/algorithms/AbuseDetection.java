@@ -60,11 +60,8 @@ public final class AbuseDetection {
 
             returnValue = true;
             requestCounter++;
-            System.out.println("Current Num: " + requestCounter);
-
         }
         else {
-            System.out.println("Current Num: " + requestCounter);
             for(Date currentDate : timesOfRequests) {
                 Instant instant = Instant.ofEpochMilli(currentDate.getTime());
                 LocalTime currentDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
@@ -84,12 +81,7 @@ public final class AbuseDetection {
         }
 
         return returnValue;
-        // keep track of dropped requests
-        // converting local time to date
-        // deleting requests after certain amount of seconds
-         
     
-        
   }
 
 }
