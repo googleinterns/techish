@@ -98,6 +98,8 @@ function matchToString(match) {
     toReturn += match.email;
     toReturn += "): ";
     toReturn += match.specialties;
+    toReturn += ". Bio: ";
+    toReturn += match.userBio;
     return toReturn;
 }
 function sendMatchRequest() {
@@ -158,10 +160,11 @@ var MatchRequest = /** @class */ (function () {
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(name, email, specialties) {
+    function User(name, email, specialties, userBio) {
         this.name = name;
         this.email = email;
         this.specialties = specialties;
+        this.userBio = userBio;
     }
     return User;
 }());

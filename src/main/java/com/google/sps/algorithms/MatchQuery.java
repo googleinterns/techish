@@ -36,6 +36,8 @@ public final class MatchQuery {
       return mentorMatches;
     }
 
+    //todo: validate potentialMentors are MENTORS not MENTEES (this is done by get specialties but it would be good to add an additional check)
+
     for(User potentialMentor : potentialMentors) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
 

@@ -122,6 +122,7 @@ public class PersistentUserRepository implements UserRepository {
     String company = user.getCompany();
     Collection<String> specialties = user.getSpecialties();
     String careerTitle = user.getOccupation();
+    String userBio = user.getBio();
 
     if(school != null) {
         userEntity.setProperty("school", school);  
@@ -141,6 +142,10 @@ public class PersistentUserRepository implements UserRepository {
     if(!specialties.isEmpty()) {
         userEntity.setProperty("specialties", specialties); 
     }
+
+    if(userBio != null) {
+        userEntity.setProperty("userBio", userBio);
+    }
     
     datastore.put(userEntity);
   }
@@ -157,6 +162,7 @@ public class PersistentUserRepository implements UserRepository {
         String company = (String) entity.getProperty("company");
         String occupation = (String) entity.getProperty("occupation");
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
+        String userBio = (String) entity.getProperty("userBio");
 
         User userObject = new User(name);
         if(id != null) {
@@ -183,6 +189,11 @@ public class PersistentUserRepository implements UserRepository {
         if(occupation != null) {
             userObject.setOccupation(occupation);
         }
+
+        if(userBio != null) {
+            userObject.setBio(userBio);
+        }
+
         userEntities.add(userObject);
     }
     return userEntities;

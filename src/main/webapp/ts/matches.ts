@@ -55,6 +55,8 @@ function matchToString(match: User) {
     toReturn += match.email;
     toReturn += "): ";
     toReturn += match.specialties;
+    toReturn += ". Bio: ";
+    toReturn += match.userBio;
     return toReturn;
 }
 
@@ -120,9 +122,11 @@ class User {
     name: string;
     email: string;
     specialties: string[];
-    constructor(name: string, email: string, specialties: string[]) {
+    userBio: string;
+    constructor(name: string, email: string, specialties: string[], userBio: string) {
         this.name = name;
         this.email = email;
         this.specialties = specialties;
+        this.userBio = userBio;
     }
 }

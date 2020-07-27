@@ -22,10 +22,12 @@ public final class User {
   private ProfileType userType;
   private String school;
   private Collection<String> specialties;
+  private String userBio;
 
   public User(String name) {
     this.name = name;
     specialties = new HashSet<String>();
+    userBio = "[Mentor did not add a bio]";
   }
   public String getName() {
       return name;
@@ -129,6 +131,14 @@ public final class User {
 
   public String getEmail() {
       return email;
+  }
+
+  public void setBio(String userBio) {
+      this.userBio = userBio;
+  }
+
+  public String getBio() {
+      return userBio;
   }
 
 }
