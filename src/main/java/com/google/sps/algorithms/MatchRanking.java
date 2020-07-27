@@ -10,6 +10,8 @@ import java.util.Map;
 
 public final class MatchRanking {
 
+    private static final double EPSILON = 0.000001;
+
     /**
     * Function takes collection of user's saved bios, all user bios, and new match bios and 
     * returns a list of the new match bios in ranked order from highest to lowest score 
@@ -84,11 +86,12 @@ public final class MatchRanking {
         for(String word : bioWords) {
             Integer wordCount = givenMap.get(word);
 
-            //skip word if it is not in the given map
             if(wordCount != null) {
                 double wordCountDouble = wordCount.intValue();
                 //take log to make large numbers easier to analyze
                 toReturn += Math.log(wordCountDouble / givenMap.size());
+            } else { //add epsilon value so that missing words don't impact probability
+                toReturn += EPSILON;
             }
         }
 
