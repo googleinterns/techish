@@ -61,11 +61,9 @@ public final class AbuseDetection {
 
             returnValue = true;
             requestCounter++;
-            System.out.println("Current num: " + requestCounter);
 
         }
         else {
-            System.out.println("ELSE) Current num: " + requestCounter);
 
             for(Date currentDate : timesOfRequests) {
                 Instant instant = Instant.ofEpochMilli(currentDate.getTime());
@@ -73,10 +71,8 @@ public final class AbuseDetection {
 
                 Duration timeDifference = Duration.between(currentDateTime, currentTime);
                 long difference = timeDifference.getSeconds();
-                System.out.println("The difference: " + difference);
                
                 long initialTimePeriod = timePeriod.getSeconds();
-                System.out.println("The initalTimeperiod: " + initialTimePeriod);
 
                
                 if(difference >= initialTimePeriod) {
