@@ -83,39 +83,6 @@ public final class AbuseDetectionTest {
     return value;
   }
   
-  public boolean addMidnightBoundaryRequests(AbuseDetection instance){
-    LocalTime inputTime = LocalTime.parse("23:59:55.010");
-    boolean value = instance.addRequest(inputTime);
-    
-    inputTime = LocalTime.parse("23:59:55.055");
-    value = instance.addRequest(inputTime);
-    
-    inputTime = LocalTime.parse("23:59:55.124");
-    value = instance.addRequest(inputTime);
-
-    inputTime = LocalTime.parse("23:59:55.231");
-    value = instance.addRequest(inputTime);
-
-    inputTime = LocalTime.parse("23:59:55.344");
-    value = instance.addRequest(inputTime);
-    
-    inputTime = LocalTime.parse("23:59:55.421");
-    value = instance.addRequest(inputTime);
-    
-    inputTime = LocalTime.parse("23:59:55.560");
-    value = instance.addRequest(inputTime);
-    
-    inputTime = LocalTime.parse("23:59:55.612");
-    value = instance.addRequest(inputTime);
-   
-    inputTime = LocalTime.parse("23:59:55.723");
-    value = instance.addRequest(inputTime);
-    
-    inputTime = LocalTime.parse("00:01:10.020");
-    value = instance.addRequest(inputTime);
-
-    return value;
-  }
 
    public boolean add20Requests(AbuseDetection instance){
     LocalTime inputTime = LocalTime.parse("18:19:21.000");
@@ -310,19 +277,10 @@ public final class AbuseDetectionTest {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue  = addRequestsNearMidnight(instance);
-    LocalTime inputTime = LocalTime.parse("00:21:20.020");
+    LocalTime inputTime = LocalTime.parse("00:21:01.020");
     boolean value = instance.addRequest(inputTime);
 
     Assert.assertEquals(false, value);
-  }
-  
-  @Test
-  public void addingRequestsDuringMidnightBoundaryTest() {
-    Duration currentDur = Duration.ofSeconds(1);
-    AbuseDetection instance = new AbuseDetection(currentDur, 10);
-    boolean value  = addMidnightBoundaryRequests(instance);
-   
-    Assert.assertEquals(true, value);
   }
 
   @Test
