@@ -62,6 +62,7 @@ public final class MatchRankingTest {
       allUserBios.add(BIO_BACKWARD);
   }
 
+  //bio A should have a higher score than bio B because both D and E have "security" in them
   @Test
   public void basicRanking() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -80,6 +81,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //the long bio should have a lower score because it has no words in common with the saved bios
   @Test
   public void testLongBio() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -98,7 +100,8 @@ public final class MatchRankingTest {
       List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
-
+  
+  //the bio with bad formatting should have a lower score because it has nothing in common with the saved bios
   @Test
   public void badBioLowerScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -118,6 +121,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //the bio in spanish should have a lower score because it has nothing in common with saved bios
   @Test
   public void wrongLanguageLowerScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -137,6 +141,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //the bio with no words matched should have a lower score because it has nothing in common with saved bios
   @Test
   public void bioWithNoWordMatches() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -156,6 +161,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //two bios that are the same should only be returned once
   @Test
   public void twoSameBio() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -174,6 +180,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //the empty bio should be ranked last because it should have a score of 0
   @Test
   public void emptyBioLast() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -193,6 +200,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //the bio with only numbers should be last because it has nothing in common with the saved bios
   @Test
   public void numberBioLast() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -212,6 +220,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //two bios with the same words should have the same scores
   @Test
   public void twoBiosSameScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -226,9 +235,9 @@ public final class MatchRankingTest {
       Map<String, Double> matchScores = MatchRanking.getMatchScores(savedMatchBios, allUserBios, newMatchBios);
       
       Assert.assertTrue(compareDoubles(matchScores.get(BIO_FORWARD), matchScores.get(BIO_BACKWARD)));
-      
   }
 
+  //a long bio that has the word "security" a lot should be ranked higher than the bio with "security" once
   @Test
   public void longBioLotsOfKeyword() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -249,6 +258,7 @@ public final class MatchRankingTest {
       Assert.assertEquals(expected, result);
   }
 
+  //compares two bios with the same words, but one with two of every word and makes sure that they have the same score
   @Test
   public void nthRootTest() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -264,15 +274,9 @@ public final class MatchRankingTest {
       Assert.assertTrue(compareDoubles(matchScores.get(BIO_A), matchScores.get(BIO_A_DOUBLED)));
   }
 
+  //helper method to compare doubles used in some tests
   private static boolean compareDoubles(double d1, double d2) {
-    final double THRESHOLD = .0001;
- 
-    if (Math.abs(d1 - d2) < THRESHOLD) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return (Math.abs(d1 - d2) < 0.0001);
   }
 
 }
