@@ -63,19 +63,35 @@ public class PersistentMatchRepository implements MatchRepository {
     matchA.addSpecialty("Database");
     matchA.setId("11");
     matchA.setEmail("scott@google.com");
+    matchA.setOccupation("Software Engineer");
+    matchA.setCompany("Google");
+    matchA.setBio("This is a fake profile for testing. Please do not contact!");
+
     User matchB = new User("Trevor Morgan");
     matchB.addSpecialty("Security");
     matchB.setId("22");
     matchB.setEmail("trevor@google.com");
+    matchB.setOccupation("Software Engineer");
+    matchB.setCompany("Instagram");
+    matchB.setBio("This is a fake profile for testing. Please do not contact!");
+
     User matchC = new User("Twila Singleton");
     matchC.addSpecialty("Graphics");
     matchC.setId("33");
     matchC.setEmail("twila@google.com");
+    matchC.setOccupation("Product Manager");
+    matchC.setCompany("Google");
+    matchC.setBio("This is a fake profile for testing. Please do not contact!");
+
     User matchD = new User("Rhonda Garrett");
     matchD.addSpecialty("DoS");
     matchD.addSpecialty("Security");
     matchD.setId("44");
     matchD.setEmail("rhonda@google.com");
+    matchD.setOccupation("Engineer");
+    matchD.setCompany("Microsoft");
+    matchD.setBio("This is a fake profile for testing. Please do not contact!");
+
     User testUser = new User("Test User");
     testUser.setId("000");
     testUser.setEmail("test@example.com");
