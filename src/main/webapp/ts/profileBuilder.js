@@ -51,7 +51,7 @@ function setForm(value) {
         }
     }
 }
-function redirectifLoggedOut() {
+function redirectIfLoggedOut() {
     return __awaiter(this, void 0, void 0, function () {
         var logStatus;
         return __generator(this, function (_a) {
@@ -86,5 +86,5 @@ function logStatusMethod() {
     });
 }
 window.onload = function () {
-    redirectifLoggedOut();
+    redirectIfLoggedOut();
 };

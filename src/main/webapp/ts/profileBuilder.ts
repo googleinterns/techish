@@ -9,7 +9,6 @@ function setForm(value: string) {
     const mentorForm = document.getElementById('Mentor');
     const userTypeButton = document.getElementById('user-input');
 
-  
     if(menteeForm && mentorForm && userTypeButton){
         if(value == 'Mentee') {
             menteeForm.setAttribute('style','display:block;');
@@ -24,7 +23,7 @@ function setForm(value: string) {
     }
 } 
 
-async function redirectifLoggedOut() {
+async function redirectIfLoggedOut() {
     const logStatus = await logStatusMethod();
     if(logStatus.loginUrl != "") {
         document.location.href = logStatus.loginUrl;
@@ -39,5 +38,5 @@ async function logStatusMethod(): Promise<authInfoFromServlet> {
 }
 
 window.onload = () => {
-    redirectifLoggedOut();
+    redirectIfLoggedOut();
 }
