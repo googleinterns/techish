@@ -27,7 +27,7 @@ public final class User {
   public User(String name) {
     this.name = name;
     specialties = new HashSet<String>();
-    userBio = "[Mentor did not add a bio]";
+    userBio = "[user did not add a bio]";
   }
   public String getName() {
       return name;
