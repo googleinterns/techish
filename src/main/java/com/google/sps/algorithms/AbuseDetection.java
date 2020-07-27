@@ -11,49 +11,82 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-
+import java.util.Date;
 
 
 public final class AbuseDetection {
 
-    private HashMap <HttpServletRequest, LocalTime> mapOfRequests = new HashMap<HttpServletRequest, LocalTime>();
-    private int requestCounter;
-    private LocalTime time1;
-    private LocalTime time2;
-    private HttpServletRequest requestResult;
+    // private Collection <LocalTime> timesOfRequests = new ArrayList<LocalTime>();
+    private Collection <Date> timesOfRequests = new ArrayList<Date>();
 
-  /** 
-  *  This method receives a request and adds it to the hashmap
+    private int requestCounter = 0;
+    private int requestsDropped = 0;
+
+    private final int currentNumRequestsAllowed;
+    private final long timePeriod;
+  
+  /**
+  * Constructor that initializes currentNumRequestsAllowed and timePeriod
   */
-  public void requestMade(HttpServletRequest request) {
-      LocalTime currentTime = LocalTime.now();
-      mapOfRequests.put(currentTime, request);
+  public AbuseDetection(long timeValue, int currentCounter) { 
+    this.timePeriod = timeValue;
+    this.currentNumRequestsAllowed = currentCounter;
   }
 
   /**
-  *  Function takes a Map of requests and local time, loops through them, and when it passes
-  *  10 requests per second then it responds to the user with an error. At the end of the function
-  *  it returns a map of filtered requests.   
+  *  Function takes a local time, tries to add requests only if there are not
+  *  more than the currentRequestsAllowed variable, and less than the 
+  *  timePeriod. If added the method returns true, if not it returns false.
   */
-   public Collection<HttpServletRequest> query(mapOfRequests) throws IOException {
-        Collection<HttpServletRequest> filteredRequests = new ArrayList<>();
-        int requestsSize = requests.size();
+   public boolean addRequest(LocalTime currentTime) {
+        Instant currentTimeToInstance =  currentTime.atDate(LocalDate.now()).
+        atZone(ZoneId.systemDefault()).toInstant();
+        Date timeToDate = Date.from(currentTimeToInstance);
     
-        for (Map.Entry currentRequest : mapOfRequests.entrySet()) {
-            if(requestCounter > 9) {
-               LocalTime currentTime = currentRequest.getKey();
-               HttpServletRequest currentKey = currentRequest.getValue();
+        boolean returnValue = false;
+        if(requestCounter < currentNumRequestsAllowed) {
+            timesOfRequests.add(timeToDate);
 
-               filteredRequests.add(currentKey);
-
-            }
+            returnValue = true;
             requestCounter++;
+            System.out.println("Current Num: " + requestCounter);
+
         }
-        return requestResult;
+        else {
+            System.out.println("Current Num: " + requestCounter);
+            for(Date currentDate : timesOfRequests) {
+                Instant instant = Instant.ofEpochMilli(currentDate.getTime());
+                LocalTime currentDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
+
+                Duration timeDifference = Duration.between(currentDateTime, currentTime);
+                long difference = timeDifference.getSeconds();
+
+                if(difference >= timePeriod) {
+                    timesOfRequests.remove(currentDate);
+                    requestsDropped++;
+                  
+                    timesOfRequests.add(timeToDate);
+                    returnValue = true;
+                    break;
+                }
+            }
+        }
+
+        return returnValue;
+        // keep track of dropped requests
+        // converting local time to date
+        // deleting requests after certain amount of seconds
+         
+    
+        
   }
 
 }
