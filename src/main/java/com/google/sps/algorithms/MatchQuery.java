@@ -8,8 +8,12 @@ import com.google.sps.data.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import java.util.*;
+
 
 public final class MatchQuery {
+  
+  private PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
 
   /**
   * This method takes a MatchRequest and a Collection of users that are already saved and returns 
@@ -17,14 +21,11 @@ public final class MatchQuery {
   * saved in the userSavedMatches collection.
   */
   public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches) {
-    //Access User Repository
-    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-
     return query(request, userSavedMatches, userRepository);
   }
 
   //overload of query allows UserRepository to be passed in for testing
-  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches, UserRepository userRepository) {
+  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches, PersistentUserRepository userRepository) {
       
     Collection<User> potentialMentors = userRepository.getAllUsers();
     Collection<User> mentorMatches = new ArrayList<User>();
@@ -44,7 +45,56 @@ public final class MatchQuery {
             mentorMatches.add(potentialMentor);
         }
     }
+
+    Collection<User> allUsers = userRepository.fetchUserProfiles();
+    List<User> rankedMatches = MatchRanking.rankMatches(userSavedMatches, allUsers, mentorMatches);
     
-    return mentorMatches;
+    return rankedMatches;
   }
+
+//   private Collection<User> rankMatches(Collection<User> newMatches, Collection<User> savedMatches) {
+//       //get all user bios
+//       Collection<User> allUsers = userRepository.fetchUserProfiles();
+//       Collection<String> allUserBios = new ArrayList<String>();
+//       for(User user : allUsers) {
+//           allUserBios.add(user.getBio());
+//       }
+
+//       //get saved bios
+//       Collection<String> savedUserBios = new ArrayList<String>();
+//       for(User user : savedMatches) {
+//           savedUserBios.add(user.getBio());
+//       }
+      
+//       //get new match bios
+//       Collection<String> newMatchBios = new ArrayList<String>();
+//       for(User user : newMatches) {
+//           newMatchBios.add(user.getBio());
+//       }
+
+//       //get ranking
+//       List<String> rankedBios = MatchRanking.rankMatches(savedUserBios, allUserBios, newMatchBios);
+
+//       //todo account for same bios
+//       Map<String, User> bioToUser = new HashMap<String, User>();
+//       for(User newMatch : newMatches) {
+          
+//           bioToUser.put(newMatch.getBio(), newMatch);
+//       }
+
+    
+//       //map bio to user then return the users
+      
+//       List<User> rankedUsers = new ArrayList<User>();
+//       for(String userBio : rankedBios) {
+//           rankedUsers.add(bioToUser.get(userBio));
+//       }
+    
+//       return rankedUsers;
+
+
+//   }
+
+
+
 }
