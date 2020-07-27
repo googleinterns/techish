@@ -19,7 +19,16 @@ public final class MatchRanking {
     */
     public static List<String> rankMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
+        // System.out.println("SCORES: " + newMatchScores.toString());
         return sortBiosByScore(newMatchScores);
+    }
+
+
+    /**
+    * Returns a map of bio scores - should only be used in testing. 
+    */
+    public static Map<String, Double> getMatchScores(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+        return scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
     }
 
     /**
@@ -65,7 +74,7 @@ public final class MatchRanking {
 
     /**
     * Function that takes a bio and maps of the word counts in saved bios and all bios, and returns the score for the 
-    * bio as a double.
+    * bio as a double. The score is the nth root of the regular score to normalize larger bios.
     */
     private static double calculateBioScore(String bio, Map<String, Integer> savedMatchesWordCount, Map<String, Integer> allUserWordCount) {
         //separate bio words by whitespace and store in an array
@@ -74,24 +83,33 @@ public final class MatchRanking {
         double numerator = calculateBioProbability(bioWords, savedMatchesWordCount);
         double denominator = calculateBioProbability(bioWords, allUserWordCount);
 
-        return (numerator/denominator);
+        //convert to whole number so that we can take nth root below
+        // long result = Math.round(numerator - denominator);
+        double result = numerator / denominator;
+
+        //if result == NaN, return 0
+        if(result != result) {
+            return 0.0;
+        }
+
+        double nthRoot = Math.pow(result, (1.0/bioWords.length));
+        return nthRoot;
     }
 
     /**
     * Calculate the probability of generating a bio given a certain word count map.
     */
     private static double calculateBioProbability(String[] bioWords, Map<String, Integer> givenMap) {
-        double toReturn = 0.0;
+        double toReturn = 1.0;
 
         for(String word : bioWords) {
             Integer wordCount = givenMap.get(word);
 
             if(wordCount != null) {
                 double wordCountDouble = wordCount.intValue();
-                //take log to make large numbers easier to analyze
-                toReturn += Math.log(wordCountDouble / givenMap.size());
-            } else { //add epsilon value so that missing words don't impact probability
-                toReturn += EPSILON;
+                toReturn *= (wordCountDouble / givenMap.size());
+            } else { //multiply by epsilon value so that missing words lower the score
+                toReturn *= EPSILON;
             }
         }
 
