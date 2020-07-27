@@ -31,16 +31,17 @@ public final class AbuseDetection {
     private int requestsDropped = 0;
 
     private final int currentNumRequestsAllowed;
-    private final long timePeriod;
+    private final Duration timePeriod;
   
   /**
   * Constructor that initializes currentNumRequestsAllowed and timePeriod
-  * The timeValue represents the amount of seconds allowed for this interval.
+  * The durationInSeconds represents the amount of seconds passed 
+  * in for this time interval of requests.
   * The requestsAllowed is the amount of requests that are being allowed
   * during that timeValue interval.
   */
-  public AbuseDetection(long timeValue, int requestsAllowed) { 
-    this.timePeriod = timeValue;
+  public AbuseDetection(Duration durationInSeconds, int requestsAllowed) { 
+    this.timePeriod = durationInSeconds;
     this.currentNumRequestsAllowed = requestsAllowed;
   }
 
@@ -60,19 +61,29 @@ public final class AbuseDetection {
 
             returnValue = true;
             requestCounter++;
+            System.out.println("Current num: " + requestCounter);
+
         }
         else {
+            System.out.println("ELSE) Current num: " + requestCounter);
+
             for(Date currentDate : timesOfRequests) {
                 Instant instant = Instant.ofEpochMilli(currentDate.getTime());
                 LocalTime currentDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
 
                 Duration timeDifference = Duration.between(currentDateTime, currentTime);
                 long difference = timeDifference.getSeconds();
+                System.out.println("The difference: " + difference);
+               
+                long initialTimePeriod = timePeriod.getSeconds();
+                System.out.println("The initalTimeperiod: " + initialTimePeriod);
 
-                if(difference >= timePeriod) {
+               
+                if(difference >= initialTimePeriod) {
                     timesOfRequests.remove(currentDate);
                     requestsDropped++;
-                  
+
+                    
                     timesOfRequests.add(timeToDate);
                     returnValue = true;
                     break;
@@ -81,7 +92,6 @@ public final class AbuseDetection {
         }
 
         return returnValue;
-    
   }
 
 }

@@ -3,6 +3,8 @@ package com.google.sps;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRequest;
 import com.google.sps.algorithms.AbuseDetection;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalTime;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,7 +15,6 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class AbuseDetectionTest {  
 
- 
   public boolean addMultipleRequests(AbuseDetection instance){
     LocalTime inputTime = LocalTime.parse("18:19:20.010");
     boolean value = instance.addRequest(inputTime);
@@ -47,6 +48,7 @@ public final class AbuseDetectionTest {
     
     return value;
   }
+
  public boolean addRequestsNearMidnight(AbuseDetection instance){
     LocalTime inputTime = LocalTime.parse("23:59:55.010");
     boolean value = instance.addRequest(inputTime);
@@ -76,6 +78,40 @@ public final class AbuseDetectionTest {
     value = instance.addRequest(inputTime);
     
     inputTime = LocalTime.parse("23:59:55.800");
+    value = instance.addRequest(inputTime);
+
+    return value;
+  }
+  
+  public boolean addMidnightBoundaryRequests(AbuseDetection instance){
+    LocalTime inputTime = LocalTime.parse("23:59:55.010");
+    boolean value = instance.addRequest(inputTime);
+    
+    inputTime = LocalTime.parse("23:59:55.055");
+    value = instance.addRequest(inputTime);
+    
+    inputTime = LocalTime.parse("23:59:55.124");
+    value = instance.addRequest(inputTime);
+
+    inputTime = LocalTime.parse("23:59:55.231");
+    value = instance.addRequest(inputTime);
+
+    inputTime = LocalTime.parse("23:59:55.344");
+    value = instance.addRequest(inputTime);
+    
+    inputTime = LocalTime.parse("23:59:55.421");
+    value = instance.addRequest(inputTime);
+    
+    inputTime = LocalTime.parse("23:59:55.560");
+    value = instance.addRequest(inputTime);
+    
+    inputTime = LocalTime.parse("23:59:55.612");
+    value = instance.addRequest(inputTime);
+   
+    inputTime = LocalTime.parse("23:59:55.723");
+    value = instance.addRequest(inputTime);
+    
+    inputTime = LocalTime.parse("00:01:10.020");
     value = instance.addRequest(inputTime);
 
     return value;
@@ -144,7 +180,7 @@ public final class AbuseDetectionTest {
    
     return value;
   }
-  public void add20RequestsOtherInterval(AbuseDetection instance) {
+  public boolean add20RequestsOtherInterval(AbuseDetection instance) {
     LocalTime inputTime = LocalTime.parse("18:19:23.000");
     boolean value = instance.addRequest(inputTime);
     
@@ -210,7 +246,8 @@ public final class AbuseDetectionTest {
   
   @Test
   public void addingOneTimeRequest() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     LocalTime inputTime = LocalTime.parse("18:19:20.010");
     boolean value = instance.addRequest(inputTime);
 
@@ -219,7 +256,8 @@ public final class AbuseDetectionTest {
 
   @Test
   public void addingMultipleRequestsGetFalse() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue = addMultipleRequests(instance);
     LocalTime inputTime = LocalTime.parse("18:19:20.901");
     boolean value = instance.addRequest(inputTime);
@@ -229,7 +267,8 @@ public final class AbuseDetectionTest {
 
   @Test
   public void addingMultipleRequestsGetTrue() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue = addMultipleRequests(instance);
     LocalTime inputTime = LocalTime.parse("18:19:21.012");
     boolean value = instance.addRequest(inputTime);
@@ -239,7 +278,8 @@ public final class AbuseDetectionTest {
 
   @Test
   public void requestOverSecondReturnsFalse() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue = addMultipleRequests(instance);
     LocalTime inputTime1 = LocalTime.parse("18:19:21.012");
     boolean curVal = instance.addRequest(inputTime1);
@@ -252,7 +292,8 @@ public final class AbuseDetectionTest {
 
   @Test
   public void requestOverSecondReturnsTrue() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue = addMultipleRequests(instance);
     LocalTime inputTime1 = LocalTime.parse("18:19:21.012");
     boolean curVal = instance.addRequest(inputTime1);
@@ -265,27 +306,38 @@ public final class AbuseDetectionTest {
   }
 
   @Test
-  public void addingRequestsNearMidnightTest() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
+  public void adding11RequestsNearMidnight() {
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue  = addRequestsNearMidnight(instance);
     LocalTime inputTime = LocalTime.parse("00:21:20.020");
     boolean value = instance.addRequest(inputTime);
 
     Assert.assertEquals(false, value);
   }
+  
+  @Test
+  public void addingRequestsDuringMidnightBoundaryTest() {
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
+    boolean value  = addMidnightBoundaryRequests(instance);
+   
+    Assert.assertEquals(true, value);
+  }
 
   @Test
   public void instance20RequestsReturnTrue() {
-    AbuseDetection instance = new AbuseDetection(2, 20);
+    Duration currentDur = Duration.ofSeconds(2);
+    AbuseDetection instance = new AbuseDetection(currentDur, 20);
     boolean returnValue  = add20Requests(instance);
 
-    
     Assert.assertEquals(true, returnValue);
   }
 
   @Test
   public void instance20RequestsReturnFalse() {
-    AbuseDetection instance = new AbuseDetection(2, 20);
+    Duration currentDur = Duration.ofSeconds(2);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
     boolean returnValue  = add20Requests(instance);
     LocalTime inputTime = LocalTime.parse("18:19:22.020");
     boolean value = instance.addRequest(inputTime);
@@ -293,14 +345,4 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(false, value);
   }
 
-  @Test
-  public void threeIntervalsTest() {
-    AbuseDetection instance = new AbuseDetection(1, 10);
-    boolean returnValue  = add20Requests(instance);
-    // boolean value  = add20RequestsOtherInterval(instance);
-
-    
-    
-    Assert.assertEquals(false, returnValue);
-  }
 }
