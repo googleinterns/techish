@@ -40,8 +40,8 @@ public final class AbuseDetection {
   * The requestsAllowed is the amount of requests that are being allowed
   * during that timeValue interval.
   */
-  public AbuseDetection(Duration durationInSeconds, int requestsAllowed) { 
-    this.timePeriod = durationInSeconds;
+  public AbuseDetection(Duration requestInterval, int requestsAllowed) { 
+    this.timePeriod = requestInterval;
     this.currentNumRequestsAllowed = requestsAllowed;
   }
 
