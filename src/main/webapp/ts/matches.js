@@ -85,20 +85,38 @@ function logStatusMethod() {
 }
 function createMatchElement(match) {
     var matchElement = document.createElement('li');
-    matchElement.className = 'match';
-    var nameElement = document.createElement('span');
-    nameElement.innerText = matchToString(match);
+    matchElement.className = 'list-group-item';
+    var emailElement = document.createElement("a");
+    emailElement.innerText = match.email;
+    emailElement.href = "mailto:" + match.email;
+    emailElement.target = "_blank";
+    var careerElement = document.createElement('i');
+    careerElement.innerText = "\n" + match.occupation + " at " + match.company;
+    var allSpecialtiesElement = document.createElement('p');
+    allSpecialtiesElement.innerText = "Specialties: ";
+    var specialties = match.specialties;
+    for (var index = 0; index < specialties.length; index++) {
+        var specialtyElement = document.createElement('span');
+        specialtyElement.className = "tags";
+        specialtyElement.innerText = specialties[index];
+        allSpecialtiesElement.appendChild(specialtyElement);
+    }
+    var bioElement = document.createElement('p');
+    bioElement.innerText = match.userBio;
+    var nameElement = document.createElement("a");
+    nameElement.innerText = match.name + ": ";
+    nameElement.title = match.name;
+    nameElement.appendChild(emailElement);
+    nameElement.appendChild(careerElement);
+    nameElement.appendChild(allSpecialtiesElement);
+    nameElement.appendChild(bioElement);
     matchElement.appendChild(nameElement);
     return matchElement;
 }
 function matchToString(match) {
     var toReturn = "";
     toReturn += match.name;
-    toReturn += " (";
-    toReturn += match.email;
-    toReturn += "): ";
-    toReturn += match.specialties;
-    toReturn += ". Bio: ";
+    toReturn += " (" + match.specialties + "): ";
     toReturn += match.userBio;
     return toReturn;
 }
@@ -160,11 +178,13 @@ var MatchRequest = /** @class */ (function () {
     return MatchRequest;
 }());
 var User = /** @class */ (function () {
-    function User(name, email, specialties, userBio) {
+    function User(name, email, specialties, userBio, title, company) {
         this.name = name;
         this.email = email;
         this.specialties = specialties;
         this.userBio = userBio;
+        this.occupation = title;
+        this.company = company;
     }
     return User;
 }());

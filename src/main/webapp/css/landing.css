@@ -27,3 +27,19 @@ html {
 .btn-learnmore:focus{
     box-shadow:0 0 0 .2rem #38044F
 }
+
+span.tags 
+{
+    background: #6b63ff;
+    border-radius: 2px;
+    color: #f5f5f5;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.new-match-select option {
+    overflow: scroll;
+    width: 28em;
+    height: calc(1.5em + 0.75rem + 2px);
+}
+

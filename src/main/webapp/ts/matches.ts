@@ -38,24 +38,46 @@ async function logStatusMethod(): Promise<authInfoFromServlet> {
 
 function createMatchElement(match: User) {
     const matchElement = document.createElement('li');
-    matchElement.className = 'match';
+    matchElement.className = 'list-group-item';
 
-    const nameElement = document.createElement('span');
-    nameElement.innerText = matchToString(match);
+    const emailElement = document.createElement("a");
+    emailElement.innerText = match.email;
+    emailElement.href = "mailto:" + match.email;
+    emailElement.target = "_blank";
+
+    const careerElement = document.createElement('i');
+    careerElement.innerText = "\n" + match.occupation + " at " + match.company;
+
+    const allSpecialtiesElement = document.createElement('p');
+    allSpecialtiesElement.innerText = "Specialties: ";
+
+    let specialties : string[] = match.specialties;
+    for(let index = 0; index < specialties.length; index++) {
+        const specialtyElement = document.createElement('span');
+        specialtyElement.className = "tags";
+        specialtyElement.innerText = specialties[index];
+        allSpecialtiesElement.appendChild(specialtyElement);
+    }
+
+    const bioElement = document.createElement('p');
+    bioElement.innerText = match.userBio;
+
+    const nameElement = document.createElement("a");
+    nameElement.innerText = match.name + ": ";
+    nameElement.title = match.name;
+    nameElement.appendChild(emailElement);
+    nameElement.appendChild(careerElement);
+    nameElement.appendChild(allSpecialtiesElement);
+    nameElement.appendChild(bioElement);
 
     matchElement.appendChild(nameElement);
-
     return matchElement;
 }
 
 function matchToString(match: User) {
     let toReturn : string = "";
     toReturn += match.name;
-    toReturn += " (";
-    toReturn += match.email;
-    toReturn += "): ";
-    toReturn += match.specialties;
-    toReturn += ". Bio: ";
+    toReturn += " (" + match.specialties + "): ";
     toReturn += match.userBio;
     return toReturn;
 }
@@ -123,10 +145,14 @@ class User {
     email: string;
     specialties: string[];
     userBio: string;
-    constructor(name: string, email: string, specialties: string[], userBio: string) {
+    occupation: string;
+    company: string;
+    constructor(name: string, email: string, specialties: string[], userBio: string, title: string, company: string) {
         this.name = name;
         this.email = email;
         this.specialties = specialties;
         this.userBio = userBio;
+        this.occupation = title;
+        this.company = company;
     }
 }
