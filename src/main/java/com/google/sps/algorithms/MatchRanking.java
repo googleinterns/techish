@@ -19,7 +19,6 @@ public final class MatchRanking {
     */
     public static List<String> rankMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
-        // System.out.println("SCORES: " + newMatchScores.toString());
         return sortBiosByScore(newMatchScores);
     }
 
@@ -61,7 +60,7 @@ public final class MatchRanking {
         Arrays.sort(scoresArray, new Comparator() {
             public int compare(Object o1, Object o2) {
                 return ((Map.Entry<String, Double>) o2).getValue()
-                        .compareTo(((Map.Entry<String, Double>) o1).getValue());
+                .compareTo(((Map.Entry<String, Double>) o1).getValue());
             }
         });
 
@@ -82,9 +81,6 @@ public final class MatchRanking {
 
         double numerator = calculateBioProbability(bioWords, savedMatchesWordCount);
         double denominator = calculateBioProbability(bioWords, allUserWordCount);
-
-        //convert to whole number so that we can take nth root below
-        // long result = Math.round(numerator - denominator);
         double result = numerator / denominator;
 
         //if result == NaN, return 0
@@ -112,7 +108,6 @@ public final class MatchRanking {
                 toReturn *= EPSILON;
             }
         }
-
         return toReturn;
     }
 
