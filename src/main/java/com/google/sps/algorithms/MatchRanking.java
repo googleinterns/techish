@@ -8,67 +8,78 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.sps.data.User;
+
 public final class MatchRanking {
 
     private static final double EPSILON = 0.000001;
 
     /**
-    * Function takes collection of user's saved bios, all user bios, and new match bios and 
-    * returns a list of the new match bios in ranked order from highest to lowest score 
-    * (higher score = more likely that the user will select it). 
+    * Function takes collection of user's saved matches, all users, and new match users and 
+    * returns a list of the new matches as users in ranked order from highest to lowest score 
+    * (higher score = more likely that the user will select it).
     */
-    public static List<String> rankMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
-        Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
-        return sortBiosByScore(newMatchScores);
+    public static List<User> rankMatches(Collection<User> savedMatches, Collection<User> allUsers, Collection<User> newMatches) {
+        Map<User, Double> newMatchScores = scoreNewMatches(savedMatches, allUsers, newMatches);
+        return sortUsersByScore(newMatchScores);
     }
 
 
     /**
-    * Returns a map of bio scores - should only be used in testing. 
+    * Returns a map of User scores - should only be used in testing. 
     */
-    public static Map<String, Double> getMatchScores(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
-        return scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
+    public static Map<User, Double> getMatchScores(Collection<User> savedMatches, Collection<User> allUsers, Collection<User> newMatches) {
+        return scoreNewMatches(savedMatches, allUsers, newMatches);
     }
 
     /**
-    * Function that takes the three bio collections and returns a map with each new user bio mapped to it's score.
+    * Function that takes the three User collections and returns a map with each new match mapped to its score.
     */
-    private static Map<String, Double> scoreNewMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
-        //count words in all of the saved matches
+    private static Map<User, Double> scoreNewMatches(Collection<User> savedMatches, Collection<User> allUsers, Collection<User> newMatches) {
+        Collection<String> savedMatchBios = new ArrayList<String>();
+        for(User user : savedMatches) {
+            savedMatchBios.add(user.getBio());
+        }
+
+        Collection<String> allUserBios = new ArrayList<String>();
+        for(User user : allUsers) {
+            allUserBios.add(user.getBio());
+        }
+
+        //count words in all of the saved match bios
         Map<String, Integer> savedMatchesWordCount = countWordInstances(savedMatchBios);
 
         //count words in all of the user bios
         Map<String, Integer> allUserWordCount = countWordInstances(allUserBios);
 
         //calculate score for each new match bio
-        Map<String, Double> newBioScores = new HashMap<String, Double>();
-        for(String newBio : newMatchBios) {
-            double bioScore = calculateBioScore(newBio, savedMatchesWordCount, allUserWordCount);
-            newBioScores.put(newBio, new Double(bioScore));
+        Map<User, Double> newMatchScores = new HashMap<User, Double>();
+        for(User newMatch : newMatches) {
+            double bioScore = calculateBioScore(newMatch.getBio(), savedMatchesWordCount, allUserWordCount);
+            newMatchScores.put(newMatch, new Double(bioScore));
         }
 
-        return newBioScores;
+        return newMatchScores;
     }
 
     /**
-    * Function that takes the map of bios and their scores and returns a list of the bios in sorted order from highest to lowest score.
+    * Function that takes the map of users to their scores and returns a list of the users in sorted order from highest to lowest score.
     */
-    private static List<String> sortBiosByScore(Map<String, Double> newMatchScores) {
-        List<String> orderedBios = new ArrayList<String>();
-        Object[] scoresArray = newMatchScores.entrySet().toArray();
+    private static List<User> sortUsersByScore(Map<User, Double> newMatchScores) {
+        List<User> orderedUsers = new ArrayList<User>();
+        Object[] matchArray = newMatchScores.entrySet().toArray();
 
-        Arrays.sort(scoresArray, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                return ((Map.Entry<String, Double>) o2).getValue()
-                .compareTo(((Map.Entry<String, Double>) o1).getValue());
-            }
+        Arrays.sort(matchArray, new Comparator() {
+          public int compare(Object o1, Object o2) {
+              return ((Map.Entry<User, Double>) o2).getValue().compareTo(((Map.Entry<User, Double>) o1).getValue());
+          }
         });
 
-        for (Object entry : scoresArray) {
-        orderedBios.add(((Map.Entry<String, Double>) entry).getKey());
+        for (Object entry : matchArray) {
+          orderedUsers.add(((Map.Entry<User, Double>) entry).getKey());
         }
 
-        return orderedBios;
+        return orderedUsers;
     }
 
     /**
