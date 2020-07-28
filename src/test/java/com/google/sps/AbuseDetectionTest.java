@@ -13,7 +13,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class AbuseDetectionTest {  
 
-  public void addMultipleRequests(AbuseDetection instance){
+  public void add10Requests(AbuseDetection instance){
     instance.addRequest(LocalTime.parse("18:19:20.010"));
     instance.addRequest(LocalTime.parse("18:19:20.112"));
     instance.addRequest(LocalTime.parse("18:19:20.115"));
@@ -26,7 +26,7 @@ public final class AbuseDetectionTest {
     instance.addRequest(LocalTime.parse("18:19:20.866"));
   }
 
-  public void addRequestsNearMidnight(AbuseDetection instance){
+  public void add10RequestsNearMidnight(AbuseDetection instance){
     instance.addRequest(LocalTime.parse("23:59:55.010"));
     instance.addRequest(LocalTime.parse("23:59:55.055"));
     instance.addRequest(LocalTime.parse("23:59:55.124"));
@@ -63,6 +63,9 @@ public final class AbuseDetectionTest {
     return value;
   }
 
+  /*
+  * 1 request is added. The timestamp is: 18:19:20.010.
+  */
   @Test
   public void addingOneTimeRequest() {
     Duration currentDur = Duration.ofSeconds(1);
@@ -74,11 +77,15 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(true, value);
   }
 
+  /*
+  * 10 Requests are added. First timestamp: 18:19:20.010. The
+  * Last Timestamp 18:19:20.866. 
+  */
   @Test
   public void addingMultipleRequestsGetFalse() {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
-    addMultipleRequests(instance);
+    add10Requests(instance);
     LocalTime inputTime = LocalTime.parse("18:19:20.901");
     boolean value = instance.addRequest(inputTime);
     // 10 requests were added since 18:19:20.010, thus the 11th within 
@@ -86,24 +93,30 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(false, value);
   }
 
-
+  /*
+  * 10 Requests are added. First timestamp: 18:19:20.010. The
+  * Last Timestamp 18:19:20.866. 
+  */
   @Test
   public void addingMultipleRequestsGetTrue() {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
-    addMultipleRequests(instance);
+    add10Requests(instance);
     LocalTime inputTime = LocalTime.parse("18:19:21.012");
     boolean value = instance.addRequest(inputTime);
     // 10 requests were added since 18:19:20.010, thus the 11th is not 
     // within a second, so it gets added, which returns true
     Assert.assertEquals(true, value);
   }
-
+  /*
+  * 10 Requests are added. First timestamp: 18:19:20.010. The
+  * Last Timestamp 18:19:20.866. 
+  */
   @Test
   public void requestOverSecondReturnsFalse() {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
-    addMultipleRequests(instance);
+    add10Requests(instance);
     LocalTime inputTime1 = LocalTime.parse("18:19:21.012");
     boolean curVal = instance.addRequest(inputTime1);
     LocalTime otherTime = LocalTime.parse("18:19:21.109");
@@ -114,12 +127,15 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(false, value);
   }
   
-
+  /*
+  * 10 Requests are added. First timestamp: 18:19:20.010. The
+  * Last Timestamp 18:19:20.866. 
+  */
   @Test
   public void requestOverSecondReturnsTrue() {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
-    addMultipleRequests(instance);
+    add10Requests(instance);
     LocalTime inputTime1 = LocalTime.parse("18:19:21.012");
     boolean curVal = instance.addRequest(inputTime1);
     LocalTime otherTime = LocalTime.parse("18:19:21.109");
@@ -133,11 +149,15 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(true, value);
   }
 
+  /*
+  * 10 Requests are added. First timestamp: 23:59:55.010. The
+  * Last Timestamp 23:59:55.800. 
+  */
   @Test
   public void adding11RequestsNearMidnight() {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
-    addRequestsNearMidnight(instance);
+    add10RequestsNearMidnight(instance);
     LocalTime inputTime = LocalTime.parse("00:01:01.020");
     boolean value = instance.addRequest(inputTime);
     // 10 Requests were added since 23:59:55.010, the 11th request isn't
@@ -145,6 +165,10 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(true, value);
   }
 
+  /*
+  * 20 Requests are added. First timestamp: 18:19:21.000. The
+  * Last Timestamp 18:19:21.900. 
+  */
   @Test
   public void instance20RequestsReturnTrue() {
     Duration currentDur = Duration.ofSeconds(2);
@@ -155,6 +179,10 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(true, returnValue);
   }
 
+ /*
+  * 20 Requests are added. First timestamp: 18:19:21.000. The
+  * Last Timestamp 18:19:21.900. 
+  */
   @Test
   public void instance20RequestsReturnFalse() {
     Duration currentDur = Duration.ofSeconds(2);
@@ -166,5 +194,4 @@ public final class AbuseDetectionTest {
     // 2 seconds so it returns false and doesn't get added
     Assert.assertEquals(false, value);
   }
-
 }
