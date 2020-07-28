@@ -47,10 +47,10 @@ public final class AbuseDetection {
    public boolean addRequest(LocalTime currentTime) {
         Instant currentTimeToInstance =  currentTime.atDate(LocalDate.now()).
         atZone(ZoneId.systemDefault()).toInstant();
-        Date timeToDate = Date.from(currentTimeToInstance);
+        Date datetime = Date.from(currentTimeToInstance);
     
         if(requestCounter < currentNumRequestsAllowed) {
-            timesOfRequests.add(timeToDate);
+            timesOfRequests.add(datetime);
             requestCounter++;
             return true;
         }
@@ -68,7 +68,7 @@ public final class AbuseDetection {
                     timesOfRequests.remove(currentDate);
                     requestsDropped++;
 
-                    timesOfRequests.add(timeToDate);
+                    timesOfRequests.add(datetime);
                     return true;
                 }
             }
