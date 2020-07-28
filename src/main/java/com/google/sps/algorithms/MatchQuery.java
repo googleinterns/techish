@@ -52,49 +52,4 @@ public final class MatchQuery {
     return rankedMatches;
   }
 
-//   private Collection<User> rankMatches(Collection<User> newMatches, Collection<User> savedMatches) {
-//       //get all user bios
-//       Collection<User> allUsers = userRepository.fetchUserProfiles();
-//       Collection<String> allUserBios = new ArrayList<String>();
-//       for(User user : allUsers) {
-//           allUserBios.add(user.getBio());
-//       }
-
-//       //get saved bios
-//       Collection<String> savedUserBios = new ArrayList<String>();
-//       for(User user : savedMatches) {
-//           savedUserBios.add(user.getBio());
-//       }
-      
-//       //get new match bios
-//       Collection<String> newMatchBios = new ArrayList<String>();
-//       for(User user : newMatches) {
-//           newMatchBios.add(user.getBio());
-//       }
-
-//       //get ranking
-//       List<String> rankedBios = MatchRanking.rankMatches(savedUserBios, allUserBios, newMatchBios);
-
-//       //todo account for same bios
-//       Map<String, User> bioToUser = new HashMap<String, User>();
-//       for(User newMatch : newMatches) {
-          
-//           bioToUser.put(newMatch.getBio(), newMatch);
-//       }
-
-    
-//       //map bio to user then return the users
-      
-//       List<User> rankedUsers = new ArrayList<User>();
-//       for(String userBio : rankedBios) {
-//           rankedUsers.add(bioToUser.get(userBio));
-//       }
-    
-//       return rankedUsers;
-
-
-//   }
-
-
-
 }
