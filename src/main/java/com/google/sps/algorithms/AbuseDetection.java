@@ -61,9 +61,13 @@ public final class AbuseDetection {
                 LocalTime requestIteratedInLocalTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
 
                 Duration timeDifference = Duration.between(requestIteratedInLocalTime, currentTime);
+                // get the timePeriod Duration as seconds
                 long sec = timePeriod.getSeconds();
+                // convert long to seconds
                 int seconds = (int) sec;
-
+                // checking first comparison to only execute inner if when the timeDifference
+                // is greater than timePeriod. Then, or set up checking seconds is
+                // less than the timeDifference.compareTo(timePeriod) for cases that pass around midnight
                 if(timeDifference.compareTo(timePeriod) > 0 || seconds < timeDifference.compareTo(timePeriod)) {
                     timesOfRequests.remove(requestTime);
                     requestsDropped++;
