@@ -25,9 +25,9 @@ public final class MatchQuery {
   }
 
   //overload of query allows UserRepository to be passed in for testing
-  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches, PersistentUserRepository userRepository) {
+  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches, UserRepository userRepository) {
       
-    Collection<User> potentialMentors = userRepository.getAllUsers();
+    Collection<User> allUsers = userRepository.getAllUsers();
     Collection<User> mentorMatches = new ArrayList<User>();
 
     String matchCriteria = request.getCriteria();
@@ -37,7 +37,7 @@ public final class MatchQuery {
       return mentorMatches;
     }
 
-    for(User potentialMentor : potentialMentors) {
+    for(User potentialMentor : allUsers) {
         Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
 
         //see if new mentor is not already saved AND contains correct criteria
@@ -46,7 +46,6 @@ public final class MatchQuery {
         }
     }
 
-    Collection<User> allUsers = userRepository.fetchUserProfiles();
     List<User> rankedMatches = MatchRanking.rankMatches(userSavedMatches, allUsers, mentorMatches);
     
     return rankedMatches;
