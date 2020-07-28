@@ -27,17 +27,30 @@ public final class AbuseDetectionTest {
   }
 
   public void add10RequestsNearMidnight(AbuseDetection instance){
-    instance.addRequest(LocalTime.parse("23:59:55.010"));
-    instance.addRequest(LocalTime.parse("23:59:55.055"));
-    instance.addRequest(LocalTime.parse("23:59:55.124"));
-    instance.addRequest(LocalTime.parse("23:59:55.231"));
-    instance.addRequest(LocalTime.parse("23:59:55.344"));
-    instance.addRequest(LocalTime.parse("23:59:55.421"));
-    instance.addRequest(LocalTime.parse("23:59:55.560"));
-    instance.addRequest(LocalTime.parse("23:59:55.612"));
-    instance.addRequest(LocalTime.parse("23:59:55.723"));
-    instance.addRequest(LocalTime.parse("23:59:55.800"));
+    instance.addRequest(LocalTime.parse("23:59:59.000"));
+    instance.addRequest(LocalTime.parse("23:59:59.065"));
+    instance.addRequest(LocalTime.parse("23:59:59.120"));
+    instance.addRequest(LocalTime.parse("23:59:59.260"));
+    instance.addRequest(LocalTime.parse("23:59:59.360"));
+    instance.addRequest(LocalTime.parse("23:59:59.590"));
+    instance.addRequest(LocalTime.parse("23:59:59.650"));
+    instance.addRequest(LocalTime.parse("23:59:59.740"));
+    instance.addRequest(LocalTime.parse("23:59:59.980"));
+    instance.addRequest(LocalTime.parse("00:00:00.000"));
   }
+  public void add10RequestsBeforeMidnight(AbuseDetection instance){
+    instance.addRequest(LocalTime.parse("23:59:59.000"));
+    instance.addRequest(LocalTime.parse("23:59:59.065"));
+    instance.addRequest(LocalTime.parse("23:59:59.120"));
+    instance.addRequest(LocalTime.parse("23:59:59.260"));
+    instance.addRequest(LocalTime.parse("23:59:59.360"));
+    instance.addRequest(LocalTime.parse("23:59:59.590"));
+    instance.addRequest(LocalTime.parse("23:59:59.650"));
+    instance.addRequest(LocalTime.parse("23:59:59.740"));
+    instance.addRequest(LocalTime.parse("23:59:59.930"));
+    instance.addRequest(LocalTime.parse("23:59:59.980"));
+  }
+
 
   public boolean add20Requests(AbuseDetection instance){
     instance.addRequest(LocalTime.parse("18:19:21.000"));
@@ -65,7 +78,7 @@ public final class AbuseDetectionTest {
 
   /*
   * 1 request is added. The timestamp is: 18:19:20.010.
-  */
+  */ 
   @Test
   public void addingOneTimeRequest() {
     Duration currentDur = Duration.ofSeconds(1);
@@ -108,6 +121,7 @@ public final class AbuseDetectionTest {
     // within a second, so it gets added, which returns true
     Assert.assertEquals(true, value);
   }
+
   /*
   * 10 Requests are added. First timestamp: 18:19:20.010. The
   * Last Timestamp 18:19:20.866. 
@@ -151,18 +165,32 @@ public final class AbuseDetectionTest {
 
   /*
   * 10 Requests are added. First timestamp: 23:59:55.010. The
-  * Last Timestamp 23:59:55.800. 
+  * Last Timestamp 00:00:00.000. 
   */
   @Test
   public void adding11RequestsNearMidnight() {
     Duration currentDur = Duration.ofSeconds(1);
     AbuseDetection instance = new AbuseDetection(currentDur, 10);
     add10RequestsNearMidnight(instance);
-    LocalTime inputTime = LocalTime.parse("00:01:01.020");
-    boolean value = instance.addRequest(inputTime);
-    // 10 Requests were added since 23:59:55.010, the 11th request isn't
-    // within a second so it can get added, and returns true
+    boolean value = instance.addRequest(LocalTime.parse("00:01:01.020"));
+    // 10 Requests were added since 23:59:55.010, the 11th request is
+    // within a second so it cannot get added, so it gets true
     Assert.assertEquals(true, value);
+  }
+
+  /*
+  * 10 Requests are added. First timestamp: 23:59:55.010. The
+  * Last Timestamp 23:59:59.980. 
+  */
+  @Test
+  public void adding11RequestsNearMidnightRequestGetsBlocked() {
+    Duration currentDur = Duration.ofSeconds(1);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
+    add10RequestsBeforeMidnight(instance);
+    boolean value = instance.addRequest(LocalTime.parse("00:00:00.020"));
+    // 10 Requests were added since 23:59:55.010, the 11th request is
+    // within a second so it cannot get added, so it gets false
+    Assert.assertEquals(false, value);
   }
 
   /*

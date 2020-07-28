@@ -61,7 +61,7 @@ public final class AbuseDetection {
                 LocalTime requestIteratedInLocalTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
 
                 Duration timeDifference = Duration.between(requestIteratedInLocalTime, currentTime);
-                long sec = timeDifference.getSeconds();
+                long sec = timePeriod.getSeconds();
                 int seconds = (int) sec;
 
                 if(timeDifference.compareTo(timePeriod) > 0 || seconds < timeDifference.compareTo(timePeriod)) {
