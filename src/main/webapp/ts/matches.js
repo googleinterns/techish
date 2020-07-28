@@ -57,8 +57,8 @@ function loadMatches() {
                         }
                         else {
                             //redirect to log in page from servlet because user is not logged in
-                            document.location.href = logStatus.loginUrl;
-                            alert("Please login or create an account.");
+                            document.location.href = "/index.html#learn-more";
+                            alert("This feature works for signed-in users. Click here to learn more.");
                         }
                     });
                     return [2 /*return*/];
@@ -146,10 +146,6 @@ function displayNewMatchPopup(matches) {
         var jsonString = JSON.stringify(match);
         var newOption = new Option(matchString, jsonString);
         newMatchContainer.add(newOption, undefined);
-        // const optionElement = document.createElement('option');
-        // optionElement.setAttribute("value", jsonString);
-        // optionElement.appendChild(createMatchElement(match));
-        // newMatchContainer.add(optionElement);
     }
 }
 /**
