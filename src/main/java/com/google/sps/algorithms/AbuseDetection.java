@@ -24,7 +24,6 @@ import java.util.Date;
 
 public final class AbuseDetection {
 
-    // private Collection <LocalTime> timesOfRequests = new ArrayList<LocalTime>();
     private Collection <Date> timesOfRequests = new ArrayList<Date>();
 
     private int requestCounter = 0;
