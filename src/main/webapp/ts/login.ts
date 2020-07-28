@@ -23,6 +23,7 @@ async function loadHome() {
         } else {
             link.setAttribute('href', logStatus.loginUrl);
             link.innerHTML = 'Log In';
+            
         }
     }
 }

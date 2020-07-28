@@ -44,8 +44,6 @@
     </header>
     <section>
       <div class="container">
-        <h3>Match History:</h3>
-        <ul id="match-history"></ul>
         <div class="form" id="matchForm">
           <form class="form-container" id="match_form">
             <h3>Get New Matches</h3>
@@ -70,6 +68,10 @@
           </form>
         </div>
         <hr>
+        <h3>Saved Matches</h3>
+        <p>Once you have a match saved, click their email to compose a message! The mentors do not see who matches with them to give the mentee the opportunity to reach out first.</p>
+        <ul id="match-history"></ul>
+        <hr>
         <!-- New Matches Popup -->
         <div class="modal fade" id="newMatchModal" tabindex="-1" role="dialog" aria-labelledby="newMatchModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -82,7 +84,7 @@
               </div>
               <div class="modal-body">
                 <form action="/matches" id="new_match_form" method="POST">
-                  <select  name="new-matches" id="new-matches" multiple>
+                  <select  name="new-matches" id="new-matches" class="new-match-select" multiple>
                     <!-- populated using JavaScript -->
                   </select>
                   <br/><br/>

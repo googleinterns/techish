@@ -127,6 +127,20 @@ public final class PersistentUserRepositoryTest {
   }
 
   @Test
+  public void userBioWrittenBack() throws Exception {
+    PersistentUserRepository repository = new PersistentUserRepository();
+    User userA = new User("Larry");
+    userA.setId("6655");
+    String bio = "I am an engineer at Google.";
+    userA.setBio(bio);
+    repository.addUser(userA);
+
+    Collection<User> allUsers = repository.getAllUsers();
+
+    Assert.assertEquals(bio, repository.fetchUserWithId("6655").getBio());
+  }
+
+  @Test
   public void removeUserThatExists() {
     PersistentUserRepository repository = new PersistentUserRepository();
     repository.addUser(USER_A);
