@@ -70,16 +70,14 @@ public final class AbuseDetection {
                 LocalTime currentDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
 
                 Duration timeDifference = Duration.between(currentDateTime, currentTime);
+                long sec = timeDifference.getSeconds();
+                int seconds = (int) sec;
                 int difference = timeDifference.compareTo(timePeriod);
-
-                long timePeriodlong = timePeriod.getSeconds();
-                int timePeriodInt = (int)timePeriodlong;
-               
-                if(difference >= timePeriodInt) {
+            
+                if(difference > 0 || seconds < difference) {
                     timesOfRequests.remove(currentDate);
                     requestsDropped++;
 
-    
                     timesOfRequests.add(timeToDate);
                     returnValue = true;
                     break;
