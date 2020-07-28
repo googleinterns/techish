@@ -1,10 +1,5 @@
 package com.google.sps.algorithms;
 
-import com.google.sps.data.MatchRepository;
-import com.google.sps.data.MatchRequest;
-import com.google.sps.data.PersistentUserRepository;
-import com.google.sps.data.User;
-import com.google.sps.data.UserRepository;
 import java.lang.Exception;
 import java.io.IOException; 
 import javax.servlet.annotation.WebServlet;
