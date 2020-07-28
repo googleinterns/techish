@@ -70,14 +70,13 @@ public final class MatchRanking {
         Object[] matchArray = newMatchScores.entrySet().toArray();
 
         Arrays.sort(matchArray, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                return ((Map.Entry<User, Double>) o2).getValue()
-                .compareTo(((Map.Entry<User, Double>) o1).getValue());
-            }
+          public int compare(Object o1, Object o2) {
+              return ((Map.Entry<User, Double>) o2).getValue().compareTo(((Map.Entry<User, Double>) o1).getValue());
+          }
         });
 
         for (Object entry : matchArray) {
-        orderedUsers.add(((Map.Entry<User, Double>) entry).getKey());
+          orderedUsers.add(((Map.Entry<User, Double>) entry).getKey());
         }
 
         return orderedUsers;
