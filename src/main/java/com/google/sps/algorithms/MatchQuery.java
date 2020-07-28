@@ -10,15 +10,14 @@ import java.util.Collection;
 import java.util.List;
 
 public final class MatchQuery {
-  
-  private PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-
+    
   /**
   * This method takes a MatchRequest and a Collection of users that are already saved and returns 
   * all Users in the User Repository that match the criteria in MatchRequest AND are not already
   * saved in the userSavedMatches collection.
   */
   public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches) {
+    PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
     return query(request, userSavedMatches, userRepository);
   }
 
