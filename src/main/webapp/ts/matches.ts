@@ -14,17 +14,17 @@ async function loadMatches() {
     fetch('/matches')
         .then(response => response.json())
         .then((matches) => {
-            if((logStatus.loginUrl === "") && (matches != null)) {
-            const matchListElement = document.getElementById('match-history')!;
-            matchListElement.innerHTML = "";
+            if ((logStatus.loginUrl === "") && (matches != null)) {
+                const matchListElement = document.getElementById('match-history')!;
+                matchListElement.innerHTML = "";
 
-            matches.forEach((match: User) => {
-                matchListElement.appendChild(createMatchElement(match));
-            })
+                matches.forEach((match: User) => {
+                    matchListElement.appendChild(createMatchElement(match));
+                })
             } else {
                 //redirect to log in page from servlet because user is not logged in
-                document.location.href = logStatus.loginUrl;
-                alert("Please login or create an account.");
+                document.location.href = "/index.html#learn-more";
+                alert("This feature works for signed-in users. Click here to learn more.");
             }
         });
 }
@@ -51,8 +51,8 @@ function createMatchElement(match: User) {
     const allSpecialtiesElement = document.createElement('p');
     allSpecialtiesElement.innerText = "Specialties: ";
 
-    let specialties : string[] = match.specialties;
-    for(let index = 0; index < specialties.length; index++) {
+    let specialties: string[] = match.specialties;
+    for (let index = 0; index < specialties.length; index++) {
         const specialtyElement = document.createElement('span');
         specialtyElement.className = "tags";
         specialtyElement.innerText = specialties[index];
@@ -75,7 +75,7 @@ function createMatchElement(match: User) {
 }
 
 function matchToString(match: User) {
-    let toReturn : string = "";
+    let toReturn: string = "";
     toReturn += match.name;
     toReturn += " (" + match.specialties + "): ";
     toReturn += match.userBio;
@@ -85,52 +85,52 @@ function matchToString(match: User) {
 function sendMatchRequest() {
     const specialty = (<HTMLInputElement>document.getElementById('specialty')).value;
 
-  // Create the request to send to the server using the data we collected from
-  // the web form.
-  const matchRequest = new MatchRequest(specialty);
+    // Create the request to send to the server using the data we collected from
+    // the web form.
+    const matchRequest = new MatchRequest(specialty);
 
-  queryServer(matchRequest).then((matches) => {
-      if(matches.length == 0) {
-        $('#noNewMatchModal').modal();
-      } else {
-        $('#newMatchModal').modal();
-        displayNewMatchPopup(matches);
-      }
-  });
+    queryServer(matchRequest).then((matches) => {
+        if (matches.length == 0) {
+            $('#noNewMatchModal').modal();
+        } else {
+            $('#newMatchModal').modal();
+            displayNewMatchPopup(matches);
+        }
+    });
 }
 
-function displayNewMatchPopup(matches : Array<User>) {
-  const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
+function displayNewMatchPopup(matches: Array<User>) {
+    const newMatchContainer = <HTMLSelectElement>document.getElementById('new-matches');
 
-  // clear out any old results
-  newMatchContainer.innerHTML = '';
+    // clear out any old results
+    newMatchContainer.innerHTML = '';
 
-  // add results to the page
-  for (const match of matches) {
-    const matchString : string = matchToString(match);
-    const jsonString : string = JSON.stringify(match);
-    let newOption = new Option(matchString, jsonString);
-    newMatchContainer.add(newOption, undefined);
-  }
+    // add results to the page
+    for (const match of matches) {
+        const matchString: string = matchToString(match);
+        const jsonString: string = JSON.stringify(match);
+        let newOption = new Option(matchString, jsonString);
+        newMatchContainer.add(newOption, undefined);
+    }
 }
 
 /**
  * Sends the match request to the server and get back the matches.
  */
 async function queryServer(matchRequest: MatchRequest) {
-  const json = JSON.stringify(matchRequest);
-  return fetch('/new-matches-query', {method: 'POST', body: json})
-      .then((response) => {
-        return response.json();
-      })
-      .then((users) => {
-        //convert range from json to User
-        const out : Array<User> = [];
-        users.forEach((range: User) => {
-          out.push(range);
+    const json = JSON.stringify(matchRequest);
+    return fetch('/new-matches-query', { method: 'POST', body: json })
+        .then((response) => {
+            return response.json();
+        })
+        .then((users) => {
+            //convert range from json to User
+            const out: Array<User> = [];
+            users.forEach((range: User) => {
+                out.push(range);
+            });
+            return out;
         });
-        return out;
-      });
 }
 
 class MatchRequest {
