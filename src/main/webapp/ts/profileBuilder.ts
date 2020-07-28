@@ -9,7 +9,7 @@ function setForm(value: string) {
             mentorForm.setAttribute('style','display:none;');
             userTypeButton.setAttribute('value','Mentee');
         }
-        else{
+        else {
             mentorForm.setAttribute('style','display:block;');
             menteeForm.setAttribute('style','display:none;');
             userTypeButton.setAttribute('value','Mentor');
