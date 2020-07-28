@@ -56,16 +56,16 @@ public final class AbuseDetection {
         }
         else {
 
-            for(Date currentDate : timesOfRequests) {
-                Instant instant = Instant.ofEpochMilli(currentDate.getTime());
-                LocalTime currentDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
+            for(Date requestTime : timesOfRequests) {
+                Instant instant = Instant.ofEpochMilli(requestTime.getTime());
+                LocalTime requestIteratedInLocalTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
 
-                Duration timeDifference = Duration.between(currentDateTime, currentTime);
+                Duration timeDifference = Duration.between(requestIteratedInLocalTime, currentTime);
                 long sec = timeDifference.getSeconds();
                 int seconds = (int) sec;
 
                 if(timeDifference.compareTo(timePeriod) > 0 || seconds < timeDifference.compareTo(timePeriod)) {
-                    timesOfRequests.remove(currentDate);
+                    timesOfRequests.remove(requestTime);
                     requestsDropped++;
 
                     timesOfRequests.add(datetime);
