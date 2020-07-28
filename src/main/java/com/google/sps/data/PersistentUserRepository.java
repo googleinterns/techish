@@ -48,18 +48,27 @@ public class PersistentUserRepository implements UserRepository {
     mentorA.addSpecialty("Machine Learning");
     mentorA.addSpecialty("Systems");
     mentorA.setEmail("kevin@gmail.com");
+    mentorA.setOccupation("Software Engineer");
+    mentorA.setCompany("Google");
+    mentorA.setBio("This is a fake profile for testing. Please do not contact!");
     mentorA.setId("12");
 
     User mentorB = new User("Mabel Mccabe");
     mentorB.addSpecialty("Electrical Engineering");
     mentorB.addSpecialty("Graphics");
     mentorB.setEmail("mabel@gmail.com");
+    mentorB.setOccupation("Product Manager");
+    mentorB.setCompany("Facebook");
+    mentorB.setBio("This is a fake profile for testing. Please do not contact!");
     mentorB.setId("23");
 
     User mentorC = new User("Julie Johnson");
     mentorC.addSpecialty("Machine Learning");
     mentorC.addSpecialty("Security");
     mentorC.setEmail("julie@gmail.com");
+    mentorC.setOccupation("Software Engineer");
+    mentorC.setCompany("Microsoft");
+    mentorC.setBio("This is a fake profile for testing. Please do not contact!");
     mentorC.setId("34");
 
     User mentorD = new User("John Smith");
@@ -67,6 +76,9 @@ public class PersistentUserRepository implements UserRepository {
     mentorD.addSpecialty("DoS");
     mentorD.addSpecialty("Database");
     mentorD.setEmail("john@gmail.com");
+    mentorD.setOccupation("Software Engineer");
+    mentorD.setCompany("Facebook");
+    mentorD.setBio("This is a fake profile for testing. Please do not contact!");
     mentorD.setId("56");
 
     User mentorE = new User("Bret Burton");
@@ -74,6 +86,9 @@ public class PersistentUserRepository implements UserRepository {
     mentorE.addSpecialty("Network");
     mentorE.addSpecialty("Graphics");
     mentorE.setEmail("bret@gmail.com");
+    mentorE.setOccupation("Manager");
+    mentorE.setCompany("Apple");
+    mentorE.setBio("This is a fake profile for testing. Please do not contact!");
     mentorE.setId("78");
 
 
@@ -122,6 +137,7 @@ public class PersistentUserRepository implements UserRepository {
     String company = user.getCompany();
     Collection<String> specialties = user.getSpecialties();
     String careerTitle = user.getOccupation();
+    String userBio = user.getBio();
 
     if(school != null) {
         userEntity.setProperty("school", school);  
@@ -141,6 +157,10 @@ public class PersistentUserRepository implements UserRepository {
     if(!specialties.isEmpty()) {
         userEntity.setProperty("specialties", specialties); 
     }
+
+    if(userBio != null) {
+        userEntity.setProperty("userBio", userBio);
+    }
     
     datastore.put(userEntity);
   }
@@ -157,6 +177,7 @@ public class PersistentUserRepository implements UserRepository {
         String company = (String) entity.getProperty("company");
         String occupation = (String) entity.getProperty("occupation");
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
+        String userBio = (String) entity.getProperty("userBio");
 
         User userObject = new User(name);
         if(id != null) {
@@ -183,6 +204,11 @@ public class PersistentUserRepository implements UserRepository {
         if(occupation != null) {
             userObject.setOccupation(occupation);
         }
+
+        if(userBio != null) {
+            userObject.setBio(userBio);
+        }
+
         userEntities.add(userObject);
     }
     return userEntities;
