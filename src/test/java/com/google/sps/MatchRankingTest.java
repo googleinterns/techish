@@ -17,6 +17,7 @@ import org.junit.runners.JUnit4;
 public final class MatchRankingTest {
 
   private static final String BIO_A = "Working in network security at Google.";
+  private static final String BIO_A_DOUBLED = "Working working in in network network security security at at google google.";
   private static final String BIO_B = "Securing RPC endpoints in cloud";
   private static final String BIO_C = "Serving frontend pages with low latency";
   private static final String BIO_D = "Android app security";
@@ -28,6 +29,10 @@ public final class MatchRankingTest {
   "spending vast amounts of personal time reading ahead in the textbook, watching tutorials, and creating my own programs for random small tasks that I thought of. I changed my major to CS before the end of freshman" +
   " year and I joined Women in Computing to gain exposure to the field. Last summer, during my internship at the Beckman Institute for Advanced Science and Technology, I was chosen as the intern who developed scripts " +
    "to analyze MRI data for my team’s project.";
+  private static final String BIO_LONG_SECURITY = "security security I love security security security security security I love security security security security security I love security security security security security " +
+  "security security I love security security security security security I love security security security security security I love security security security security security I love security security security security " +
+  "security security I love security security security security security I love security security security security security I love security security security security security I love security security security security " +
+  "security I love security security security security security I love security security security security security I love security security security security security I love security security security security security I love ";
   private static final String BIO_SHORT = "hi";
   private static final String BIO_EMPTY = "";
   private static final String BIO_SPANISH = "Soy un ingeniero de software que trabaja en aprendizaje automático, inteligencia artificial y big data.";
@@ -35,27 +40,29 @@ public final class MatchRankingTest {
   private static final String BIO_NUMBERS = "12346 234 132dfs 4adslfk92 113224";
   private static final String BIO_FORWARD = "security is life";
   private static final String BIO_BACKWARD = "life is security";
-  private MatchRanking MATCH_RANKING;
   private Collection<String> allUserBios;
 
   @Before
   public void setup() {
       allUserBios = new HashSet<String>();
       allUserBios.add(BIO_A);
+      allUserBios.add(BIO_A_DOUBLED);
       allUserBios.add(BIO_B);
       allUserBios.add(BIO_C);
       allUserBios.add(BIO_D);
       allUserBios.add(BIO_E);
       allUserBios.add(BIO_LONG);
+      allUserBios.add(BIO_LONG_SECURITY);
       allUserBios.add(BIO_SHORT);
       allUserBios.add(BIO_EMPTY);
       allUserBios.add(BIO_SPANISH);
       allUserBios.add(BIO_BAD_FORMAT);
       allUserBios.add(BIO_NUMBERS);
-
-      MATCH_RANKING = new MatchRanking();
+      allUserBios.add(BIO_FORWARD);
+      allUserBios.add(BIO_BACKWARD);
   }
 
+  //bio A should have a higher score than bio B because both D and E have "security" in them
   @Test
   public void basicRanking() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -70,12 +77,13 @@ public final class MatchRankingTest {
       expected.add(BIO_A);
       expected.add(BIO_B);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //the long bio should have a lower score because it has no words in common with the saved bios
   @Test
-  public void longBioLowerScore() {
+  public void testLongBio() {
       Collection<String> savedMatchBios = new HashSet<String>();
       savedMatchBios.add(BIO_A);
       savedMatchBios.add(BIO_B);
@@ -89,10 +97,11 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_LONG);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
-
+  
+  //the bio with bad formatting should have a lower score because it has nothing in common with the saved bios
   @Test
   public void badBioLowerScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -108,10 +117,11 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_BAD_FORMAT);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //the bio in spanish should have a lower score because it has nothing in common with saved bios
   @Test
   public void wrongLanguageLowerScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -127,10 +137,11 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_SPANISH);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //the bio with no words matched should have a lower score because it has nothing in common with saved bios
   @Test
   public void bioWithNoWordMatches() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -146,10 +157,11 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_SHORT);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //two bios that are the same should only be returned once
   @Test
   public void twoSameBio() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -164,10 +176,11 @@ public final class MatchRankingTest {
       List<String> expected = new ArrayList<String>();
       expected.add(BIO_E);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //the empty bio should be ranked last because it should have a score of 0
   @Test
   public void emptyBioLast() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -183,10 +196,11 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_EMPTY);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //the bio with only numbers should be last because it has nothing in common with the saved bios
   @Test
   public void numberBioLast() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -202,10 +216,11 @@ public final class MatchRankingTest {
       expected.add(BIO_E);
       expected.add(BIO_NUMBERS);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
       Assert.assertEquals(expected, result);
   }
 
+  //two bios with the same words should have the same scores
   @Test
   public void twoBiosSameScore() {
       Collection<String> savedMatchBios = new HashSet<String>();
@@ -217,11 +232,51 @@ public final class MatchRankingTest {
       newMatchBios.add(BIO_FORWARD);
       newMatchBios.add(BIO_BACKWARD);
 
-      List<String> result = MATCH_RANKING.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      Map<String, Double> matchScores = MatchRanking.getMatchScores(savedMatchBios, allUserBios, newMatchBios);
       
-      //just check if contained because order doesn't matter
-      Assert.assertTrue(result.contains(BIO_FORWARD));
-      Assert.assertTrue(result.contains(BIO_BACKWARD));
+      Assert.assertTrue(compareDoubles(matchScores.get(BIO_FORWARD), matchScores.get(BIO_BACKWARD)));
+  }
+
+  //a long bio that has the word "security" a lot should be ranked higher than the bio with "security" once
+  @Test
+  public void longBioLotsOfKeyword() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_D);
+      savedMatchBios.add(BIO_E);
+      savedMatchBios.add(BIO_FORWARD);
+      savedMatchBios.add(BIO_BACKWARD);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_A);
+      newMatchBios.add(BIO_LONG_SECURITY);
+
+      List<String> expected = new ArrayList<String>();
+      expected.add(BIO_LONG_SECURITY);
+      expected.add(BIO_A);
+
+      List<String> result = MatchRanking.rankMatches(savedMatchBios, allUserBios, newMatchBios);
+      Assert.assertEquals(expected, result);
+  }
+
+  //compares two bios with the same words, but one with two of every word and makes sure that they have the same score
+  @Test
+  public void nthRootTest() {
+      Collection<String> savedMatchBios = new HashSet<String>();
+      savedMatchBios.add(BIO_D);
+      savedMatchBios.add(BIO_E);
+
+      Collection<String> newMatchBios = new HashSet<String>();
+      newMatchBios.add(BIO_A);
+      newMatchBios.add(BIO_A_DOUBLED);
+
+      Map<String, Double> matchScores = MatchRanking.getMatchScores(savedMatchBios, allUserBios, newMatchBios);
+
+      Assert.assertTrue(compareDoubles(matchScores.get(BIO_A), matchScores.get(BIO_A_DOUBLED)));
+  }
+
+  //helper method to compare doubles used in some tests
+  private static boolean compareDoubles(double d1, double d2) {
+    return (Math.abs(d1 - d2) < 0.0001);
   }
 
 }

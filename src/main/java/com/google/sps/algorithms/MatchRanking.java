@@ -10,6 +10,8 @@ import java.util.Map;
 
 public final class MatchRanking {
 
+    private static final double EPSILON = 0.000001;
+
     /**
     * Function takes collection of user's saved bios, all user bios, and new match bios and 
     * returns a list of the new match bios in ranked order from highest to lowest score 
@@ -18,6 +20,14 @@ public final class MatchRanking {
     public static List<String> rankMatches(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
         Map<String, Double> newMatchScores = scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
         return sortBiosByScore(newMatchScores);
+    }
+
+
+    /**
+    * Returns a map of bio scores - should only be used in testing. 
+    */
+    public static Map<String, Double> getMatchScores(Collection<String> savedMatchBios, Collection<String> allUserBios, Collection<String> newMatchBios) {
+        return scoreNewMatches(savedMatchBios, allUserBios, newMatchBios);
     }
 
     /**
@@ -50,7 +60,7 @@ public final class MatchRanking {
         Arrays.sort(scoresArray, new Comparator() {
             public int compare(Object o1, Object o2) {
                 return ((Map.Entry<String, Double>) o2).getValue()
-                        .compareTo(((Map.Entry<String, Double>) o1).getValue());
+                .compareTo(((Map.Entry<String, Double>) o1).getValue());
             }
         });
 
@@ -63,7 +73,7 @@ public final class MatchRanking {
 
     /**
     * Function that takes a bio and maps of the word counts in saved bios and all bios, and returns the score for the 
-    * bio as a double.
+    * bio as a double. The score is the nth root of the regular score to normalize larger bios.
     */
     private static double calculateBioScore(String bio, Map<String, Integer> savedMatchesWordCount, Map<String, Integer> allUserWordCount) {
         //separate bio words by whitespace and store in an array
@@ -71,27 +81,34 @@ public final class MatchRanking {
 
         double numerator = calculateBioProbability(bioWords, savedMatchesWordCount);
         double denominator = calculateBioProbability(bioWords, allUserWordCount);
+        double result = numerator / denominator;
 
-        return (numerator/denominator);
+        //if result == NaN, return 0
+        if(result != result) {
+            return 0.0;
+        }
+
+        //take the nth root to normalize result so that there is no bias towards longer/shorter bios
+        double nthRoot = Math.pow(result, (1.0/bioWords.length));
+        return nthRoot;
     }
 
     /**
     * Calculate the probability of generating a bio given a certain word count map.
     */
     private static double calculateBioProbability(String[] bioWords, Map<String, Integer> givenMap) {
-        double toReturn = 0.0;
+        double toReturn = 1.0;
 
         for(String word : bioWords) {
             Integer wordCount = givenMap.get(word);
 
-            //skip word if it is not in the given map
             if(wordCount != null) {
                 double wordCountDouble = wordCount.intValue();
-                //take log to make large numbers easier to analyze
-                toReturn += Math.log(wordCountDouble / givenMap.size());
+                toReturn *= (wordCountDouble / givenMap.size());
+            } else { //multiply by epsilon value so that missing words lower the score
+                toReturn *= EPSILON;
             }
         }
-
         return toReturn;
     }
 
