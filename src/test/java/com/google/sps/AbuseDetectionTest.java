@@ -293,15 +293,15 @@ public final class AbuseDetectionTest {
     Assert.assertEquals(true, returnValue);
   }
 
-//   @Test
-//   public void instance20RequestsReturnFalse() {
-//     Duration currentDur = Duration.ofSeconds(2);
-//     AbuseDetection instance = new AbuseDetection(currentDur, 10);
-//     boolean returnValue  = add20Requests(instance);
-//     LocalTime inputTime = LocalTime.parse("18:19:22.020");
-//     boolean value = instance.addRequest(inputTime);
+  @Test
+  public void instance20RequestsReturnFalse() {
+    Duration currentDur = Duration.ofSeconds(2);
+    AbuseDetection instance = new AbuseDetection(currentDur, 10);
+    boolean returnValue  = add20Requests(instance);
+    LocalTime inputTime = LocalTime.parse("18:19:22.020");
+    boolean value = instance.addRequest(inputTime);
     
-//     Assert.assertEquals(false, value);
-//   }
+    Assert.assertEquals(false, value);
+  }
 
 }

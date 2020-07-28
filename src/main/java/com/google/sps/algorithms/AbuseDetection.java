@@ -72,9 +72,8 @@ public final class AbuseDetection {
                 Duration timeDifference = Duration.between(currentDateTime, currentTime);
                 long sec = timeDifference.getSeconds();
                 int seconds = (int) sec;
-                int difference = timeDifference.compareTo(timePeriod);
-            
-                if(difference > 0 || seconds < difference) {
+
+                if(timeDifference.compareTo(timePeriod) > 0 || seconds < timeDifference.compareTo(timePeriod)) {
                     timesOfRequests.remove(currentDate);
                     requestsDropped++;
 
