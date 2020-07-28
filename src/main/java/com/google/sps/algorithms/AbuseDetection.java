@@ -49,13 +49,10 @@ public final class AbuseDetection {
         atZone(ZoneId.systemDefault()).toInstant();
         Date timeToDate = Date.from(currentTimeToInstance);
     
-        boolean returnValue = false;
         if(requestCounter < currentNumRequestsAllowed) {
             timesOfRequests.add(timeToDate);
-
-            returnValue = true;
             requestCounter++;
-
+            return true;
         }
         else {
 
@@ -72,13 +69,12 @@ public final class AbuseDetection {
                     requestsDropped++;
 
                     timesOfRequests.add(timeToDate);
-                    returnValue = true;
-                    break;
+                    return true;
                 }
             }
         }
 
-        return returnValue;
+        return false;
   }
 
 }
