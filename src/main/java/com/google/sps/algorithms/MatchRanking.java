@@ -100,6 +100,7 @@ public final class MatchRanking {
             return 0.0;
         }
 
+        //take the nth root to normalize result so that there is no bias towards longer/shorter bios
         double nthRoot = Math.pow(result, (1.0/bioWords.length));
         return nthRoot;
     }
