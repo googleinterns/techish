@@ -7,9 +7,7 @@ import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import java.util.*;
-
+import java.util.List;
 
 public final class MatchQuery {
   
