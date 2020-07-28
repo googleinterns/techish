@@ -29,8 +29,8 @@ public final class AbuseDetection {
   
   /**
   * Constructor that initializes currentNumRequestsAllowed and timePeriod
-  * The durationInSeconds represents the amount of seconds passed 
-  * in for this time interval of requests.
+  * The requestInterval represents the amount of seconds passed in for
+  * this time interval of requests.
   * The requestsAllowed is the amount of requests that are being allowed
   * during that timeValue interval.
   */
