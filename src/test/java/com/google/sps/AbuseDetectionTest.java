@@ -25,8 +25,8 @@ public final class AbuseDetectionTest {
     AbuseDetection instance = new AbuseDetection(Duration.ofSeconds(1), 10);
     try {
         boolean value = instance.addRequest(df.parse("07-27 18:19:20.010"));
-            // 1 request since 18:19:20.010, since it's less than 10 the 
-            // request adds and thus returns true
+        // 1 request since 18:19:20.010, since it's less than 10 the 
+        // request adds and thus returns true
         Assert.assertEquals(true, value);
     } catch(Exception e){
         System.err.println("Exception handled: " + e);
