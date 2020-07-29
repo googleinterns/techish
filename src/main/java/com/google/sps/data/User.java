@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.sps.algorithms.MatchRanking;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
-
-import java.util.*;
+import java.util.Map;
 
 public final class User {
   public static enum ProfileType {
@@ -26,7 +26,6 @@ public final class User {
   private Collection<String> specialties;
   private String userBio;
   private Map<String, Integer> savedMatchWordCount;
-
 
   public User(String name) {
     this.name = name;
