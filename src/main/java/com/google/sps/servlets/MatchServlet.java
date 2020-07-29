@@ -69,8 +69,7 @@ public class MatchServlet extends HttpServlet {
           matchRepository.addMatch(userToAdd, newMatch);
 
           //add bio word count to current user
-        //   User currentUser = sessionContext.getLoggedInUser();
-        userToAdd.addNewBioToMapCount(newMatch.getBio());
+          userToAdd.addNewBioToMapCount(newMatch.getBio());
 
         }
       } else {
