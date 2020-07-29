@@ -14,11 +14,32 @@ function setForm(value: string) {
             menteeForm.setAttribute('style','display:block;');
             mentorForm.setAttribute('style','display:none;');
             userTypeButton.setAttribute('value','Mentee');
+            const menteeName = document.getElementById('name-input') as HTMLInputElement;
+            const menteeSchool = document.getElementById('school-input') as HTMLInputElement;
+            const menteeMajor = document.getElementById('major-input') as HTMLInputElement;
+            if(menteeName && menteeSchool && menteeMajor) {
+                menteeName.required = true;
+                menteeSchool.required = true;
+                menteeMajor.required = true;
+            }
         }
         else {
             mentorForm.setAttribute('style','display:block;');
             menteeForm.setAttribute('style','display:none;');
             userTypeButton.setAttribute('value','Mentor');
+
+            const mentorName = document.getElementById('profName-input') as HTMLInputElement;
+            const mentorCompany = document.getElementById('company-input') as HTMLInputElement;
+            const mentorCareerTitle = document.getElementById('careerTitle-input') as HTMLInputElement;
+            const mentorSpecialty = document.getElementById('specialty-input') as HTMLInputElement;
+            const mentorBio = document.getElementById('bio-input') as HTMLInputElement;
+            if(mentorName && mentorCompany && mentorCareerTitle && mentorSpecialty && mentorBio) {
+                mentorName.required = true;
+                mentorCompany.required = true;
+                mentorCareerTitle.required = true;
+                mentorSpecialty.required = true;
+                mentorBio.required = true;
+            }
         }
     }
 } 

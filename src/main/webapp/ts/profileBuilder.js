@@ -43,11 +43,31 @@ function setForm(value) {
             menteeForm.setAttribute('style', 'display:block;');
             mentorForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentee');
+            var menteeName = document.getElementById('name-input');
+            var menteeSchool = document.getElementById('school-input');
+            var menteeMajor = document.getElementById('major-input');
+            if (menteeName && menteeSchool && menteeMajor) {
+                menteeName.required = true;
+                menteeSchool.required = true;
+                menteeMajor.required = true;
+            }
         }
         else {
             mentorForm.setAttribute('style', 'display:block;');
             menteeForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentor');
+            var mentorName = document.getElementById('profName-input');
+            var mentorCompany = document.getElementById('company-input');
+            var mentorCareerTitle = document.getElementById('careerTitle-input');
+            var mentorSpecialty = document.getElementById('specialty-input');
+            var mentorBio = document.getElementById('bio-input');
+            if (mentorName && mentorCompany && mentorCareerTitle && mentorSpecialty && mentorBio) {
+                mentorName.required = true;
+                mentorCompany.required = true;
+                mentorCareerTitle.required = true;
+                mentorSpecialty.required = true;
+                mentorBio.required = true;
+            }
         }
     }
 }
