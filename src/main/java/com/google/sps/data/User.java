@@ -152,22 +152,24 @@ public final class User {
       return userBio;
   }
 
+  //adds word count of bio when user saves a new match
   public void addNewBioToMapCount(String newBio) {
-        String[] bioWords = newBio.toLowerCase().split("\\W+");
+    String[] bioWords = newBio.toLowerCase().split("\\W+");
             
-        //add each word in bio to map
-        for(String word : bioWords) {
-            if(savedMatchWordCount.containsKey(word)) {
-                Integer oldCount = savedMatchWordCount.get(word);
-                savedMatchWordCount.put(word, oldCount + 1); 
-            } else {
-                savedMatchWordCount.put(word, 1);
-            }
+    //add each word in bio to map
+    for(String word : bioWords) {
+        if(savedMatchWordCount.containsKey(word)) {
+            Integer oldCount = savedMatchWordCount.get(word);
+            savedMatchWordCount.put(word, oldCount + 1); 
+        } else {
+            savedMatchWordCount.put(word, 1);
         }
     }
+  }
 
-    public Map<String, Integer> getBioMap() {
-        return savedMatchWordCount;
-    }
+  //get the saved bio map for user
+  public Map<String, Integer> getBioMap() {
+    return savedMatchWordCount;
+  }
 
 }
