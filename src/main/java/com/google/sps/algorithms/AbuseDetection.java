@@ -1,11 +1,5 @@
 package com.google.sps.algorithms;
 
-import java.lang.Exception;
-import java.io.IOException; 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -29,7 +23,7 @@ public final class AbuseDetection {
   
   /**
   * Constructor that initializes currentNumRequestsAllowed and timePeriod
-  * The requestInterval represents the amount of seconds passed in for
+  * The requestInterval represents the time passed in for
   * this time interval of requests.
   * The requestsAllowed is the amount of requests that are being allowed
   * during that timeValue interval.
@@ -44,38 +38,29 @@ public final class AbuseDetection {
   *  more than the currentRequestsAllowed variable, and less than the 
   *  timePeriod. If added the method returns true, if not it returns false.
   */
-   public boolean addRequest(LocalTime currentTime) {
-        Instant currentTimeToInstance =  currentTime.atDate(LocalDate.now()).
-        atZone(ZoneId.systemDefault()).toInstant();
-        Date datetime = Date.from(currentTimeToInstance);
-    
+   public boolean addRequest(Date currentDate) {
+   
         if(requestCounter < currentNumRequestsAllowed) {
-            timesOfRequests.add(datetime);
+            timesOfRequests.add(currentDate);
             requestCounter++;
             return true;
         }
         else {
+            Date requestDate = timesOfRequests.iterator().next();
+          
+            long diffBetweenDates = currentDate.getTime() - requestDate.getTime();
+            Duration timeDifference = Duration.ofMillis(diffBetweenDates);
 
-            for(Date requestTime : timesOfRequests) {
-                Instant instant = Instant.ofEpochMilli(requestTime.getTime());
-                LocalTime requestIteratedInLocalTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
+            // checking first comparison to only execute inner if when the timeDifference
+            // is greater than timePeriod. 
+            if(timeDifference.compareTo(timePeriod) > 0)   {
+                timesOfRequests.remove(requestDate);
+                requestsDropped++;
 
-                Duration timeDifference = Duration.between(requestIteratedInLocalTime, currentTime);
-                // get the timePeriod Duration as seconds
-                long sec = timePeriod.getSeconds();
-                // convert long to seconds
-                int seconds = (int) sec;
-                // checking first comparison to only execute inner if when the timeDifference
-                // is greater than timePeriod. Then, or set up checking seconds is
-                // less than the timeDifference.compareTo(timePeriod) for cases that pass around midnight
-                if(timeDifference.compareTo(timePeriod) > 0 || seconds < timeDifference.compareTo(timePeriod)) {
-                    timesOfRequests.remove(requestTime);
-                    requestsDropped++;
-
-                    timesOfRequests.add(datetime);
-                    return true;
-                }
-            }
+                timesOfRequests.add(currentDate);
+                return true;
+            } 
+            
         }
 
         return false;
