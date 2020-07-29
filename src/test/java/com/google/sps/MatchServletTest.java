@@ -30,6 +30,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+
+import java.util.*;
+
 public class MatchServletTest {
 
     private HttpServletRequest request;
@@ -150,8 +153,8 @@ public class MatchServletTest {
 
     //count number of opening brackets in result string, which is equal to number of matches
     private int matchesInString(String result) {
-        int numMatches = (result.length() - result.replace("{", "").length());
-        return numMatches;
+        User[] userArray = gson.fromJson(result, User[].class);  
+        return userArray.length;
     }
 
 }

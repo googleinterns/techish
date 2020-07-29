@@ -33,7 +33,7 @@ public final class MatchRankingTest {
   private User user_forward = new User("");
   private User user_forward_repeat = new User("");
   private User user_backward = new User("");
-  private Collection<User> allUsers;
+//   private Collection<User> allUsers;
 
   @Before
   public void setup() {
@@ -79,31 +79,44 @@ public final class MatchRankingTest {
     user_backward.setBio("life is security");
     user_backward.setId("15y");
 
-    allUsers = new ArrayList<User>();
-    allUsers.add(user_a);
-    allUsers.add(user_a_doubled);
-    allUsers.add(user_b);
-    allUsers.add(user_c);
-    allUsers.add(user_d);
-    allUsers.add(user_e);
-    allUsers.add(user_long);
-    allUsers.add(user_long_security);
-    allUsers.add(user_short);
-    allUsers.add(user_empty);
-    allUsers.add(user_spanish);
-    allUsers.add(user_bad_format);
-    allUsers.add(user_numbers);
-    allUsers.add(user_forward);
-    allUsers.add(user_forward_repeat);
-    allUsers.add(user_backward);
+    // allUsers = new ArrayList<User>();
+    // allUsers.add(user_a);
+    // allUsers.add(user_a_doubled);
+    // allUsers.add(user_b);
+    // allUsers.add(user_c);
+    // allUsers.add(user_d);
+    // allUsers.add(user_e);
+    // allUsers.add(user_long);
+    // allUsers.add(user_long_security);
+    // allUsers.add(user_short);
+    // allUsers.add(user_empty);
+    // allUsers.add(user_spanish);
+    // allUsers.add(user_bad_format);
+    // allUsers.add(user_numbers);
+    // allUsers.add(user_forward);
+    // allUsers.add(user_forward_repeat);
+    // allUsers.add(user_backward);
+
+    // MatchRanking.addToAllUserWordCount(user_a.getBio());
+    // MatchRanking.addToAllUserWordCount(user_a_doubled.getBio());
+    // MatchRanking.addToAllUserWordCount(user_b.getBio());
+    // MatchRanking.addToAllUserWordCount(user_c.getBio());
+    // MatchRanking.addToAllUserWordCount(user_d.getBio());
+    // MatchRanking.addToAllUserWordCount(user_e.getBio());
+    // MatchRanking.addToAllUserWordCount(user_long.getBio());
+    // MatchRanking.addToAllUserWordCount(user_long_security.getBio());
   }
 
   //User A should have a higher score than User B because both D and E have "security" in them
   @Test
   public void basicRanking() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_d);
-      savedMatches.add(user_e);
+    //   Collection<User> savedMatches = new HashSet<User>();
+    //   savedMatches.add(user_d);
+    //   savedMatches.add(user_e);
+
+    User currentUser = new User("");
+    currentUser.addNewBioToMapCount(user_d.getBio());
+    currentUser.addNewBioToMapCount(user_e.getBio());
 
       Collection<User> newMatches = new HashSet<User>();
       newMatches.add(user_a);
@@ -113,17 +126,22 @@ public final class MatchRankingTest {
       expected.add(user_a);
       expected.add(user_b);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
+      List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
       Assert.assertEquals(expected, result);
   }
 
   //the long bio user should have a lower score because it has no words in common with the saved users
   @Test
   public void longBioTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+    //   Collection<User> savedMatches = new HashSet<User>();
+    //   savedMatches.add(user_a);
+    //   savedMatches.add(user_b);
+    //   savedMatches.add(user_d);
+
+    User currentUser = new User("");
+    currentUser.addNewBioToMapCount(user_a.getBio());
+    currentUser.addNewBioToMapCount(user_b.getBio());
+    currentUser.addNewBioToMapCount(user_d.getBio());
 
       Collection<User> newMatches = new HashSet<User>();
       newMatches.add(user_long);
@@ -133,203 +151,203 @@ public final class MatchRankingTest {
       expected.add(user_e);
       expected.add(user_long);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
+      List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
       Assert.assertEquals(expected, result);
   }
   
-  //the user with bad formatting should have a lower score because it has nothing in common with the saved users
-  @Test
-  public void badBioTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //the user with bad formatting should have a lower score because it has nothing in common with the saved users
+//   @Test
+//   public void badBioTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_bad_format);
-      newMatches.add(user_e);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_bad_format);
+//       newMatches.add(user_e);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_e);
-      expected.add(user_bad_format);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_e);
+//       expected.add(user_bad_format);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //the user in spanish should have a lower score because it has nothing in common with saved users
-  @Test
-  public void wrongLanguageTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //the user in spanish should have a lower score because it has nothing in common with saved users
+//   @Test
+//   public void wrongLanguageTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_spanish);
-      newMatches.add(user_e);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_spanish);
+//       newMatches.add(user_e);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_e);
-      expected.add(user_spanish);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_e);
+//       expected.add(user_spanish);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //the user with no words matched should have a lower score because it has nothing in common with saved users
-  @Test
-  public void shortBioTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //the user with no words matched should have a lower score because it has nothing in common with saved users
+//   @Test
+//   public void shortBioTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_short);
-      newMatches.add(user_e);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_short);
+//       newMatches.add(user_e);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_e);
-      expected.add(user_short);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_e);
+//       expected.add(user_short);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //two users that are the same should only be returned once
-  @Test
-  public void duplicateUserTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //two users that are the same should only be returned once
+//   @Test
+//   public void duplicateUserTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_e);
-      newMatches.add(user_e);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_e);
+//       newMatches.add(user_e);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_e);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_e);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //the empty user should be ranked last because it should have a score of 0
-  @Test
-  public void emptyBioTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //the empty user should be ranked last because it should have a score of 0
+//   @Test
+//   public void emptyBioTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_e);
-      newMatches.add(user_empty);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_e);
+//       newMatches.add(user_empty);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_e);
-      expected.add(user_empty);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_e);
+//       expected.add(user_empty);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //the user with only numbers should be last because it has nothing in common with the saved users
-  @Test
-  public void numberBioTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //the user with only numbers should be last because it has nothing in common with the saved users
+//   @Test
+//   public void numberBioTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_e);
-      newMatches.add(user_numbers);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_e);
+//       newMatches.add(user_numbers);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_e);
-      expected.add(user_numbers);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_e);
+//       expected.add(user_numbers);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //two users with the same words in their bios should have the same scores
-  @Test
-  public void sameWordsInBiosTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //two users with the same words in their bios should have the same scores
+//   @Test
+//   public void sameWordsInBiosTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_forward);
-      newMatches.add(user_backward);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_forward);
+//       newMatches.add(user_backward);
 
-      Map<User, Double> matchScores = MatchRanking.getMatchScores(savedMatches, allUsers, newMatches);
+//       Map<User, Double> matchScores = MatchRanking.getMatchScores(savedMatches, newMatches);
       
-      Assert.assertTrue(compareDoubles(matchScores.get(user_forward), matchScores.get(user_backward)));
-  }
+//       Assert.assertTrue(compareDoubles(matchScores.get(user_forward), matchScores.get(user_backward)));
+//   }
 
-  //two users with equal bios should have the same scores
-  @Test
-  public void equalBiosTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_a);
-      savedMatches.add(user_b);
-      savedMatches.add(user_d);
+//   //two users with equal bios should have the same scores
+//   @Test
+//   public void equalBiosTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_a);
+//       savedMatches.add(user_b);
+//       savedMatches.add(user_d);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_forward);
-      newMatches.add(user_forward_repeat);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_forward);
+//       newMatches.add(user_forward_repeat);
 
-      Map<User, Double> matchScores = MatchRanking.getMatchScores(savedMatches, allUsers, newMatches);
+//       Map<User, Double> matchScores = MatchRanking.getMatchScores(savedMatches, newMatches);
       
-      Assert.assertTrue(compareDoubles(matchScores.get(user_forward), matchScores.get(user_forward_repeat)));
-  }
+//       Assert.assertTrue(compareDoubles(matchScores.get(user_forward), matchScores.get(user_forward_repeat)));
+//   }
 
-  //a long user bio that has the word "security" a lot should be ranked higher than the user with "security" once
-  @Test
-  public void longBioWithKeywordTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_d);
-      savedMatches.add(user_e);
-      savedMatches.add(user_forward);
-      savedMatches.add(user_backward);
+//   //a long user bio that has the word "security" a lot should be ranked higher than the user with "security" once
+//   @Test
+//   public void longBioWithKeywordTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_d);
+//       savedMatches.add(user_e);
+//       savedMatches.add(user_forward);
+//       savedMatches.add(user_backward);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_a);
-      newMatches.add(user_long_security);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_a);
+//       newMatches.add(user_long_security);
 
-      List<User> expected = new ArrayList<User>();
-      expected.add(user_long_security);
-      expected.add(user_a);
+//       List<User> expected = new ArrayList<User>();
+//       expected.add(user_long_security);
+//       expected.add(user_a);
 
-      List<User> result = MatchRanking.rankMatches(savedMatches, allUsers, newMatches);
-      Assert.assertEquals(expected, result);
-  }
+//       List<User> result = MatchRanking.rankMatches(savedMatches, newMatches);
+//       Assert.assertEquals(expected, result);
+//   }
 
-  //compares two users with the same words, but one with two of every word and makes sure that they have the same score
-  @Test
-  public void nthRootTest() {
-      Collection<User> savedMatches = new HashSet<User>();
-      savedMatches.add(user_d);
-      savedMatches.add(user_e);
+//   //compares two users with the same words, but one with two of every word and makes sure that they have the same score
+//   @Test
+//   public void nthRootTest() {
+//       Collection<User> savedMatches = new HashSet<User>();
+//       savedMatches.add(user_d);
+//       savedMatches.add(user_e);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(user_a);
-      newMatches.add(user_a_doubled);
+//       Collection<User> newMatches = new HashSet<User>();
+//       newMatches.add(user_a);
+//       newMatches.add(user_a_doubled);
 
-      Map<User, Double> matchScores = MatchRanking.getMatchScores(savedMatches, allUsers, newMatches);
+//       Map<User, Double> matchScores = MatchRanking.getMatchScores(savedMatches, newMatches);
 
-      Assert.assertTrue(compareDoubles(matchScores.get(user_a), matchScores.get(user_a_doubled)));
-  }
+//       Assert.assertTrue(compareDoubles(matchScores.get(user_a), matchScores.get(user_a_doubled)));
+//   }
 
-  //helper method to compare doubles used in some tests
-  private static boolean compareDoubles(double d1, double d2) {
-    return (Math.abs(d1 - d2) < 0.0001);
-  }
+//   //helper method to compare doubles used in some tests
+//   private static boolean compareDoubles(double d1, double d2) {
+//     return (Math.abs(d1 - d2) < 0.0001);
+//   }
 
 }

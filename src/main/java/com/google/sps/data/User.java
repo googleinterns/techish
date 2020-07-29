@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.sps.algorithms.MatchRanking;
 import java.util.Collection;
 import java.util.HashSet;
 
+import java.util.*;
 
 public final class User {
   public static enum ProfileType {
@@ -23,12 +25,16 @@ public final class User {
   private String school;
   private Collection<String> specialties;
   private String userBio;
+  private Map<String, Integer> savedMatchWordCount;
+
 
   public User(String name) {
     this.name = name;
     specialties = new HashSet<String>();
     userBio = "[user did not add a bio]";
+    savedMatchWordCount = new HashMap<String, Integer>();
   }
+
   public String getName() {
       return name;
   }
@@ -135,10 +141,33 @@ public final class User {
 
   public void setBio(String userBio) {
       this.userBio = userBio;
+
+      //update map that counts every user bio word in MatchRanking
+      if(userBio != null) {
+          MatchRanking.addToAllUserWordCount(userBio);
+      }
   }
 
   public String getBio() {
       return userBio;
   }
+
+  public void addNewBioToMapCount(String newBio) {
+        String[] bioWords = newBio.toLowerCase().split("\\W+");
+            
+        //add each word in bio to map
+        for(String word : bioWords) {
+            if(savedMatchWordCount.containsKey(word)) {
+                Integer oldCount = savedMatchWordCount.get(word);
+                savedMatchWordCount.put(word, oldCount + 1); 
+            } else {
+                savedMatchWordCount.put(word, 1);
+            }
+        }
+    }
+
+    public Map<String, Integer> getBioMap() {
+        return savedMatchWordCount;
+    }
 
 }
