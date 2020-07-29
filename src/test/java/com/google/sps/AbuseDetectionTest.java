@@ -80,7 +80,7 @@ public final class AbuseDetectionTest {
         Assert.assertEquals(true, instance.addRequest(df.parse("7-27 23:59:59.650")));
         Assert.assertEquals(true, instance.addRequest(df.parse("7-27 23:59:59.740")));
         Assert.assertEquals(true, instance.addRequest(df.parse("7-27 23:59:59.860")));
-        Assert.assertEquals(true, instance.addRequest(df.parse("7-27 00:00:59.900")));
+        Assert.assertEquals(true, instance.addRequest(df.parse("7-27 23:59:59.900")));
     
         // 10 Requests were added since 23:59:55.010, the 11th request is within a second so it cannot get added, so it gets true
         Assert.assertEquals(true, instance.addRequest(df.parse("7-28 00:00:00.010")));
