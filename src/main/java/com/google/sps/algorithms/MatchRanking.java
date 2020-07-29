@@ -1,5 +1,6 @@
 package com.google.sps.algorithms;
 
+import com.google.sps.data.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,15 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.sps.data.User;
-
 public final class MatchRanking {
 
     private static final double EPSILON = 0.000001;
     private static Map<String, Integer> allUserWordCount = new HashMap<String, Integer>();
 
     /**
-    * Function takes collection of user's saved matches, all users, and new match users and 
+    * Function takes user's saved matches word count map and new match users and 
     * returns a list of the new matches as users in ranked order from highest to lowest score 
     * (higher score = more likely that the user will select it).
     */
@@ -34,25 +33,10 @@ public final class MatchRanking {
     }
 
     /**
-    * Function that takes the three User collections and returns a map with each new match mapped to its score.
+    * Function that returns a map with each new match mapped to its score.
     */
     private static Map<User, Double> scoreNewMatches(Map<String, Integer> savedMatchesWordCount, Collection<User> newMatches) {
-        // Collection<String> savedMatchBios = new ArrayList<String>();
-        // for(User user : savedMatches) {
-        //     savedMatchBios.add(user.getBio());
-        // }
-
-        // Collection<String> allUserBios = new ArrayList<String>();
-        // for(User user : allUsers) {
-        //     allUserBios.add(user.getBio());
-        // }
-
-        //count words in all of the saved match bios
-        // Map<String, Integer> savedMatchesWordCount = countWordInstances(savedMatchBios);
-
-        //count words in all of the user bios
-        // Map<String, Integer> allUserWordCount = countWordInstances(allUserBios);
-
+        
         //calculate score for each new match bio
         Map<User, Double> newMatchScores = new HashMap<User, Double>();
         for(User newMatch : newMatches) {
@@ -64,7 +48,7 @@ public final class MatchRanking {
     }
 
     /**
-    * Function that takes the map of users to their scores and returns a list of the users in sorted order from highest to lowest score.
+    * Function that returns a list of the users in sorted order from highest to lowest score.
     */
     private static List<User> sortUsersByScore(Map<User, Double> newMatchScores) {
         List<User> orderedUsers = new ArrayList<User>();
@@ -151,21 +135,10 @@ public final class MatchRanking {
     * Called everytime a user adds a new bio, this updates the private map storing word counts for all users.
     */
     public static void addToAllUserWordCount(String newBio) {
-         addNewBioToMapCount(newBio, allUserWordCount);
-
-        // String[] bioWords = newBio.toLowerCase().split("\\W+");
-            
-        // //add each word in bio to map
-        // for(String word : bioWords) {
-        //     if(allUserWordCount.containsKey(word)) {
-        //         Integer oldCount = allUserWordCount.get(word);
-        //         allUserWordCount.put(word, oldCount + 1); 
-        //     } else {
-        //         allUserWordCount.put(word, 1);
-        //     }
-        // }
+        addNewBioToMapCount(newBio, allUserWordCount);
     }
 
+    //overload of addToAllUserWordCount for testing
     public static void addNewBioToMapCount(String newBio, Map<String, Integer> countMap) {
         String[] bioWords = newBio.toLowerCase().split("\\W+");
             
