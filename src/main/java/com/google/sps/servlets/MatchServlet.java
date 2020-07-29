@@ -48,10 +48,8 @@ public class MatchServlet extends HttpServlet {
   public boolean analyzeRequest(HttpServletRequest request) {
     SimpleDateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
     Date currentDate = new Date();
-    System.out.println(currentDate);
 
     boolean value = instance.addRequest(currentDate);
-    System.out.println(value);
     
     return value;
   }
