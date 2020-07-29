@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 
-public final class AbuseDetection {
+public class AbuseDetection {
 
     private Collection <Date> timesOfRequests = new ArrayList<Date>();
 

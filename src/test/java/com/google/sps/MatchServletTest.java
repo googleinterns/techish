@@ -8,6 +8,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.gson.Gson;
+import com.google.sps.algorithms.AbuseDetection;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.PersistentMatchRepository;
 import com.google.sps.data.PersistentUserRepository;
@@ -18,6 +19,7 @@ import com.google.sps.servlets.MatchServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Duration;
 import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,7 @@ public class MatchServletTest {
     private MatchServlet matchServlet;
     private SessionContext sessionContext;
     private PersistentMatchRepository matchRepository;
+    private AbuseDetection abuseFeature;
 
     private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -50,6 +53,7 @@ public class MatchServletTest {
         request = Mockito.mock(HttpServletRequest.class); 
         response = Mockito.mock(HttpServletResponse.class);
         sessionContext = Mockito.mock(SessionContext.class);
+        abuseFeature = Mockito.mock(AbuseDetection.class);
 
         userRepository = PersistentUserRepository.getInstance();
         matchRepository = PersistentMatchRepository.getInstance();
@@ -131,6 +135,41 @@ public class MatchServletTest {
         matchServlet.doPost(request, response);
 
         verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
+    }
+
+    @Test
+    public void doGetRequestReturnMatches() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
+        Collection<User> matches = matchRepository.getMatchesForUser(testUser);
+        String expected = gson.toJson(matches);
+    
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+
+        Assert.assertEquals(expected, result);
+    }
+    @Test
+    public void doGetRequestReturnError() throws IOException, ServletException {
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+        doGetHelper(request, response, matchServlet);
+    
+        //call doGet
+        String result = doGetHelper(request, response, matchServlet);
+
+        verify(response, times(1)).sendRedirect("/index.html");
     }
 
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)

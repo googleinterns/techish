@@ -4,6 +4,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.sps.algorithms.AbuseDetection;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.PersistentMatchRepository;
 import com.google.sps.data.PersistentUserRepository;
@@ -11,8 +12,11 @@ import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -28,6 +32,8 @@ public class MatchServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
+  private AbuseDetection instance = new AbuseDetection(Duration.ofSeconds(1), 10);
+
 
   @Override
   public void init(ServletConfig config) throws ServletException {
@@ -38,9 +44,21 @@ public class MatchServlet extends HttpServlet {
   public void testOnlySetContext(SessionContext sessionContext) {
     this.sessionContext = sessionContext;
   }
+  // method to analyze the request
+  public boolean analyzeRequest(HttpServletRequest request) {
+    SimpleDateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
+    Date currentDate = new Date();
+    System.out.println(currentDate);
+
+    boolean value = instance.addRequest(currentDate);
+    System.out.println(value);
+    
+    return value;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
     Gson gson = new Gson();
     response.setContentType("application/json;");
 
@@ -49,8 +67,24 @@ public class MatchServlet extends HttpServlet {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
-        response.getWriter().println(gson.toJson(matches));
+        // calling analyze request 
+        boolean value = analyzeRequest(request);
+        // if true, means the request was passed
+        if(value) {
+            Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
+            response.getWriter().println(gson.toJson(matches));
+        }
+        // request did not pass
+        else {
+            System.err.println("Error too many requests, so request couldn't be added");
+            // print out alert
+            System.out.println("<script type=\"text/javascript\">");
+            System.out.println("alert('Too many requests, so request could not be processed');");
+            System.out.println("location='MatchServlet.java';");
+            System.out.println("</script>");
+            // redirect bc it doesn't work
+            response.sendRedirect("/index.html");
+        }
     }
   }
 
