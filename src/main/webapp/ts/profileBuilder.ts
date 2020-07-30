@@ -22,6 +22,9 @@ function setForm(value: string) {
                 menteeSchool.required = true;
                 menteeMajor.required = true;
             }
+            else{
+                console.error("Required forms failed for mentee form");
+            }
         }
         else {
             mentorForm.setAttribute('style','display:block;');
@@ -39,6 +42,9 @@ function setForm(value: string) {
                 mentorCareerTitle.required = true;
                 mentorSpecialty.required = true;
                 mentorBio.required = true;
+            }
+            else{
+                console.error("Required forms failed for mentor form");
             }
         }
     }
