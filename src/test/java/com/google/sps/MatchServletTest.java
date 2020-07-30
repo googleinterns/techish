@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collection;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,6 +63,7 @@ public class MatchServletTest {
         gson = new Gson();
         matchServlet = new MatchServlet();
         matchServlet.testOnlySetContext(sessionContext);
+        matchServlet.testOnlySetAbuseDetection(abuseFeature);
     }
 
     @After
@@ -73,6 +75,8 @@ public class MatchServletTest {
     public void doGet_returnMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         Collection<User> matches = matchRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
@@ -86,6 +90,9 @@ public class MatchServletTest {
     @Test
     public void doGet_UserNotLoggedIn() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(false);
+       
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
+
         String expected = gson.toJson(null);
         String result = doGetHelper(request, response, matchServlet);
         Assert.assertEquals(expected, result);
@@ -95,6 +102,8 @@ public class MatchServletTest {
     public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+        when(matchServlet.analyzeTimeOfRequest(request)).thenReturn(true);
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         //First doGet Call
         String result = doGetHelper(request, response, matchServlet);
@@ -130,6 +139,7 @@ public class MatchServletTest {
     public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
         String[] nullMatches = null;
         when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
         matchServlet.doPost(request, response);
@@ -141,6 +151,8 @@ public class MatchServletTest {
     public void doGetRequestReturnMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+        when(matchServlet.analyzeTimeOfRequest(request)).thenReturn(true);
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         Collection<User> matches = matchRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
@@ -150,24 +162,15 @@ public class MatchServletTest {
 
         Assert.assertEquals(expected, result);
     }
+
     @Test
     public void doGetRequestReturnError() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
-        doGetHelper(request, response, matchServlet);
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
     
         //call doGet
-        String result = doGetHelper(request, response, matchServlet);
+        matchServlet.doGet(request, response);
 
         verify(response, times(1)).sendRedirect("/errorPage.html");
     }
@@ -178,6 +181,7 @@ public class MatchServletTest {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(printWriter);
+
 
         matchServlet.doGet(request, response);
 

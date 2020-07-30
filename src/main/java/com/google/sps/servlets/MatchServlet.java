@@ -32,7 +32,7 @@ public class MatchServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
-  private AbuseDetection abuseDetectionFeature = new AbuseDetection(Duration.ofSeconds(1), 10);
+  private AbuseDetection abuseDetectionFeature;
 
 
   @Override
@@ -44,6 +44,13 @@ public class MatchServlet extends HttpServlet {
   public void testOnlySetContext(SessionContext sessionContext) {
     this.sessionContext = sessionContext;
   }
+
+
+  //method to override AbuseDetectionFeature with Mock FOR TESTING        
+  public void testOnlySetAbuseDetection(AbuseDetection abuseFeature) {
+    this.abuseDetectionFeature = abuseFeature;
+  }
+
 
   // method to create a Date object containing the Date and Time 
   // the request comes in, then passes that into addRequest, which
