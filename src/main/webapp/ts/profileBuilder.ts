@@ -9,9 +9,8 @@ function setForm(value: string) {
     const mentorForm = document.getElementById('Mentor');
     const userTypeButton = document.getElementById('user-input');
 
-    const menteeFormInputs = document.querySelectorAll("[id='mentee']");
-
-    const mentorFormInputs = document.querySelectorAll("[id='mentor']");
+    const menteeInputs:string[] = ['name-input','school-input', 'major-input' ];
+    const mentorInputs:string[] =['profName-input','company-input','careerTitle-input', 'bio-input', 'specialty-input']
 
     if (menteeForm && mentorForm && userTypeButton) {
         if (value == 'Mentee') {
@@ -19,9 +18,9 @@ function setForm(value: string) {
             mentorForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentee');
 
-            if (menteeFormInputs && mentorFormInputs) {
-                setRequiredInputs(menteeFormInputs, true);
-                setRequiredInputs(mentorFormInputs, false);
+            if (menteeInputs && mentorInputs) {
+                setRequiredInputs(menteeInputs, true);
+                setRequiredInputs(mentorInputs, false);
             }
             else {
                 console.error("Required forms failed for mentee form");
@@ -32,9 +31,9 @@ function setForm(value: string) {
             menteeForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentor');
 
-            if (menteeFormInputs && mentorFormInputs) {
-                setRequiredInputs(mentorFormInputs, true);
-                setRequiredInputs(menteeFormInputs, false);
+            if (mentorInputs && menteeInputs) {
+                setRequiredInputs(mentorInputs, true);
+                setRequiredInputs(menteeInputs, false);
             }
             else {
                 console.error("Required forms failed for mentor form");
@@ -45,7 +44,8 @@ function setForm(value: string) {
 
 function setRequiredInputs(elements: any, boolValue: boolean) {
     for(let i= 0; i < elements.length; i++){
-        elements[i].required = boolValue;
+        const currentElement = document.getElementById(elements[i]) as HTMLInputElement;
+        currentElement.required = boolValue;
     }
 
 }

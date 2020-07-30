@@ -38,16 +38,16 @@ function setForm(value) {
     var menteeForm = document.getElementById('Mentee');
     var mentorForm = document.getElementById('Mentor');
     var userTypeButton = document.getElementById('user-input');
-    var menteeFormInputs = document.querySelectorAll("[id='mentee']");
-    var mentorFormInputs = document.querySelectorAll("[id='mentor']");
+    var menteeInputs = ['name-input', 'school-input', 'major-input'];
+    var mentorInputs = ['profName-input', 'company-input', 'careerTitle-input', 'bio-input', 'specialty-input'];
     if (menteeForm && mentorForm && userTypeButton) {
         if (value == 'Mentee') {
             menteeForm.setAttribute('style', 'display:block;');
             mentorForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentee');
-            if (menteeFormInputs && mentorFormInputs) {
-                setRequiredInputs(menteeFormInputs, true);
-                setRequiredInputs(mentorFormInputs, false);
+            if (menteeInputs && mentorInputs) {
+                setRequiredInputs(menteeInputs, true);
+                setRequiredInputs(mentorInputs, false);
             }
             else {
                 console.error("Required forms failed for mentee form");
@@ -57,9 +57,9 @@ function setForm(value) {
             mentorForm.setAttribute('style', 'display:block;');
             menteeForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentor');
-            if (menteeFormInputs && mentorFormInputs) {
-                setRequiredInputs(mentorFormInputs, true);
-                setRequiredInputs(menteeFormInputs, false);
+            if (mentorInputs && menteeInputs) {
+                setRequiredInputs(mentorInputs, true);
+                setRequiredInputs(menteeInputs, false);
             }
             else {
                 console.error("Required forms failed for mentor form");
@@ -69,7 +69,8 @@ function setForm(value) {
 }
 function setRequiredInputs(elements, boolValue) {
     for (var i = 0; i < elements.length; i++) {
-        elements[i].required = boolValue;
+        var currentElement = document.getElementById(elements[i]);
+        currentElement.required = boolValue;
     }
 }
 function redirectIfLoggedOut() {
