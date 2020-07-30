@@ -18,4 +18,6 @@ public interface UserRepository {
 
   //method to add fake users for testing and for MVP demo
   public void addFakeMentors();
+
+  public User fetchUserWithId(String id);
 }

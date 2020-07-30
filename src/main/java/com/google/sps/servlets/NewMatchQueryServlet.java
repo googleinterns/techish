@@ -45,7 +45,7 @@ public class NewMatchQueryServlet extends HttpServlet {
 
     // Find the possible matches.
     MatchQuery matchQuery = new MatchQuery();
-    Collection<User> answer = matchQuery.query(sessionContext.getLoggedInUser(), matchRequest, userSavedMatches);
+    Collection<User> answer = matchQuery.query(currentUser, matchRequest, userSavedMatches);
 
     // Convert the answer to JSON
     String jsonResponse = gson.toJson(answer);

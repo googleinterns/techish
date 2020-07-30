@@ -68,8 +68,9 @@ public class MatchServlet extends HttpServlet {
           User newMatch = new Gson().fromJson(matchName, User.class);
           matchRepository.addMatch(userToAdd, newMatch);
 
-          //add bio word count to current user
-          userToAdd.addNewBioToMapCount(newMatch.getBio());
+        //   System.out.println("above save user: " + newMatch.getBio());
+        //   //add bio word count to current user
+        //   userToAdd.addNewBioToMapCount(newMatch.getBio());
 
         }
       } else {

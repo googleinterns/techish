@@ -94,7 +94,7 @@ public class PersistentMatchRepository implements MatchRepository {
 
     User testUser = new User("Test User");
     testUser.setId("000");
-    testUser.setEmail("test@example.com");
+    testUser.setEmail("testmatchrepo@example.com");
     List<User> allMatches = new ArrayList<User>(Arrays.asList(matchA, matchB, matchC, matchD));
 
     userRepository.addUser(testUser);
@@ -118,6 +118,36 @@ public class PersistentMatchRepository implements MatchRepository {
     } else { //user is already saved
       addMatchToExistingUser(userId, matchId);
     }
+
+    /////////////////UPDATE MAP 
+    System.out.println("good in repo add match for " + match.getName());
+
+    // Map<String, Integer> currentMap = userRepository.fetchUserWithId(userId).getBioMap();
+    Map<String, Integer> currentMap = userRepository.getMapForUser(user);
+    System.out.println("MAP BEFORE: " + currentMap.toString());
+
+    String[] bioWords = match.getBio().toLowerCase().split("\\W+");
+            
+    //add each word in bio to map
+    for(String word : bioWords) {
+        if(currentMap.containsKey(word)) {
+            Integer oldCount = currentMap.get(word);
+            currentMap.put(word, oldCount + 1); 
+        } else {
+            currentMap.put(word, 1);
+        }
+    }
+
+    System.out.println("MAP AFTER: " + currentMap.toString());
+
+    user.setBioMap(currentMap);
+    userRepository.addUserToDatabase(user);
+
+
+    // userRepository.updateMapForUser(user, currentMap);
+
+    // user.addNewBioToMapCount(match.getBio());
+    System.out.println("after call to add new bio");
   }
 
   public void removeMatch(User user, User match) throws Exception {

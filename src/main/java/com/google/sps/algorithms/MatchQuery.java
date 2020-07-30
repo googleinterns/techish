@@ -36,15 +36,25 @@ public final class MatchQuery {
     }
 
     for(User potentialMentor : allUsers) {
-        Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
+      Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
 
-        //see if new mentor is not same as logged in user AND is not already saved AND contains correct criteria
-        if(!(potentialMentor.equals(currentUser)) && !(userSavedMatches.contains(potentialMentor)) && (mentorSpecialties.contains(matchCriteria))) {
-            mentorMatches.add(potentialMentor);
-        }
+      boolean isCurrentUser = potentialMentor.equals(currentUser);
+      boolean isAlreadySaved = userSavedMatches.contains(potentialMentor);
+      boolean sharedSpecialty = mentorSpecialties.contains(matchCriteria);
+
+      //see if new mentor is not same as logged in user AND is not already saved AND contains correct criteria
+      if(!isCurrentUser && !isAlreadySaved && sharedSpecialty) {
+        mentorMatches.add(potentialMentor);
+      }
     }
 
-    List<User> rankedMatches = MatchRanking.rankMatches(currentUser.getBioMap(), mentorMatches);
+    //HADLEY THIS IS THE CAUSE OF THE ERROR FiX IT HERE WHEN YOU WAKE UP
+    
+    // PersistentUserRepository userRepo = PersistentUserRepository.getInstance();
+    // Map<String, Integer> bioMap = userRepo.getMapForUser(currentUser);
+    Map<String, Integer> bioMap = currentUser.getBioMap();
+ 
+    List<User> rankedMatches = MatchRanking.rankMatches(bioMap, mentorMatches);
     return rankedMatches;
   }
 
