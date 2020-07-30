@@ -44,14 +44,10 @@ public class MatchServlet extends HttpServlet {
   public void testOnlySetContext(SessionContext sessionContext) {
     this.sessionContext = sessionContext;
   }
+  
   // method to analyze the request
   public boolean analyzeRequest(HttpServletRequest request) {
-    SimpleDateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
-    Date currentDate = new Date();
-
-    boolean value = abuseDetectionFeature.addRequest(currentDate);
-    
-    return value;
+    return abuseDetectionFeature.addRequest(new Date());
   }
 
   @Override
