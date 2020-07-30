@@ -49,10 +49,12 @@ public final class MatchQuery {
     }
 
     //HADLEY THIS IS THE CAUSE OF THE ERROR FiX IT HERE WHEN YOU WAKE UP
-    
+
     // PersistentUserRepository userRepo = PersistentUserRepository.getInstance();
     // Map<String, Integer> bioMap = userRepo.getMapForUser(currentUser);
     Map<String, Integer> bioMap = currentUser.getBioMap();
+
+    System.out.println("BIO MAP: " + bioMap);
  
     List<User> rankedMatches = MatchRanking.rankMatches(bioMap, mentorMatches);
     return rankedMatches;

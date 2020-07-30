@@ -141,6 +141,7 @@ public class PersistentMatchRepository implements MatchRepository {
     System.out.println("MAP AFTER: " + currentMap.toString());
 
     user.setBioMap(currentMap);
+    System.out.println("current saved map for user: " + user.getBioMap().toString());
     userRepository.addUserToDatabase(user);
 
 
