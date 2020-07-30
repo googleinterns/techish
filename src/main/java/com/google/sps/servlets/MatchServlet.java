@@ -63,9 +63,9 @@ public class MatchServlet extends HttpServlet {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        boolean value = analyzeTimeOfRequest(request);
+        boolean isRequestPassed = analyzeTimeOfRequest(request);
         // if true, means the request was passed and added to the backend to get processed
-        if(value) {
+        if(isRequestPassed) {
             Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
             response.getWriter().println(gson.toJson(matches));
         }
