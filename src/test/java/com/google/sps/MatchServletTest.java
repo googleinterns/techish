@@ -102,7 +102,6 @@ public class MatchServletTest {
     public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        when(matchServlet.analyzeTimeOfRequest(request)).thenReturn(true);
         when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         //First doGet Call
@@ -151,7 +150,6 @@ public class MatchServletTest {
     public void doGetRequestReturnMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        when(matchServlet.analyzeTimeOfRequest(request)).thenReturn(true);
         when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         Collection<User> matches = matchRepository.getMatchesForUser(testUser);
