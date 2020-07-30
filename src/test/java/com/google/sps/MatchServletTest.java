@@ -169,7 +169,7 @@ public class MatchServletTest {
         //call doGet
         String result = doGetHelper(request, response, matchServlet);
 
-        verify(response, times(1)).sendRedirect("/index.html");
+        verify(response, times(1)).sendRedirect("/errorPage.html");
     }
 
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)

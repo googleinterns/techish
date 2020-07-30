@@ -72,13 +72,7 @@ public class MatchServlet extends HttpServlet {
         // request did not pass to the backend 
         else {
             System.err.println("Error too many requests, so request couldn't be added");
-            // print out alert
-            System.out.println("<script type=\"text/javascript\">");
-            System.out.println("alert('Too many requests, so request could not be processed');");
-            System.out.println("location='MatchServlet.java';");
-            System.out.println("</script>");
-            // redirect bc it doesn't work
-            response.sendRedirect("/index.html");
+            response.sendRedirect("/errorPage.html");
         }
     }
   }
