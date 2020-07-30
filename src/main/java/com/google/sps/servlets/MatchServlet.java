@@ -32,7 +32,7 @@ public class MatchServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
-  private AbuseDetection instance = new AbuseDetection(Duration.ofSeconds(1), 10);
+  private AbuseDetection abuseDetectionFeature = new AbuseDetection(Duration.ofSeconds(1), 10);
 
 
   @Override
@@ -49,7 +49,7 @@ public class MatchServlet extends HttpServlet {
     SimpleDateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
     Date currentDate = new Date();
 
-    boolean value = instance.addRequest(currentDate);
+    boolean value = abuseDetectionFeature.addRequest(currentDate);
     
     return value;
   }
