@@ -44,9 +44,11 @@ public class MatchServlet extends HttpServlet {
   public void testOnlySetContext(SessionContext sessionContext) {
     this.sessionContext = sessionContext;
   }
-  
-  // method to analyze the request
-  public boolean analyzeRequest(HttpServletRequest request) {
+
+  // method to create a Date object containing the Date and Time 
+  // the request comes in, then passes that into addRequest, which
+  // returns a boolean value representing if the request got added or not 
+  public boolean analyzeTimeOfRequest(HttpServletRequest request) {
     return abuseDetectionFeature.addRequest(new Date());
   }
 
@@ -61,8 +63,7 @@ public class MatchServlet extends HttpServlet {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        // calling analyze request 
-        boolean value = analyzeRequest(request);
+        boolean value = analyzeTimeOfRequest(request);
         // if true, means the request was passed
         if(value) {
             Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
