@@ -38,18 +38,16 @@ function setForm(value) {
     var menteeForm = document.getElementById('Mentee');
     var mentorForm = document.getElementById('Mentor');
     var userTypeButton = document.getElementById('user-input');
+    var menteeFormInputs = document.querySelectorAll("[id='mentee']");
+    var mentorFormInputs = document.querySelectorAll("[id='mentor']");
     if (menteeForm && mentorForm && userTypeButton) {
         if (value == 'Mentee') {
             menteeForm.setAttribute('style', 'display:block;');
             mentorForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentee');
-            var menteeName = document.getElementById('name-input');
-            var menteeSchool = document.getElementById('school-input');
-            var menteeMajor = document.getElementById('major-input');
-            if (menteeName && menteeSchool && menteeMajor) {
-                menteeName.required = true;
-                menteeSchool.required = true;
-                menteeMajor.required = true;
+            if (menteeFormInputs && mentorFormInputs) {
+                setRequiredInputs(menteeFormInputs, true);
+                setRequiredInputs(mentorFormInputs, false);
             }
             else {
                 console.error("Required forms failed for mentee form");
@@ -59,17 +57,9 @@ function setForm(value) {
             mentorForm.setAttribute('style', 'display:block;');
             menteeForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentor');
-            var mentorName = document.getElementById('profName-input');
-            var mentorCompany = document.getElementById('company-input');
-            var mentorCareerTitle = document.getElementById('careerTitle-input');
-            var mentorSpecialty = document.getElementById('specialty-input');
-            var mentorBio = document.getElementById('bio-input');
-            if (mentorName && mentorCompany && mentorCareerTitle && mentorSpecialty && mentorBio) {
-                mentorName.required = true;
-                mentorCompany.required = true;
-                mentorCareerTitle.required = true;
-                mentorSpecialty.required = true;
-                mentorBio.required = true;
+            if (menteeFormInputs && mentorFormInputs) {
+                setRequiredInputs(mentorFormInputs, true);
+                setRequiredInputs(menteeFormInputs, false);
             }
             else {
                 console.error("Required forms failed for mentor form");
@@ -77,12 +67,17 @@ function setForm(value) {
         }
     }
 }
+function setRequiredInputs(elements, boolValue) {
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].required = boolValue;
+    }
+}
 function redirectIfLoggedOut() {
     return __awaiter(this, void 0, void 0, function () {
         var logStatus;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, logStatusMethod()];
+                case 0: return [4 /*yield*/, logStatusGetter()];
                 case 1:
                     logStatus = _a.sent();
                     if (logStatus.loginUrl != "") {
@@ -94,7 +89,7 @@ function redirectIfLoggedOut() {
         });
     });
 }
-function logStatusMethod() {
+function logStatusGetter() {
     return __awaiter(this, void 0, void 0, function () {
         var response, currentStatus, authStatus;
         return __generator(this, function (_a) {
