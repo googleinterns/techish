@@ -77,7 +77,10 @@ header.headsection .bg-circle-4{
     top:-5rem;
     right:35%
 }
-
+form {
+    text-align: center;
+}
+ 
 @media (min-width:992px){
     header.headsection{
         padding-top:calc(10rem + 55px);
