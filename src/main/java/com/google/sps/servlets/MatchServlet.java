@@ -52,9 +52,12 @@ public class MatchServlet extends HttpServlet {
   }
 
 
-  // method to create a Date object containing the Date and Time 
-  // the request comes in, then passes that into addRequest, which
-  // returns a boolean value representing if the request got added or not 
+  /*
+  * This method relates to rate limiting problem by analyzing the time of the 
+  * request and limiting the amount of requests coming in. This is a problem
+  * because malicious users can overload requests to the backend, so we created
+  * this method to help limit the amount of requests coming to the backend.
+  */
   public boolean analyzeTimeOfRequest(HttpServletRequest request) {
     return abuseDetectionFeature.addRequest(new Date());
   }
