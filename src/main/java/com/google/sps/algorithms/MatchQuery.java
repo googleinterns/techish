@@ -48,7 +48,6 @@ public final class MatchQuery {
       }
     }
 
-    //HADLEY THIS IS THE CAUSE OF THE ERROR FiX IT HERE WHEN YOU WAKE UP
     Map<String, Integer> bioMap;
     if(userRepository instanceof PersistentUserRepository) {
         //get biomap directly from persistent user repository
@@ -57,8 +56,6 @@ public final class MatchQuery {
     }  else {
         bioMap = currentUser.getBioMap();
     }
-
-    System.out.println("BIO MAP: " + bioMap);
  
     List<User> rankedMatches = MatchRanking.rankMatches(bioMap, mentorMatches);
     return rankedMatches;
