@@ -17,27 +17,15 @@ function setForm(value: string) {
             menteeForm.setAttribute('style', 'display:block;');
             mentorForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentee');
-
-            if (menteeInputs && mentorInputs) {
-                setRequiredInputs(menteeInputs, true);
-                setRequiredInputs(mentorInputs, false);
-            }
-            else {
-                console.error("Required forms failed for mentee form");
-            }
+            setRequiredInputs(menteeInputs, true);
+            setRequiredInputs(mentorInputs, false); 
         }
         else {
             mentorForm.setAttribute('style', 'display:block;');
             menteeForm.setAttribute('style', 'display:none;');
             userTypeButton.setAttribute('value', 'Mentor');
-
-            if (mentorInputs && menteeInputs) {
-                setRequiredInputs(mentorInputs, true);
-                setRequiredInputs(menteeInputs, false);
-            }
-            else {
-                console.error("Required forms failed for mentor form");
-            }
+            setRequiredInputs(mentorInputs, true);
+            setRequiredInputs(menteeInputs, false);
         }
     }
 }
