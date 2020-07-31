@@ -67,12 +67,8 @@ public class MatchServlet extends HttpServlet {
         for (String matchName : matchesToSave) {
           User newMatch = new Gson().fromJson(matchName, User.class);
           matchRepository.addMatch(userToAdd, newMatch);
-
-        //   System.out.println("above save user: " + newMatch.getBio());
-        //   //add bio word count to current user
-        //   userToAdd.addNewBioToMapCount(newMatch.getBio());
-
         }
+        
       } else {
         System.err.println("new-matches is null in MatchServlet doPost()");
       }
