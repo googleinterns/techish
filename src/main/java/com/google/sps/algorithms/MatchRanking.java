@@ -134,20 +134,15 @@ public final class MatchRanking {
     * Called everytime a user adds a new bio, this updates the private map storing word counts for all users.
     */
     public static void addToAllUserWordCount(String newBio) {
-        addNewBioToMapCount(newBio, allUserWordCount);
-    }
-
-    //overload of addToAllUserWordCount for testing
-    public static void addNewBioToMapCount(String newBio, Map<String, Integer> countMap) {
         String[] bioWords = newBio.toLowerCase().split("\\W+");
             
         //add each word in bio to map
         for(String word : bioWords) {
-            if(countMap.containsKey(word)) {
-                Integer oldCount = countMap.get(word);
-                countMap.put(word, oldCount + 1); 
+            if(allUserWordCount.containsKey(word)) {
+                Integer oldCount = allUserWordCount.get(word);
+                allUserWordCount.put(word, oldCount + 1); 
             } else {
-                countMap.put(word, 1);
+                allUserWordCount.put(word, 1);
             }
         }
     }
