@@ -151,26 +151,7 @@ public final class User {
       return userBio;
   }
 
-//   //adds word count of bio when user saves a new match
-//   public void addNewBioToMapCount(String newBio) {
-    
-//     //update persistent datastore
-//     PersistentUserRepository userRepo = PersistentUserRepository.getInstance();
-
-//     Map<String, Integer> currentMap = userRepo.fetchUserWithId(id).getBioMap();
-//     this.savedMatchWordCount = currentMap;
-//     addNewBioToMapCountForTesting(newBio);
-
-
-//     try {
-//         userRepo.removeUserProfile(this);
-//     } catch(Exception e) {
-//         System.err.println("Exception caught when trying to remove user in addNewBioToMapCount for " + this.getEmail());
-//     }
-
-//     userRepo.addUser(this);
-//   }
-
+  //method for testing to directly add new bio to user
   public void addNewBioToMapCountForTesting(String newBio) {
     String[] bioWords = newBio.toLowerCase().split("\\W+");
             
@@ -185,15 +166,12 @@ public final class User {
     }
   }
 
-  //get the saved bio map for user
   public Map<String, Integer> getBioMap() {
-      System.out.println("RETURNING " + savedMatchWordCount);
     return savedMatchWordCount;
   }
 
   public void setBioMap(Map<String, Integer> bioMap) {
-      this.savedMatchWordCount = bioMap;
-    //   System.out.println("Map for " + name + " set to " + savedMatchWordCount.toString());
+    this.savedMatchWordCount = bioMap;
   }
 
 }
