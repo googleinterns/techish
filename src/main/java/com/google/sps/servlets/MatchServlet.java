@@ -62,18 +62,24 @@ public class MatchServlet extends HttpServlet {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
     } else {
-        // Time of Requests passed into addRequest, boolean represents if added to back end or not
-        boolean isRequestPassed = abuseDetectionFeature.addRequest(new Date());
-        
-        // if true, means the request was added to the backend to get processed
-        if(isRequestPassed) {
-            Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
-            response.getWriter().println(gson.toJson(matches));
+        if(abuseDetectionFeature != null){
+            // Time of Requests passed into addRequest, boolean represents if added to back end or not
+            boolean isRequestPassed = abuseDetectionFeature.addRequest(new Date());
+            
+            // if true, means the request was added to the backend to get processed
+            if(isRequestPassed) {
+                Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
+                response.getWriter().println(gson.toJson(matches));
+            }
+            // request did not make it to the backend. it got blocked. 
+            else {
+                System.err.println("Error too many requests, so request couldn't be added");
+                response.sendRedirect("/errorPage.html");
+            }
         }
-        // request did not make it to the backend. it got blocked. 
-        else {
-            System.err.println("Error too many requests, so request couldn't be added");
-            response.sendRedirect("/errorPage.html");
+        else{
+            System.err.println("Error abuseDetectionFeature is not initialized");
+            response.sendRedirect("/index.html");
         }
     }
   }

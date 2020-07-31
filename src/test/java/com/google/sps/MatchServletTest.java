@@ -75,7 +75,6 @@ public class MatchServletTest {
     public void doGet_returnMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-
         when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         Collection<User> matches = matchRepository.getMatchesForUser(testUser);
@@ -90,7 +89,6 @@ public class MatchServletTest {
     @Test
     public void doGet_UserNotLoggedIn() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(false);
-       
         when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         String expected = gson.toJson(null);
@@ -169,8 +167,19 @@ public class MatchServletTest {
     
         //call doGet
         matchServlet.doGet(request, response);
-
         verify(response, times(1)).sendRedirect("/errorPage.html");
+    }
+
+       @Test
+    public void doGetAbuseFeatureNotInitialized() throws IOException, ServletException {
+        AbuseDetection abuseInstance = null;
+        matchServlet.testOnlySetAbuseDetection(abuseInstance);
+        when(sessionContext.isUserLoggedIn()).thenReturn(true);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+    
+        //call doGet
+        matchServlet.doGet(request, response);
+        verify(response, times(1)).sendRedirect("/index.html");
     }
 
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
