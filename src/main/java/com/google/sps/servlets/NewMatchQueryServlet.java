@@ -27,7 +27,6 @@ public class NewMatchQueryServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
-  private UserRepository userRepository = PersistentUserRepository.getInstance();
 
   public void testOnlySetContext(SessionContext sessionContext) {
       this.sessionContext = sessionContext;
@@ -41,8 +40,6 @@ public class NewMatchQueryServlet extends HttpServlet {
     MatchRequest matchRequest = getMatchRequest(request, gson);
 
     User currentUser = sessionContext.getLoggedInUser();
-    // String userId = sessionContext.getLoggedInUserId();
-    // User currentUser = userRepository.fetchUserWithId(userId);
 
     Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
 
