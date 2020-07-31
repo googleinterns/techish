@@ -74,12 +74,12 @@ public class MatchServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(null));
     } else {
         boolean isRequestPassed = analyzeTimeOfRequest(request);
-        // if true, means the request was passed and added to the backend to get processed
+        // if true, means the request was added to the backend to get processed
         if(isRequestPassed) {
             Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
             response.getWriter().println(gson.toJson(matches));
         }
-        // request did not pass to the backend 
+        // request did not make it to the backend. it got blocked. 
         else {
             System.err.println("Error too many requests, so request couldn't be added");
             response.sendRedirect("/errorPage.html");
