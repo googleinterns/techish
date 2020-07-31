@@ -35,27 +35,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 function setForm(value) {
-    var menteeForm = document.getElementById('Mentee');
-    var mentorForm = document.getElementById('Mentor');
     var userTypeButton = document.getElementById('user-input');
     var menteeInputs = ['name-input', 'school-input', 'major-input'];
     var mentorInputs = ['profName-input', 'company-input', 'careerTitle-input', 'bio-input', 'specialty-input'];
-    if (menteeForm && mentorForm && userTypeButton) {
-        if (value == 'Mentee') {
-            menteeForm.setAttribute('style', 'display:block;');
-            mentorForm.setAttribute('style', 'display:none;');
-            userTypeButton.setAttribute('value', 'Mentee');
-            setRequiredInputs(menteeInputs, true);
-            setRequiredInputs(mentorInputs, false);
+    if (userTypeButton) {
+        var visibleId = value;
+        var hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
+        if (visibleId == 'Mentee') {
+            showForm(visibleId, userTypeButton, menteeInputs);
+            hideForm(hiddenId, mentorInputs);
+        }
+        else if (visibleId == 'Mentor') {
+            showForm(visibleId, userTypeButton, mentorInputs);
+            hideForm(hiddenId, menteeInputs);
         }
         else {
-            mentorForm.setAttribute('style', 'display:block;');
-            menteeForm.setAttribute('style', 'display:none;');
-            userTypeButton.setAttribute('value', 'Mentor');
-            setRequiredInputs(mentorInputs, true);
-            setRequiredInputs(menteeInputs, false);
+            console.error("Required forms failed for mentee form");
         }
     }
+}
+function showForm(visibleId, userTypeButton, requiredInputs) {
+    document.getElementById(visibleId).setAttribute('style', 'display:block;');
+    userTypeButton.setAttribute('value', visibleId);
+    setRequiredInputs(requiredInputs, true);
+}
+function hideForm(hiddenId, requiredInputs) {
+    document.getElementById(hiddenId).setAttribute('style', 'display:none;');
+    setRequiredInputs(requiredInputs, false);
 }
 function setRequiredInputs(arrayofFormIDs, isIdRequired) {
     for (var i = 0; i < arrayofFormIDs.length; i++) {

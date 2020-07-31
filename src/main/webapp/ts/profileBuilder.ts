@@ -5,35 +5,43 @@ type authInfo = {
 };
 
 function setForm(value: string) {
-    const menteeForm = document.getElementById('Mentee');
-    const mentorForm = document.getElementById('Mentor');
+
     const userTypeButton = document.getElementById('user-input');
+    const menteeInputs: string[] = ['name-input', 'school-input', 'major-input'];
+    const mentorInputs: string[] = ['profName-input', 'company-input', 'careerTitle-input', 'bio-input', 'specialty-input']
 
-    const menteeInputs:string[] = ['name-input','school-input', 'major-input' ];
-    const mentorInputs:string[] =['profName-input','company-input','careerTitle-input', 'bio-input', 'specialty-input']
-
-    if (menteeForm && mentorForm && userTypeButton) {
-        if (value == 'Mentee') {
-            menteeForm.setAttribute('style', 'display:block;');
-            mentorForm.setAttribute('style', 'display:none;');
-            userTypeButton.setAttribute('value', 'Mentee');
-            setRequiredInputs(menteeInputs, true);
-            setRequiredInputs(mentorInputs, false); 
+    if (userTypeButton) {
+        const visibleId = value;
+        const hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
+       
+        if(visibleId == 'Mentee'){
+            showForm(visibleId, userTypeButton, menteeInputs);
+            hideForm(hiddenId, mentorInputs);
+        }
+        else if(visibleId == 'Mentor'){
+            showForm(visibleId, userTypeButton, mentorInputs);
+            hideForm(hiddenId, menteeInputs);
         }
         else {
-            mentorForm.setAttribute('style', 'display:block;');
-            menteeForm.setAttribute('style', 'display:none;');
-            userTypeButton.setAttribute('value', 'Mentor');
-            setRequiredInputs(mentorInputs, true);
-            setRequiredInputs(menteeInputs, false);
+            console.error("Required forms failed for mentee form");
         }
     }
 }
 
+function showForm(visibleId: string, userTypeButton: HTMLElement, requiredInputs: string[]) {
+    document.getElementById(visibleId)!.setAttribute('style', 'display:block;');
+    userTypeButton.setAttribute('value', visibleId);
+    setRequiredInputs(requiredInputs, true);
+}
+
+function hideForm(hiddenId: string, requiredInputs: string[]) {
+    document.getElementById(hiddenId)!.setAttribute('style', 'display:none;');
+    setRequiredInputs(requiredInputs, false);
+}
 function setRequiredInputs(arrayofFormIDs: string[], isIdRequired: boolean) {
-    for(let i= 0; i < arrayofFormIDs.length; i++) {
+    for (let i = 0; i < arrayofFormIDs.length; i++) {
         const currentElement = document.getElementById(arrayofFormIDs[i]) as HTMLInputElement;
-        if(currentElement == null){
+        if (currentElement == null) {
             console.error("Element doesn't exist");
         }
         else {
