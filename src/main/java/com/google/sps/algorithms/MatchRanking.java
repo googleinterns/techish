@@ -20,7 +20,6 @@ public final class MatchRanking {
     * (higher score = more likely that the user will select it).
     */
     public static List<User> rankMatches(Map<String, Integer> savedMatchesMap, Collection<User> newMatches) {
-        System.out.println("all user map: " + allUserWordCount.toString());
         Map<User, Double> newMatchScores = scoreNewMatches(savedMatchesMap, newMatches);
         return sortUsersByScore(newMatchScores);
     }
@@ -37,7 +36,6 @@ public final class MatchRanking {
     * Function that returns a map with each new match mapped to its score.
     */
     private static Map<User, Double> scoreNewMatches(Map<String, Integer> savedMatchesWordCount, Collection<User> newMatches) {
-        
         //calculate score for each new match bio
         Map<User, Double> newMatchScores = new HashMap<User, Double>();
         for(User newMatch : newMatches) {
