@@ -5,22 +5,22 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.sps.data.PersistentUserRepository;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -138,6 +138,21 @@ public final class PersistentUserRepositoryTest {
     Collection<User> allUsers = repository.getAllUsers();
 
     Assert.assertEquals(bio, repository.fetchUserWithId("6655").getBio());
+  }
+
+  @Test
+  public void userMapWrittenBack() throws Exception {
+    PersistentUserRepository repository = new PersistentUserRepository();
+    User userA = new User("Larry");
+    userA.setId("6655");
+    Map<String, Integer> bioMap = new HashMap<String, Integer>();
+    bioMap.put("hello", 2);
+    userA.setBioMap(bioMap);
+    repository.addUser(userA);
+
+    Collection<User> allUsers = repository.getAllUsers();
+
+    Assert.assertEquals(bioMap, repository.fetchUserWithId("6655").getBioMap());
   }
 
   @Test

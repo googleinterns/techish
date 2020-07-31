@@ -2,38 +2,36 @@ package com.google.sps.data;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Query.CompositeFilter;
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import java.util.*;
-import com.google.gson.Gson; 
-import java.lang.reflect.Type;
-import com.google.gson.reflect.TypeToken;
-
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class implements the user repository using the datastore 
@@ -234,31 +232,13 @@ public class PersistentUserRepository implements UserRepository {
     return userEntities;
   }
 
-//   public void updateMapForUser(User user, Map<String, Integer> map) {
-
-//     System.out.println("MAP TO UPDATE: " + map.toString());
-
-//     PreparedQuery storedUser = getQueryFilterForId(user.getId());
-//     Entity storedUserEntity = storedUser.asSingleEntity();
-
-//     System.out.println("ENTITY BEING UPDATED: " + storedUserEntity);
-
-//     storedUserEntity.setProperty("bioMapJson", gson.toJson(map));
-//     System.out.println("new property for map: " + storedUserEntity.getProperty("bioMapJson"));
-
-//     user.setBioMap(map);
-//   }
-
+  //returns the bio map for given user
   public Map<String, Integer> getMapForUser(User user) {
     PreparedQuery storedUser = getQueryFilterForId(user.getId());
     Entity storedUserEntity = storedUser.asSingleEntity();
     String jsonMap =  (String)storedUserEntity.getProperty("bioMapJson");
 
-    System.out.println("ENTITY BEING FETCHED: " + storedUserEntity);
-
     Type type = new TypeToken<Map<String, Integer>>(){}.getType();
-
-    System.out.println("map being returned:: " + jsonMap);
     return gson.fromJson(jsonMap, type);
   }
 
