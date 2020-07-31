@@ -42,10 +42,10 @@ function setForm(value: string) {
     }
 }
 
-function setRequiredInputs(elements: any, boolValue: boolean) {
-    for(let i= 0; i < elements.length; i++){
-        const currentElement = document.getElementById(elements[i]) as HTMLInputElement;
-        currentElement.required = boolValue;
+function setRequiredInputs(arrayofFormIDs: string[], isIdRequired: boolean) {
+    for(let i= 0; i < arrayofFormIDs.length; i++){
+        const currentElement = document.getElementById(arrayofFormIDs[i]) as HTMLInputElement;
+        currentElement.required = isIdRequired;
     }
 
 }

@@ -67,10 +67,10 @@ function setForm(value) {
         }
     }
 }
-function setRequiredInputs(elements, boolValue) {
-    for (var i = 0; i < elements.length; i++) {
-        var currentElement = document.getElementById(elements[i]);
-        currentElement.required = boolValue;
+function setRequiredInputs(arrayofFormIDs, isIdRequired) {
+    for (var i = 0; i < arrayofFormIDs.length; i++) {
+        var currentElement = document.getElementById(arrayofFormIDs[i]);
+        currentElement.required = isIdRequired;
     }
 }
 function redirectIfLoggedOut() {
