@@ -21,6 +21,7 @@ function setForm(value: string) {
             if (menteeInputs && mentorInputs) {
                 setRequiredInputs(menteeInputs, true);
                 setRequiredInputs(mentorInputs, false);
+             
             }
             else {
                 console.error("Required forms failed for mentee form");
@@ -34,6 +35,7 @@ function setForm(value: string) {
             if (mentorInputs && menteeInputs) {
                 setRequiredInputs(mentorInputs, true);
                 setRequiredInputs(menteeInputs, false);
+             
             }
             else {
                 console.error("Required forms failed for mentor form");
@@ -43,9 +45,14 @@ function setForm(value: string) {
 }
 
 function setRequiredInputs(arrayofFormIDs: string[], isIdRequired: boolean) {
-    for(let i= 0; i < arrayofFormIDs.length; i++){
+    for(let i= 0; i < arrayofFormIDs.length; i++) {
         const currentElement = document.getElementById(arrayofFormIDs[i]) as HTMLInputElement;
-        currentElement.required = isIdRequired;
+        if(currentElement == null){
+            console.error("Element doesn't exist");
+        }
+        else {
+            currentElement.required = isIdRequired;
+        }
     }
 
 }

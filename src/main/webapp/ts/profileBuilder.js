@@ -70,7 +70,12 @@ function setForm(value) {
 function setRequiredInputs(arrayofFormIDs, isIdRequired) {
     for (var i = 0; i < arrayofFormIDs.length; i++) {
         var currentElement = document.getElementById(arrayofFormIDs[i]);
-        currentElement.required = isIdRequired;
+        if (currentElement == null) {
+            console.error("Element doesn't exist");
+        }
+        else {
+            currentElement.required = isIdRequired;
+        }
     }
 }
 function redirectIfLoggedOut() {
