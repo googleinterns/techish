@@ -187,6 +187,7 @@ public final class User {
 
   //get the saved bio map for user
   public Map<String, Integer> getBioMap() {
+      System.out.println("RETURNING " + savedMatchWordCount);
     return savedMatchWordCount;
   }
 
