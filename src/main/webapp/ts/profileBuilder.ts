@@ -21,7 +21,6 @@ function setForm(value: string) {
             if (menteeInputs && mentorInputs) {
                 setRequiredInputs(menteeInputs, true);
                 setRequiredInputs(mentorInputs, false);
-             
             }
             else {
                 console.error("Required forms failed for mentee form");
@@ -35,7 +34,6 @@ function setForm(value: string) {
             if (mentorInputs && menteeInputs) {
                 setRequiredInputs(mentorInputs, true);
                 setRequiredInputs(menteeInputs, false);
-             
             }
             else {
                 console.error("Required forms failed for mentor form");
