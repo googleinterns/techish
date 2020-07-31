@@ -21,8 +21,8 @@ import com.google.gson.GsonBuilder;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -119,15 +119,10 @@ public class PersistentMatchRepository implements MatchRepository {
       addMatchToExistingUser(userId, matchId);
     }
 
-    /////////////////UPDATE MAP 
-    System.out.println("good in repo add match for " + match.getName());
-
-    // Map<String, Integer> currentMap = userRepository.fetchUserWithId(userId).getBioMap();
+    //update user's saved matches word count map
     Map<String, Integer> currentMap = userRepository.getMapForUser(user);
-    System.out.println("MAP BEFORE: " + currentMap.toString());
-
     String[] bioWords = match.getBio().toLowerCase().split("\\W+");
-            
+    
     //add each word in bio to map
     for(String word : bioWords) {
         if(currentMap.containsKey(word)) {
@@ -138,17 +133,9 @@ public class PersistentMatchRepository implements MatchRepository {
         }
     }
 
-    System.out.println("MAP AFTER: " + currentMap.toString());
-
+    //update user in database
     user.setBioMap(currentMap);
-    System.out.println("current saved map for user: " + user.getBioMap().toString());
     userRepository.addUserToDatabase(user);
-
-
-    // userRepository.updateMapForUser(user, currentMap);
-
-    // user.addNewBioToMapCount(match.getBio());
-    System.out.println("after call to add new bio");
   }
 
   public void removeMatch(User user, User match) throws Exception {
