@@ -52,8 +52,6 @@ public class NonPersistentMatchRepository implements MatchRepository {
   //add a new match given User
   public void addMatch(User user, User match) {
     addMatch(user.getId(), match);
-    System.out.println("adding in non persistent match");
-    // user.addNewBioToMapCount(match.getBio());
   }
 
   //remove a match given User ID
