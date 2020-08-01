@@ -120,12 +120,20 @@ function displayNewMatchPopup(matches: Array<User>) {
 async function queryServer(matchRequest: MatchRequest) {
     const json = JSON.stringify(matchRequest);
     return fetch('/new-matches-query', { method: 'POST', body: json })
+  
         .then((response) => {
             return response.json();
         })
         .then((users) => {
             //convert range from json to User
             const out: Array<User> = [];
+            console.log("here1");
+            console.log(users);
+            if(users === '/error.html'){
+                console.log("here2");
+                document.location.href = "/error.html";
+            }
+            console.log("skipped0");
             users.forEach((range: User) => {
                 out.push(range);
             });

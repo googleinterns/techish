@@ -157,12 +157,21 @@ function queryServer(matchRequest) {
         return __generator(this, function (_a) {
             json = JSON.stringify(matchRequest);
             return [2 /*return*/, fetch('/new-matches-query', { method: 'POST', body: json })
+                    // .then(response => response.text())
+                    // .then(text => console.log(text))
                     .then(function (response) {
                     return response.json();
                 })
                     .then(function (users) {
                     //convert range from json to User
                     var out = [];
+                    console.log("here1");
+                    console.log(users);
+                    if (users === '/error.html') {
+                        console.log("here2");
+                        document.location.href = "/error.html";
+                    }
+                    console.log("skipped0");
                     users.forEach(function (range) {
                         out.push(range);
                     });

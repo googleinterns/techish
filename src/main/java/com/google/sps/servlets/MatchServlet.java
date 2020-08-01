@@ -4,7 +4,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.sps.algorithms.AbuseDetection;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.PersistentMatchRepository;
 import com.google.sps.data.PersistentUserRepository;
@@ -12,11 +11,8 @@ import com.google.sps.data.SessionContext;
 import com.google.sps.data.User;
 import com.google.sps.data.UserRepository;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -32,7 +28,7 @@ public class MatchServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
-  private AbuseDetection abuseDetectionFeature;
+
 
 
   @Override
@@ -45,12 +41,6 @@ public class MatchServlet extends HttpServlet {
     this.sessionContext = sessionContext;
   }
 
-
-  //method to override AbuseDetectionFeature with Mock FOR TESTING        
-  public void testOnlySetAbuseDetection(AbuseDetection abuseFeature) {
-    this.abuseDetectionFeature = abuseFeature;
-  }
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -61,26 +51,10 @@ public class MatchServlet extends HttpServlet {
     if(!sessionContext.isUserLoggedIn()) {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
-    } else {
-        if(abuseDetectionFeature != null){
-            // Time of Requests passed into addRequest, boolean represents if added to back end or not
-            boolean isRequestPassed = abuseDetectionFeature.addRequest(new Date());
-            
-            // if true, means the request was added to the backend to get processed
-            if(isRequestPassed) {
-                Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
-                response.getWriter().println(gson.toJson(matches));
-            }
-            // request did not make it to the backend. it got blocked. 
-            else {
-                System.err.println("Error too many requests, so request couldn't be added");
-                response.sendRedirect("/errorPage.html");
-            }
-        }
-        else{
-            System.err.println("Error abuseDetectionFeature is not initialized");
-            response.sendRedirect("/index.html");
-        }
+    } 
+    else {
+        Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
+        response.getWriter().println(gson.toJson(matches)); 
     }
   }
 
@@ -99,10 +73,10 @@ public class MatchServlet extends HttpServlet {
           matchRepository.addMatch(userToAdd, newMatch);
         }
       } else {
-        System.err.println("new-matches is null in MatchServlet doPost()");
+            System.err.println("new-matches is null in MatchServlet doPost()");
       }
-      response.sendRedirect("/logged_in_homepage.html");
+    response.sendRedirect("/logged_in_homepage.html");  
     }
+  
   }
-
 }

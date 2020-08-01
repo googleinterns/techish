@@ -8,7 +8,6 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.gson.Gson;
-import com.google.sps.algorithms.AbuseDetection;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.PersistentMatchRepository;
 import com.google.sps.data.PersistentUserRepository;
@@ -19,9 +18,7 @@ import com.google.sps.servlets.MatchServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.time.Duration;
 import java.util.Collection;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +40,6 @@ public class MatchServletTest {
     private MatchServlet matchServlet;
     private SessionContext sessionContext;
     private PersistentMatchRepository matchRepository;
-    private AbuseDetection abuseFeature;
 
     private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -54,7 +50,6 @@ public class MatchServletTest {
         request = Mockito.mock(HttpServletRequest.class); 
         response = Mockito.mock(HttpServletResponse.class);
         sessionContext = Mockito.mock(SessionContext.class);
-        abuseFeature = Mockito.mock(AbuseDetection.class);
 
         userRepository = PersistentUserRepository.getInstance();
         matchRepository = PersistentMatchRepository.getInstance();
@@ -63,7 +58,6 @@ public class MatchServletTest {
         gson = new Gson();
         matchServlet = new MatchServlet();
         matchServlet.testOnlySetContext(sessionContext);
-        matchServlet.testOnlySetAbuseDetection(abuseFeature);
     }
 
     @After
@@ -75,7 +69,6 @@ public class MatchServletTest {
     public void doGet_returnMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         Collection<User> matches = matchRepository.getMatchesForUser(testUser);
         String expected = gson.toJson(matches);
@@ -89,7 +82,6 @@ public class MatchServletTest {
     @Test
     public void doGet_UserNotLoggedIn() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(false);
-        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         String expected = gson.toJson(null);
         String result = doGetHelper(request, response, matchServlet);
@@ -100,7 +92,6 @@ public class MatchServletTest {
     public void fullCycleTest_changeNumberMatches() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
 
         //First doGet Call
         String result = doGetHelper(request, response, matchServlet);
@@ -144,51 +135,12 @@ public class MatchServletTest {
         verify(response, times(1)).sendRedirect("/logged_in_homepage.html");
     }
 
-    @Test
-    public void doGetRequestReturnMatches() throws IOException, ServletException {
-        when(sessionContext.isUserLoggedIn()).thenReturn(true);
-        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
-
-        Collection<User> matches = matchRepository.getMatchesForUser(testUser);
-        String expected = gson.toJson(matches);
-    
-        //call doGet
-        String result = doGetHelper(request, response, matchServlet);
-
-        Assert.assertEquals(expected, result);
-    }
-
-    @Test
-    public void doGetRequestReturnError() throws IOException, ServletException {
-        when(sessionContext.isUserLoggedIn()).thenReturn(true);
-        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
-    
-        //call doGet
-        matchServlet.doGet(request, response);
-        verify(response, times(1)).sendRedirect("/errorPage.html");
-    }
-
-       @Test
-    public void doGetAbuseFeatureNotInitialized() throws IOException, ServletException {
-        AbuseDetection abuseInstance = null;
-        matchServlet.testOnlySetAbuseDetection(abuseInstance);
-        when(sessionContext.isUserLoggedIn()).thenReturn(true);
-        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-    
-        //call doGet
-        matchServlet.doGet(request, response);
-        verify(response, times(1)).sendRedirect("/index.html");
-    }
-
     private String doGetHelper(HttpServletRequest request, HttpServletResponse response, MatchServlet matchServlet)
         throws IOException, ServletException
      {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(printWriter);
-
 
         matchServlet.doGet(request, response);
 
