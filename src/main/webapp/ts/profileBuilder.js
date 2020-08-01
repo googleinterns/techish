@@ -38,21 +38,15 @@ function setForm(value) {
     var userTypeButton = document.getElementById('user-input');
     var menteeInputs = ['name-input', 'school-input', 'major-input'];
     var mentorInputs = ['profName-input', 'company-input', 'careerTitle-input', 'bio-input', 'specialty-input'];
-    if (userTypeButton) {
-        var visibleId = value;
-        var hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
-        if (visibleId == 'Mentee') {
-            showForm(visibleId, userTypeButton, menteeInputs);
-            hideForm(hiddenId, mentorInputs);
-        }
-        else if (visibleId == 'Mentor') {
-            showForm(visibleId, userTypeButton, mentorInputs);
-            hideForm(hiddenId, menteeInputs);
-        }
-        else {
-            console.error("Required forms failed for mentee form");
-        }
+    if (userTypeButton == null) {
+        console.error("userTypeButton is null");
     }
+    var visibleId = value;
+    var hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
+    var hiddenInputs = hiddenId == 'Mentee' ? menteeInputs : mentorInputs;
+    var visibleInputs = visibleId == 'Mentee' ? menteeInputs : mentorInputs;
+    showForm(visibleId, userTypeButton, visibleInputs);
+    hideForm(hiddenId, hiddenInputs);
 }
 function showForm(visibleId, userTypeButton, requiredInputs) {
     document.getElementById(visibleId).setAttribute('style', 'display:block;');

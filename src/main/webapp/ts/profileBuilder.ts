@@ -5,27 +5,20 @@ type authInfo = {
 };
 
 function setForm(value: string) {
-
     const userTypeButton = document.getElementById('user-input');
     const menteeInputs: string[] = ['name-input', 'school-input', 'major-input'];
     const mentorInputs: string[] = ['profName-input', 'company-input', 'careerTitle-input', 'bio-input', 'specialty-input']
 
-    if (userTypeButton) {
-        const visibleId = value;
-        const hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
-       
-        if(visibleId == 'Mentee'){
-            showForm(visibleId, userTypeButton, menteeInputs);
-            hideForm(hiddenId, mentorInputs);
-        }
-        else if(visibleId == 'Mentor'){
-            showForm(visibleId, userTypeButton, mentorInputs);
-            hideForm(hiddenId, menteeInputs);
-        }
-        else {
-            console.error("Required forms failed for mentee form");
-        }
+    if (userTypeButton == null) {
+        console.error("userTypeButton is null");
     }
+    const visibleId = value;
+    const hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
+    const hiddenInputs = hiddenId == 'Mentee' ? menteeInputs : mentorInputs;
+    const visibleInputs = visibleId == 'Mentee' ? menteeInputs : mentorInputs;
+ 
+    showForm(visibleId, userTypeButton, visibleInputs);
+    hideForm(hiddenId, hiddenInputs); 
 }
 
 function showForm(visibleId: string, userTypeButton: HTMLElement, requiredInputs: string[]) {
