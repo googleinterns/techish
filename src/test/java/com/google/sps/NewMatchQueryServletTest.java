@@ -78,48 +78,25 @@ public class NewMatchQueryServletTest {
         localHelper.tearDown();
     }
 
-    // @Test
-    // public void doPost_returnsNewMatches() throws IOException, ServletException {
-    //     when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-    //     when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(true);
-
-    //     MatchQuery matchQuery = new MatchQuery();
-    //     Collection<User> userSavedMatches = new ArrayList<User>();
-    //     Collection<User> answer = matchQuery.query(new MatchRequest(), userSavedMatches);
- 
-    //     StringWriter StringWriter = new StringWriter();
-    //     PrintWriter printWriter = new PrintWriter(StringWriter);
-    //     when(response.getWriter()).thenReturn(printWriter);
-
-    //     newMatchQueryServlet.doPost(request, response);
-
-    //     Gson gson = new Gson();
-    //     String expected = gson.toJson(answer);
-    //     String result = StringWriter.getBuffer().toString().trim();
-
-    //     printWriter.flush();
-    //     Assert.assertEquals(expected, result);
-    // }
-
-    // @Test
-    // public void doPostReturnError() throws IOException, ServletException {
-    //     when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-    //     when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
+    @Test
+    public void doPostReturnError() throws IOException, ServletException {
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
     
       
-    //     StringWriter StringWriter = new StringWriter();
-    //     PrintWriter printWriter = new PrintWriter(StringWriter);
-    //     when(response.getWriter()).thenReturn(printWriter);
+        StringWriter StringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(StringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
 
-    //     newMatchQueryServlet.doPost(request, response);
+        newMatchQueryServlet.doPost(request, response);
 
-    //     Gson gson = new Gson();
-    //     String expected = gson.toJson("/error.html");
-    //     String result = StringWriter.getBuffer().toString().trim();
+        Gson gson = new Gson();
+        String expected = gson.toJson("/error.html");
+        String result = StringWriter.getBuffer().toString().trim();
 
-    //     printWriter.flush();
-    //     Assert.assertEquals(expected, result);
-    // }
+        printWriter.flush();
+        Assert.assertEquals(expected, result);
+    }
 
     @Test
     public void doPostAbuseFeatureNotInitialized() throws IOException, ServletException {
