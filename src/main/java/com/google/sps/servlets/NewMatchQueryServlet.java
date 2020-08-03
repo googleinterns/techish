@@ -31,7 +31,7 @@ public class NewMatchQueryServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
-  private AbuseDetection abuseDetectionFeature = new AbuseDetection(Duration.ofSeconds(1),10);
+  private AbuseDetection abuseDetectionFeature = new AbuseDetection(Duration.ofSeconds(30),3);
 
   public void testOnlySetContext(SessionContext sessionContext) {
       this.sessionContext = sessionContext;
