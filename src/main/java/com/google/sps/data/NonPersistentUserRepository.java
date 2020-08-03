@@ -96,4 +96,8 @@ import java.util.Map;
         }
         return null;
      }
+
+     public Map<String, Integer> getMapForUser(User user) {
+        return user.getBioMap();
+     }
  }

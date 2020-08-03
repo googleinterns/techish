@@ -1,6 +1,7 @@
 package com.google.sps.data;
 
 import java.util.Collection;
+import java.util.Map;
 
 /** interface for reading/writing user data that is abstracted from the database used. */
 public interface UserRepository {
@@ -20,4 +21,6 @@ public interface UserRepository {
   public void addFakeMentors();
 
   public User fetchUserWithId(String id);
+
+  public Map<String, Integer> getMapForUser(User user);
 }

@@ -48,15 +48,7 @@ public final class MatchQuery {
       }
     }
 
-    Map<String, Integer> bioMap;
-    if(userRepository instanceof PersistentUserRepository) {
-        //get biomap directly from persistent user repository
-        PersistentUserRepository userRepo = PersistentUserRepository.getInstance();
-        bioMap = userRepo.getMapForUser(currentUser);
-    }  else {
-        bioMap = currentUser.getBioMap();
-    }
- 
+    Map<String, Integer> bioMap = userRepository.getMapForUser(currentUser);
     List<User> rankedMatches = MatchRanking.rankMatches(bioMap, mentorMatches);
     return rankedMatches;
   }
