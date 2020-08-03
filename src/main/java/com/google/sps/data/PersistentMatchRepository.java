@@ -100,9 +100,10 @@ public class PersistentMatchRepository implements MatchRepository {
     userRepository.addUser(testUser);
     
     for(User match : allMatches) {
-        addMatch(testUser, match);
         userRepository.addUser(match);
+        addMatch(testUser, match);
     }
+
     return testUser;
   }
 
@@ -122,6 +123,10 @@ public class PersistentMatchRepository implements MatchRepository {
     //update user's saved matches word count map
     Map<String, Integer> currentMap = userRepository.getMapForUser(user);
     String[] bioWords = match.getBio().toLowerCase().split("\\W+");
+
+    if(currentMap == null) {
+        currentMap = new HashMap<String, Integer>();
+    }
     
     //add each word in bio to map
     for(String word : bioWords) {
