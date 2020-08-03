@@ -19,8 +19,8 @@ public final class MatchRanking {
     * returns a list of the new matches as users in ranked order from highest to lowest score 
     * (higher score = more likely that the user will select it).
     */
-    public static List<User> rankMatches(Map<String, Integer> savedMatchesMap, Collection<User> newMatches) {
-        Map<User, Double> newMatchScores = scoreNewMatches(savedMatchesMap, newMatches);
+    public static List<User> rankMatches(Map<String, Integer> savedWordCounts, Collection<User> newMatches) {
+        Map<User, Double> newMatchScores = scoreNewMatches(savedWordCounts, newMatches);
         return sortUsersByScore(newMatchScores);
     }
 
@@ -28,8 +28,8 @@ public final class MatchRanking {
     /**
     * Returns a map of User scores - should only be used in testing. 
     */
-    public static Map<User, Double> getMatchScores(Map<String, Integer> savedMatchesMap, Collection<User> newMatches) {
-        return scoreNewMatches(savedMatchesMap, newMatches);
+    public static Map<User, Double> getMatchScores(Map<String, Integer> savedWordCounts, Collection<User> newMatches) {
+        return scoreNewMatches(savedWordCounts, newMatches);
     }
 
     /**
