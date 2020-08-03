@@ -48,9 +48,7 @@ public final class MatchQuery {
       }
     }
 
-    Map<String, Integer> bioMap = userRepository.getMapForUser(currentUser);
-    List<User> rankedMatches = MatchRanking.rankMatches(bioMap, mentorMatches);
-    return rankedMatches;
+    return MatchRanking.rankMatches(userRepository.getMapForUser(currentUser), mentorMatches);
   }
 
 }
