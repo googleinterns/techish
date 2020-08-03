@@ -83,8 +83,8 @@ public final class MatchRankingTest {
   @Test
   public void basicRanking() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_e.getBio());
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    testOnlyAddNewBio(user_e.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_a);
@@ -102,9 +102,9 @@ public final class MatchRankingTest {
   @Test
   public void longBioTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_long);
@@ -122,9 +122,9 @@ public final class MatchRankingTest {
   @Test
   public void badBioTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_bad_format);
@@ -142,9 +142,9 @@ public final class MatchRankingTest {
   @Test
   public void wrongLanguageTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_spanish);
@@ -162,9 +162,9 @@ public final class MatchRankingTest {
   @Test
   public void shortBioTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_short);
@@ -182,9 +182,9 @@ public final class MatchRankingTest {
   @Test
   public void duplicateUserTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_e);
@@ -201,9 +201,9 @@ public final class MatchRankingTest {
   @Test
   public void emptyBioTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_e);
@@ -221,9 +221,9 @@ public final class MatchRankingTest {
   @Test
   public void numberBioTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_e);
@@ -241,9 +241,9 @@ public final class MatchRankingTest {
   @Test
   public void sameWordsInBiosTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_forward);
@@ -258,9 +258,9 @@ public final class MatchRankingTest {
   @Test
   public void equalBiosTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_a.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_b.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_forward);
@@ -275,10 +275,10 @@ public final class MatchRankingTest {
   @Test
   public void longBioWithKeywordTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_e.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_forward.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_backward.getBio());
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    testOnlyAddNewBio(user_e.getBio(), currentUser);
+    testOnlyAddNewBio(user_forward.getBio(), currentUser);
+    testOnlyAddNewBio(user_backward.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_a);
@@ -296,8 +296,8 @@ public final class MatchRankingTest {
   @Test
   public void nthRootTest() {
     User currentUser = new User("");
-    currentUser.addNewBioToMapCountForTesting(user_d.getBio());
-    currentUser.addNewBioToMapCountForTesting(user_e.getBio());
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    testOnlyAddNewBio(user_e.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_a);
@@ -311,6 +311,24 @@ public final class MatchRankingTest {
   //helper method to compare doubles used in some tests
   private static boolean compareDoubles(double d1, double d2) {
     return (Math.abs(d1 - d2) < 0.0001);
+  }
+
+  //method for testing to directly add new bio to user
+  private void testOnlyAddNewBio(String newBio, User user) {
+    String[] bioWords = newBio.toLowerCase().split("\\W+");
+    Map<String, Integer> savedMatchWordCount = user.getBioMap();
+            
+    //add each word in bio to map
+    for(String word : bioWords) {
+        if(savedMatchWordCount.containsKey(word)) {
+            Integer oldCount = savedMatchWordCount.get(word);
+            savedMatchWordCount.put(word, oldCount + 1); 
+        } else {
+            savedMatchWordCount.put(word, 1);
+        }
+    }
+
+    user.setBioMap(savedMatchWordCount);
   }
 
 }

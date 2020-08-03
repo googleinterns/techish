@@ -25,7 +25,7 @@ public final class User {
   private String school;
   private Collection<String> specialties;
   private String userBio;
-  public Map<String, Integer> savedMatchWordCount;
+  private Map<String, Integer> savedMatchWordCount;
 
   public User(String name) {
     this.name = name;
@@ -149,21 +149,6 @@ public final class User {
 
   public String getBio() {
       return userBio;
-  }
-
-  //method for testing to directly add new bio to user
-  public void addNewBioToMapCountForTesting(String newBio) {
-    String[] bioWords = newBio.toLowerCase().split("\\W+");
-            
-    //add each word in bio to map
-    for(String word : bioWords) {
-        if(savedMatchWordCount.containsKey(word)) {
-            Integer oldCount = savedMatchWordCount.get(word);
-            savedMatchWordCount.put(word, oldCount + 1); 
-        } else {
-            savedMatchWordCount.put(word, 1);
-        }
-    }
   }
 
   public Map<String, Integer> getBioMap() {
