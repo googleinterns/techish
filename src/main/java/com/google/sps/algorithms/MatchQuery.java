@@ -8,21 +8,22 @@ import com.google.sps.data.UserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public final class MatchQuery {
-    
+ 
   /**
-  * This method takes a MatchRequest and a Collection of users that are already saved and returns 
+  * This method takes a current User, MatchRequest, and a Collection of users that are already saved and returns 
   * all Users in the User Repository that match the criteria in MatchRequest AND are not already
   * saved in the userSavedMatches collection.
   */
-  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches) {
+  public Collection<User> query(User currentUser, MatchRequest request, Collection<User> userSavedMatches) {
     PersistentUserRepository userRepository = PersistentUserRepository.getInstance();
-    return query(request, userSavedMatches, userRepository);
+    return query(currentUser, request, userSavedMatches, userRepository);
   }
 
   //overload of query allows UserRepository to be passed in for testing
-  public Collection<User> query(MatchRequest request, Collection<User> userSavedMatches, UserRepository userRepository) {
+  public Collection<User> query(User currentUser, MatchRequest request, Collection<User> userSavedMatches, UserRepository userRepository) {
       
     Collection<User> allUsers = userRepository.getAllUsers();
     Collection<User> mentorMatches = new ArrayList<User>();
@@ -35,17 +36,19 @@ public final class MatchQuery {
     }
 
     for(User potentialMentor : allUsers) {
-        Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
+      Collection<String> mentorSpecialties = potentialMentor.getSpecialties();
 
-        //see if new mentor is not already saved AND contains correct criteria
-        if(!(userSavedMatches.contains(potentialMentor)) && (mentorSpecialties.contains(matchCriteria))) {
-            mentorMatches.add(potentialMentor);
-        }
+      boolean isCurrentUser = potentialMentor.equals(currentUser);
+      boolean isAlreadySaved = userSavedMatches.contains(potentialMentor);
+      boolean sharedSpecialty = mentorSpecialties.contains(matchCriteria);
+
+      //see if new mentor is not same as logged in user AND is not already saved AND contains correct criteria
+      if(!isCurrentUser && !isAlreadySaved && sharedSpecialty) {
+        mentorMatches.add(potentialMentor);
+      }
     }
 
-    List<User> rankedMatches = MatchRanking.rankMatches(userSavedMatches, allUsers, mentorMatches);
-    
-    return rankedMatches;
+    return MatchRanking.rankMatches(userRepository.getMapForUser(currentUser), mentorMatches);
   }
 
 }

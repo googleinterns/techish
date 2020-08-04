@@ -87,4 +87,17 @@ import java.util.Map;
         allUsers.add(newUser);
         return newUser;
      }
+
+     public User fetchUserWithId(String id) {
+        for (User user : allUsers) {
+            if(id.equals(user.getId())) {
+                return user;
+            }
+        }
+        return null;
+     }
+
+     public Map<String, Integer> getMapForUser(User user) {
+        return user.getBioMap();
+     }
  }

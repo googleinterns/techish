@@ -1,7 +1,7 @@
 package com.google.sps;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -33,12 +33,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
 public class NewMatchQueryServletTest {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
     private UserRepository userRepository;
-    // = PersistentUserRepository.getInstance();
     private User testUser;
     private Gson gson;
     private NewMatchQueryServlet newMatchQueryServlet;
@@ -75,7 +75,7 @@ public class NewMatchQueryServletTest {
 
         MatchQuery matchQuery = new MatchQuery();
         Collection<User> userSavedMatches = new ArrayList<User>();
-        Collection<User> answer = matchQuery.query(new MatchRequest(), userSavedMatches);
+        Collection<User> answer = matchQuery.query(testUser, new MatchRequest(), userSavedMatches);
  
         StringWriter StringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(StringWriter);

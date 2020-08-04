@@ -2,32 +2,36 @@ package com.google.sps.data;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Query.CompositeFilter;
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.User;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class implements the user repository using the datastore 
@@ -35,8 +39,8 @@ import java.util.stream.Collectors;
 public class PersistentUserRepository implements UserRepository {
   
   private final DatastoreService datastore;
-
   private static PersistentUserRepository instance = null;
+  private static final Gson gson = new Gson();
 
   public PersistentUserRepository() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -123,6 +127,7 @@ public class PersistentUserRepository implements UserRepository {
   }
     
   public void addUserToDatabase(User user) {
+
     String name = user.getName();
     String id = user.getId();
     String email = user.getEmail();
@@ -138,6 +143,7 @@ public class PersistentUserRepository implements UserRepository {
     Collection<String> specialties = user.getSpecialties();
     String careerTitle = user.getOccupation();
     String userBio = user.getBio();
+    String wordCountJson = gson.toJson(user.getBioMap());
 
     if(school != null) {
         userEntity.setProperty("school", school);  
@@ -161,6 +167,10 @@ public class PersistentUserRepository implements UserRepository {
     if(userBio != null) {
         userEntity.setProperty("userBio", userBio);
     }
+
+    if(wordCountJson != null) {
+        userEntity.setProperty("bioMapJson", wordCountJson);
+    }
     
     datastore.put(userEntity);
   }
@@ -178,6 +188,10 @@ public class PersistentUserRepository implements UserRepository {
         String occupation = (String) entity.getProperty("occupation");
         Collection<String> specialties = (Collection<String>) entity.getProperty("specialties");
         String userBio = (String) entity.getProperty("userBio");
+        String bioMapJson = (String) entity.getProperty("bioMapJson");
+
+        Type type = new TypeToken<Map<String, Integer>>(){}.getType();
+        Map<String, Integer> bioMap = gson.fromJson(bioMapJson, type);
 
         User userObject = new User(name);
         if(id != null) {
@@ -209,10 +223,25 @@ public class PersistentUserRepository implements UserRepository {
             userObject.setBio(userBio);
         }
 
+        if(bioMap != null) {
+            userObject.setBioMap(bioMap);
+        }
+
         userEntities.add(userObject);
     }
     return userEntities;
   }
+
+  //returns the bio map for given user
+  public Map<String, Integer> getMapForUser(User user) {
+    PreparedQuery storedUser = getQueryFilterForId(user.getId());
+    Entity storedUserEntity = storedUser.asSingleEntity();
+    String jsonMap =  (String)storedUserEntity.getProperty("bioMapJson");
+
+    Type type = new TypeToken<Map<String, Integer>>(){}.getType();
+    return gson.fromJson(jsonMap, type);
+  }
+
 
   // function to fetch the user from the database
   public Collection<User> fetchUserProfiles() {
@@ -256,20 +285,20 @@ public class PersistentUserRepository implements UserRepository {
 
   // function that adds user to the database if it does not exist already
   public void addUser(User user) {
-    String userName = user.getName();
-    Collection<User> userProfiles = fetchUsersWithName(userName);
+    String userId = user.getId();
+    User userProfile = fetchUserWithId(userId);
     /*
      * if the userProfiles is larger than 1, that means the 
      * if it doesnt exist then it gets added
     */
-    if(userProfiles.size() == 0) {
+    if(userProfile == null) {
         addUserToDatabase(user);
     }
   }
 
   public void removeUserProfile(User user) throws Exception {
-    String inputUserName = user.getName();
-    PreparedQuery results = getQueryFilterForName(inputUserName);
+    String inputUserId = user.getId();
+    PreparedQuery results = getQueryFilterForId(inputUserId);
     int size = results.countEntities();
 
     /*
@@ -278,15 +307,15 @@ public class PersistentUserRepository implements UserRepository {
     */
     if(size > 0){
         for (Entity entity : results.asIterable()) {
-            String currentName = (String) entity.getProperty("name");
-            if(inputUserName.equals(currentName)) {
+            String currentId = (String) entity.getProperty("id");
+            if(inputUserId.equals(currentId)) {
                 Key current = entity.getKey();
                 datastore.delete(current);
             }
 
         }
     } else {
-        throw new Exception("Can't remove " + inputUserName + " not found in datastore.");
+        throw new Exception("Can't remove " + user.getName() + " not found in datastore.");
     }
       
   }
