@@ -158,14 +158,14 @@ function queryServer(matchRequest) {
             json = JSON.stringify(matchRequest);
             return [2 /*return*/, fetch('/new-matches-query', { method: 'POST', body: json, redirect: "follow" })
                     .then(function (response) {
+                    if (response.redirected) {
+                        document.location.href = "/error.html";
+                    }
                     return response.json();
                 })
                     .then(function (users) {
                     //convert range from json to User
                     var out = [];
-                    if (users === '/error.html') {
-                        document.location.href = "/error.html";
-                    }
                     users.forEach(function (range) {
                         out.push(range);
                     });

@@ -72,6 +72,7 @@ public class NewMatchQueryServlet extends HttpServlet {
         else {
             System.err.println("Error too many requests, so request couldn't be added");
             jsonResponse = gson.toJson("/error.html");
+            response.sendRedirect("/error.html");
         }
     }
     else{
