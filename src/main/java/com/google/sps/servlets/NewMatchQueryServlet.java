@@ -71,7 +71,6 @@ public class NewMatchQueryServlet extends HttpServlet {
         // request did not make it to the backend. it got blocked. 
         else {
             System.err.println("Error too many requests, so request couldn't be added");
-            jsonResponse = gson.toJson("/error.html");
             response.sendRedirect("/error.html");
         }
     }
