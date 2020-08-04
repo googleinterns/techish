@@ -82,7 +82,6 @@ public class NewMatchQueryServletTest {
     public void doPostReturnError() throws IOException, ServletException {
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
         when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
-    
    
         MatchQuery matchQuery = new MatchQuery();
         Collection<User> userSavedMatches = new ArrayList<User>();
@@ -94,12 +93,7 @@ public class NewMatchQueryServletTest {
 
         newMatchQueryServlet.doPost(request, response);
 
-        Gson gson = new Gson();
-        String expected = gson.toJson("/error.html");
-        String result = StringWriter.getBuffer().toString().trim();
-
-        printWriter.flush();
-        Assert.assertEquals(expected, result);
+        verify(response, times(1)).sendRedirect("/error.html");
     }
 
     @Test
