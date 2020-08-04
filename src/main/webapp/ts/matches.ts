@@ -19,7 +19,9 @@ async function loadMatches() {
                 matchListElement.innerHTML = "";
 
                 matches.forEach((match: User) => {
-                    matchListElement.appendChild(createMatchElement(match));
+                    if(match != null) {
+                        matchListElement.appendChild(createMatchElement(match));
+                    }
                 })
             } else {
                 //redirect to log in page from servlet because user is not logged in
@@ -41,9 +43,11 @@ function createMatchElement(match: User) {
     matchElement.className = 'list-group-item';
 
     const emailElement = document.createElement("a");
-    emailElement.innerText = match.email;
-    emailElement.href = "mailto:" + match.email;
-    emailElement.target = "_blank";
+    if(match.email != null) {
+        emailElement.innerText = match.email;
+        emailElement.href = "mailto:" + match.email;
+        emailElement.target = "_blank";
+    }
 
     const careerElement = document.createElement('i');
     careerElement.innerText = "\n" + match.occupation + " at " + match.company;
