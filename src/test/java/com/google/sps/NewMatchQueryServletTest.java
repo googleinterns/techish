@@ -1,11 +1,14 @@
 package com.google.sps;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.gson.Gson;
+import com.google.sps.algorithms.AbuseDetection;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.MatchRequest;
@@ -19,8 +22,10 @@ import com.google.sps.servlets.NewMatchQueryServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -43,6 +48,7 @@ public class NewMatchQueryServletTest {
     private Gson gson;
     private NewMatchQueryServlet newMatchQueryServlet;
     private SessionContext sessionContext;
+    private AbuseDetection abuseFeature;
 
     private LocalServiceTestHelper localHelper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -53,6 +59,8 @@ public class NewMatchQueryServletTest {
         request = Mockito.mock(HttpServletRequest.class); 
         response = Mockito.mock(HttpServletResponse.class);
         sessionContext = Mockito.mock(SessionContext.class);
+        abuseFeature = Mockito.mock(AbuseDetection.class);
+
         testUser = new User("Test User");
         testUser.setId("000");
         testUser.setEmail("test@example.com");
@@ -62,6 +70,7 @@ public class NewMatchQueryServletTest {
         gson = new Gson();
         newMatchQueryServlet = new NewMatchQueryServlet();
         newMatchQueryServlet.testOnlySetContext(sessionContext);
+        newMatchQueryServlet.testOnlySetAbuseDetection(abuseFeature);
     }
 
     @After
@@ -70,9 +79,10 @@ public class NewMatchQueryServletTest {
     }
 
     @Test
-    public void doPost_returnsNewMatches() throws IOException, ServletException {
+    public void doPostReturnError() throws IOException, ServletException {
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
-
+        when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
+   
         MatchQuery matchQuery = new MatchQuery();
         Collection<User> userSavedMatches = new ArrayList<User>();
         Collection<User> answer = matchQuery.query(testUser, new MatchRequest(), userSavedMatches);
@@ -83,11 +93,20 @@ public class NewMatchQueryServletTest {
 
         newMatchQueryServlet.doPost(request, response);
 
-        Gson gson = new Gson();
-        String expected = gson.toJson(answer);
-        String result = StringWriter.getBuffer().toString().trim();
+        verify(response, times(1)).sendRedirect("/error.html");
+    }
 
-        printWriter.flush();
-        Assert.assertEquals(expected, result);
+    @Test
+    public void doPostAbuseFeatureNotInitialized() throws IOException, ServletException {
+        AbuseDetection abuseInstance = null;
+        newMatchQueryServlet.testOnlySetAbuseDetection(abuseInstance);
+        when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+    
+        StringWriter StringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(StringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+        newMatchQueryServlet.doPost(request, response);
+
+        verify(response, times(1)).sendRedirect("/index.html");
     }
 }

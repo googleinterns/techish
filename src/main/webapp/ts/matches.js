@@ -156,8 +156,11 @@ function queryServer(matchRequest) {
         var json;
         return __generator(this, function (_a) {
             json = JSON.stringify(matchRequest);
-            return [2 /*return*/, fetch('/new-matches-query', { method: 'POST', body: json })
+            return [2 /*return*/, fetch('/new-matches-query', { method: 'POST', body: json, redirect: "follow" })
                     .then(function (response) {
+                    if (response.redirected) {
+                        document.location.href = "/error.html";
+                    }
                     return response.json();
                 })
                     .then(function (users) {

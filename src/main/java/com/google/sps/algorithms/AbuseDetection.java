@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 
-public final class AbuseDetection {
+public class AbuseDetection {
 
     private Collection <Date> timesOfRequests = new ArrayList<Date>();
 
@@ -34,9 +34,9 @@ public final class AbuseDetection {
   }
 
   /**
-  *  Function takes a local time, tries to add requests only if there are not
+  *  Function takes a local Date, tries to add requests only if there are not
   *  more than the currentRequestsAllowed variable, and less than the 
-  *  timePeriod. If added the method returns true, if not it returns false.
+  *  Date. If added the method returns true, if not it returns false.
   */
    public boolean addRequest(Date currentDate) {
    

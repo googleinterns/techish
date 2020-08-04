@@ -119,11 +119,15 @@ function displayNewMatchPopup(matches: Array<User>) {
  */
 async function queryServer(matchRequest: MatchRequest) {
     const json = JSON.stringify(matchRequest);
-    return fetch('/new-matches-query', { method: 'POST', body: json })
+    return fetch('/new-matches-query', { method: 'POST', body: json, redirect: "follow" })
         .then((response) => {
+            if(response.redirected) {
+                document.location.href = "/error.html";
+            }
             return response.json();
         })
         .then((users) => {
+    
             //convert range from json to User
             const out: Array<User> = [];
             users.forEach((range: User) => {

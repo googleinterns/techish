@@ -3,6 +3,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+import com.google.sps.algorithms.AbuseDetection;
 import com.google.sps.algorithms.MatchQuery;
 import com.google.sps.data.MatchRepository;
 import com.google.sps.data.MatchRequest;
@@ -14,7 +15,10 @@ import com.google.sps.data.UserRepository;
 import com.google.sps.servlets.MatchServlet;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Collection;
+import java.util.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,29 +31,53 @@ public class NewMatchQueryServlet extends HttpServlet {
 
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
+  private AbuseDetection abuseDetectionFeature = new AbuseDetection(Duration.ofSeconds(1),10);
 
   public void testOnlySetContext(SessionContext sessionContext) {
       this.sessionContext = sessionContext;
   }
 
+  //method to override AbuseDetectionFeature with Mock FOR TESTING        
+  public void testOnlySetAbuseDetection(AbuseDetection abuseFeature) {
+    this.abuseDetectionFeature = abuseFeature;
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
     Gson gson = new Gson();
+    String jsonResponse = "";
+    if(abuseDetectionFeature != null) {
 
-    // Convert the JSON to an instance of MatchRequest.
-    MatchRequest matchRequest = getMatchRequest(request, gson);
+        // Time of Requests passed into addRequest, boolean represents if added to back end or not        
+        boolean isRequestPassed = abuseDetectionFeature.addRequest(new Date()); 
 
-    User currentUser = sessionContext.getLoggedInUser();
+        // if true, means the request was added to the backend to get processed
+        if(isRequestPassed) {
+            // Convert the JSON to an instance of MatchRequest.
+            MatchRequest matchRequest = getMatchRequest(request, gson);
 
-    Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
+            User currentUser = sessionContext.getLoggedInUser();
 
-    // Find the possible matches.
-    MatchQuery matchQuery = new MatchQuery();
-    Collection<User> answer = matchQuery.query(currentUser, matchRequest, userSavedMatches);
+            Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
+             
+           // Find the possible matches.
+           MatchQuery matchQuery = new MatchQuery();
+           Collection<User> answer = matchQuery.query(currentUser, matchRequest, userSavedMatches);
 
-    // Convert the answer to JSON
-    String jsonResponse = gson.toJson(answer);
-
+            // Convert the answer to JSON
+            jsonResponse = gson.toJson(answer);
+        }
+        // request did not make it to the backend. it got blocked. 
+        else {
+            System.err.println("Error too many requests, so request couldn't be added");
+            response.sendRedirect("/error.html");
+        }
+    }
+    else{
+        System.err.println("Error abuseDetectionFeature is not initialized");
+        response.sendRedirect("/index.html");
+    }
     // Send the JSON back as the response
     response.setContentType("application/json");
     response.getWriter().println(jsonResponse);

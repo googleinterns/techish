@@ -29,6 +29,8 @@ public class MatchServlet extends HttpServlet {
   private MatchRepository matchRepository = PersistentMatchRepository.getInstance();  
   private SessionContext sessionContext = SessionContext.getInstance();
 
+
+
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
@@ -41,6 +43,7 @@ public class MatchServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
     Gson gson = new Gson();
     response.setContentType("application/json;");
 
@@ -48,9 +51,10 @@ public class MatchServlet extends HttpServlet {
     if(!sessionContext.isUserLoggedIn()) {
         //return null for matches so that page redirects to logged out homepage
         response.getWriter().println(gson.toJson(null));
-    } else {
+    } 
+    else {
         Collection<User> matches = matchRepository.getMatchesForUser(sessionContext.getLoggedInUser());
-        response.getWriter().println(gson.toJson(matches));
+        response.getWriter().println(gson.toJson(matches)); 
     }
   }
 
@@ -70,10 +74,10 @@ public class MatchServlet extends HttpServlet {
         }
         
       } else {
-        System.err.println("new-matches is null in MatchServlet doPost()");
+            System.err.println("new-matches is null in MatchServlet doPost()");
       }
-      response.sendRedirect("/logged_in_homepage.html");
+    response.sendRedirect("/logged_in_homepage.html");  
     }
+  
   }
-
 }

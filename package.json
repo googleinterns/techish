@@ -19,6 +19,7 @@
   "homepage": "https://github.com/samuelsandoval1/techish#readme",
   "devDependencies": {
     "@types/bootstrap": "^4.5.0",
+    "@types/jquery": "^3.5.1",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-node": "^4.1.0",
@@ -29,7 +30,6 @@
   },
   "dependencies": {
     "@types/es6-promise": "^3.3.0",
-    "@types/jquery": "^3.5.0",
     "bootstrap-select": "^1.13.18",
     "startbootstrap-one-page-wonder": "^5.0.8"
   }

@@ -82,6 +82,7 @@ public class MatchServletTest {
     @Test
     public void doGet_UserNotLoggedIn() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(false);
+
         String expected = gson.toJson(null);
         String result = doGetHelper(request, response, matchServlet);
         Assert.assertEquals(expected, result);
@@ -126,6 +127,7 @@ public class MatchServletTest {
     public void nullParameterValues_ShouldNotThrowError() throws IOException, ServletException {
         when(sessionContext.isUserLoggedIn()).thenReturn(true);
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
+
         String[] nullMatches = null;
         when(request.getParameterValues("new-matches")).thenReturn(nullMatches);
         matchServlet.doPost(request, response);
