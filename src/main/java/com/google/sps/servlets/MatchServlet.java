@@ -72,6 +72,7 @@ public class MatchServlet extends HttpServlet {
           User newMatch = new Gson().fromJson(matchName, User.class);
           matchRepository.addMatch(userToAdd, newMatch);
         }
+        
       } else {
             System.err.println("new-matches is null in MatchServlet doPost()");
       }

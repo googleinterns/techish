@@ -83,7 +83,11 @@ public class NewMatchQueryServletTest {
         when(sessionContext.getLoggedInUser()).thenReturn(testUser);
         when(abuseFeature.addRequest(Mockito.any(Date.class))).thenReturn(false);
     
-      
+   
+        MatchQuery matchQuery = new MatchQuery();
+        Collection<User> userSavedMatches = new ArrayList<User>();
+        Collection<User> answer = matchQuery.query(testUser, new MatchRequest(), userSavedMatches);
+ 
         StringWriter StringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(StringWriter);
         when(response.getWriter()).thenReturn(printWriter);

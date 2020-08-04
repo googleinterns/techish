@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
 /** */
 @RunWith(JUnit4.class)
 public final class MatchQueryTest {
@@ -37,17 +38,17 @@ public final class MatchQueryTest {
 
   @Test
   public void emptyRequest_shouldReturnNoMentors() {
-    Assert.assertTrue(MATCH_QUERY.query(EMPTY_REQUEST, userSavedMatches, userRepository).isEmpty());
+    Assert.assertTrue(MATCH_QUERY.query(testUser, EMPTY_REQUEST, userSavedMatches, userRepository).isEmpty());
   }
 
   @Test
   public void mlRequest_ShouldReturnMLMentors() {
-    Assert.assertEquals(2, MATCH_QUERY.query(ML_REQUEST, userSavedMatches, userRepository).size());
+    Assert.assertEquals(2, MATCH_QUERY.query(testUser, ML_REQUEST, userSavedMatches, userRepository).size());
   }
 
   @Test
   public void badRequest_ShouldReturnNoMentors() {
-    Assert.assertTrue(MATCH_QUERY.query(BAD_REQUEST, userSavedMatches, userRepository).isEmpty());
+    Assert.assertTrue(MATCH_QUERY.query(testUser, BAD_REQUEST, userSavedMatches, userRepository).isEmpty());
   }
 
   @Test
@@ -58,7 +59,7 @@ public final class MatchQueryTest {
     newMentor.setId("1");
     userSavedMatches.add(newMentor);
 
-    Assert.assertEquals(1, MATCH_QUERY.query(ML_REQUEST, userSavedMatches, userRepository).size());
+    Assert.assertEquals(1, MATCH_QUERY.query(testUser, ML_REQUEST, userSavedMatches, userRepository).size());
   }
 
 }

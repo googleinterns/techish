@@ -60,10 +60,10 @@ public class NewMatchQueryServlet extends HttpServlet {
             User currentUser = sessionContext.getLoggedInUser();
 
             Collection<User> userSavedMatches = matchRepository.getMatchesForUser(currentUser);
-
-            // Find the possible matches.
-            MatchQuery matchQuery = new MatchQuery();
-            Collection<User> answer = matchQuery.query(matchRequest, userSavedMatches);
+             
+           // Find the possible matches.
+           MatchQuery matchQuery = new MatchQuery();
+           Collection<User> answer = matchQuery.query(currentUser, matchRequest, userSavedMatches);
 
             // Convert the answer to JSON
             jsonResponse = gson.toJson(answer);

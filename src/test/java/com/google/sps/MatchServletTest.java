@@ -150,10 +150,10 @@ public class MatchServletTest {
         return result;
     }
 
-    //count number of opening brackets in result string, which is equal to number of matches
+    //count number of matches in json array string
     private int matchesInString(String result) {
-        int numMatches = (result.length() - result.replace("{", "").length());
-        return numMatches;
+        User[] userArray = gson.fromJson(result, User[].class);  
+        return userArray.length;
     }
 
 }

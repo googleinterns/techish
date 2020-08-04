@@ -35,19 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 function setForm(value) {
-    var menteeForm = document.getElementById('Mentee');
-    var mentorForm = document.getElementById('Mentor');
     var userTypeButton = document.getElementById('user-input');
-    if (menteeForm && mentorForm && userTypeButton) {
-        if (value == 'Mentee') {
-            menteeForm.setAttribute('style', 'display:block;');
-            mentorForm.setAttribute('style', 'display:none;');
-            userTypeButton.setAttribute('value', 'Mentee');
+    var menteeInputs = ['name-input', 'school-input', 'major-input'];
+    var mentorInputs = ['profName-input', 'company-input', 'careerTitle-input', 'bio-input', 'specialty-input'];
+    if (userTypeButton == null) {
+        console.error("userTypeButton is null");
+    }
+    var visibleId = value;
+    var hiddenId = visibleId == 'Mentee' ? 'Mentor' : 'Mentee';
+    var hiddenInputs = hiddenId == 'Mentee' ? menteeInputs : mentorInputs;
+    var visibleInputs = visibleId == 'Mentee' ? menteeInputs : mentorInputs;
+    showForm(visibleId, userTypeButton, visibleInputs);
+    hideForm(hiddenId, hiddenInputs);
+}
+function showForm(visibleId, userTypeButton, requiredInputs) {
+    document.getElementById(visibleId).setAttribute('style', 'display:block;');
+    userTypeButton.setAttribute('value', visibleId);
+    setRequiredInputs(requiredInputs, true);
+}
+function hideForm(hiddenId, requiredInputs) {
+    document.getElementById(hiddenId).setAttribute('style', 'display:none;');
+    setRequiredInputs(requiredInputs, false);
+}
+function setRequiredInputs(arrayofFormIDs, isIdRequired) {
+    for (var i = 0; i < arrayofFormIDs.length; i++) {
+        var currentElement = document.getElementById(arrayofFormIDs[i]);
+        if (currentElement == null) {
+            console.error("Element doesn't exist");
         }
         else {
-            mentorForm.setAttribute('style', 'display:block;');
-            menteeForm.setAttribute('style', 'display:none;');
-            userTypeButton.setAttribute('value', 'Mentor');
+            currentElement.required = isIdRequired;
         }
     }
 }
@@ -56,7 +73,7 @@ function redirectIfLoggedOut() {
         var logStatus;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, logStatusMethod()];
+                case 0: return [4 /*yield*/, logStatusGetter()];
                 case 1:
                     logStatus = _a.sent();
                     if (logStatus.loginUrl != "") {
@@ -68,7 +85,7 @@ function redirectIfLoggedOut() {
         });
     });
 }
-function logStatusMethod() {
+function logStatusGetter() {
     return __awaiter(this, void 0, void 0, function () {
         var response, currentStatus, authStatus;
         return __generator(this, function (_a) {
