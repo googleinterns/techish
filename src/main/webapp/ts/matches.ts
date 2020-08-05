@@ -47,6 +47,8 @@ function createMatchElement(match: User) {
         emailElement.innerText = match.email;
         emailElement.href = "mailto:" + match.email;
         emailElement.target = "_blank";
+    } else {
+        emailElement.innerText = "<no email provided>";
     }
 
     const careerElement = document.createElement('i');

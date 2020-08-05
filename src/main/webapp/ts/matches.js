@@ -94,6 +94,9 @@ function createMatchElement(match) {
         emailElement.href = "mailto:" + match.email;
         emailElement.target = "_blank";
     }
+    else {
+        emailElement.innerText = "<no email provided>";
+    }
     var careerElement = document.createElement('i');
     careerElement.innerText = "\n" + match.occupation + " at " + match.company;
     var allSpecialtiesElement = document.createElement('p');
