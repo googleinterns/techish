@@ -314,6 +314,40 @@ public final class MatchRankingTest {
     return (Math.abs(d1 - d2) < 0.0001);
   }
 
+  @Test
+  public void testDifferentLengthBios() {
+    User currentUser = new User("");
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
+
+    User userGood = new User("");
+    userGood.setId("09876");
+    User userBad = new User("");
+    userBad.setId("123456");
+    User userBadTwo = new User("");
+    userBadTwo.setId("23423");
+
+    for(int i = 10; i < 5000; i += 50) {
+      try {
+        userGood.setBio(getRandomGoodBio(i));
+        userBad.setBio(getRandomBadBio(i));
+        userBadTwo.setBio(getRandomBadBio(i));
+
+        Collection<User> newMatches = new HashSet<User>();
+        newMatches.add(userGood);
+        newMatches.add(userBad);
+        newMatches.add(userBadTwo);
+
+        List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
+        Assert.assertEquals(userGood, result.get(0));
+      } catch (Exception e) {
+          System.err.println("System could not handle bio of length " + i + ". See testDifferentLengthBios for more details.");
+          break;
+      }
+    }
+  }
+
   //method for testing to directly add new bio to user
   private void testOnlyAddNewBio(String newBio, User user) {
     String[] bioWords = newBio.toLowerCase().split("\\W+");
@@ -361,39 +395,4 @@ public final class MatchRankingTest {
 
       return toReturn;
   }
-
-  @Test
-  public void testDifferentLengthBios() {
-    User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
-
-    User userGood = new User("");
-    userGood.setId("09876");
-    User userBad = new User("");
-    userBad.setId("123456");
-    User userBadTwo = new User("");
-    userBadTwo.setId("23423");
-
-    for(int i = 10; i < 5000; i += 50) {
-      try {
-        userGood.setBio(getRandomGoodBio(i));
-        userBad.setBio(getRandomBadBio(i));
-        userBadTwo.setBio(getRandomBadBio(i));
-
-        Collection<User> newMatches = new HashSet<User>();
-        newMatches.add(userGood);
-        newMatches.add(userBad);
-        newMatches.add(userBadTwo);
-
-        List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
-        Assert.assertEquals(userGood, result.get(0));
-      } catch (Exception e) {
-          System.err.println("System could not handle bio of length " + i + ". See testDifferentLengthBios for more details.");
-          break;
-      }
-    }
-  }
-
 }
