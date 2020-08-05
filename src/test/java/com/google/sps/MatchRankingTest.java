@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -329,6 +330,70 @@ public final class MatchRankingTest {
     }
 
     user.setBioMap(savedMatchWordCount);
+  }
+
+  private String getRandomGoodBio(int bioLength) {
+      String[] possibleWords = {"security", "engineer", "software", "Security", "data", "work", "secure", "engineering", "work", "google", "microsoft", "structures",
+      "working", "network", "securing", "endpoints", "cloud", "android", "app", "application"};
+
+      Random random = new Random();
+      String toReturn = "";
+      for(int i = 0; i < bioLength; ++i) {
+          int randomNum = random.nextInt(possibleWords.length - 1);
+          String newWord = possibleWords[randomNum];
+          toReturn = toReturn.concat(newWord + " ");
+      }
+
+      return toReturn;
+  }
+
+  private String getRandomBadBio(int bioLength) {
+      String[] possibleWords = {"giraffe", "beach", "tennis", "horse", "monkey", "english", "history", "bear", "hi", "asdf", "qwudfdsewff", "adslkfjasdf", "bored",
+       "latte", "coffee", "tired", "dont know", "what", "boring", "cow", "moose", "lettuce", "blah"};
+
+       Random random = new Random();
+      String toReturn = "";
+      for(int i = 0; i < bioLength; ++i) {
+          int randomNum = random.nextInt(possibleWords.length - 1);
+          String newWord = possibleWords[randomNum];
+          toReturn = toReturn.concat(newWord + " ");
+      }
+
+      return toReturn;
+  }
+
+  @Test
+  public void testDifferentLengthBios() {
+    User currentUser = new User("");
+    testOnlyAddNewBio(user_a.getBio(), currentUser);
+    testOnlyAddNewBio(user_b.getBio(), currentUser);
+    testOnlyAddNewBio(user_d.getBio(), currentUser);
+
+    User userGood = new User("");
+    userGood.setId("09876");
+    User userBad = new User("");
+    userBad.setId("123456");
+    User userBadTwo = new User("");
+    userBadTwo.setId("23423");
+
+    for(int i = 10; i < 5000; i += 50) {
+      try {
+        userGood.setBio(getRandomGoodBio(i));
+        userBad.setBio(getRandomBadBio(i));
+        userBadTwo.setBio(getRandomBadBio(i));
+
+        Collection<User> newMatches = new HashSet<User>();
+        newMatches.add(userGood);
+        newMatches.add(userBad);
+        newMatches.add(userBadTwo);
+
+        List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
+        Assert.assertEquals(userGood, result.get(0));
+      } catch (Exception e) {
+          System.err.println("System could not handle bio of length " + i + ". See testDifferentLengthBios for more details.");
+          break;
+      }
+    }
   }
 
 }
