@@ -52,7 +52,9 @@ function loadMatches() {
                             var matchListElement_1 = document.getElementById('match-history');
                             matchListElement_1.innerHTML = "";
                             matches.forEach(function (match) {
-                                matchListElement_1.appendChild(createMatchElement(match));
+                                if (match != null) {
+                                    matchListElement_1.appendChild(createMatchElement(match));
+                                }
                             });
                         }
                         else {
@@ -87,9 +89,14 @@ function createMatchElement(match) {
     var matchElement = document.createElement('li');
     matchElement.className = 'list-group-item';
     var emailElement = document.createElement("a");
-    emailElement.innerText = match.email;
-    emailElement.href = "mailto:" + match.email;
-    emailElement.target = "_blank";
+    if (match.email != null) {
+        emailElement.innerText = match.email;
+        emailElement.href = "mailto:" + match.email;
+        emailElement.target = "_blank";
+    }
+    else {
+        emailElement.innerText = "<no email provided>";
+    }
     var careerElement = document.createElement('i');
     careerElement.innerText = "\n" + match.occupation + " at " + match.company;
     var allSpecialtiesElement = document.createElement('p');
