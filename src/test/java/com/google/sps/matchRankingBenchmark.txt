@@ -1,0 +1,40 @@
+When user had 0% keywords, it ranked ahead of user with half keywords 0% of runs.
+
+When user had 5% keywords, it ranked ahead of user with half keywords 0% of runs.
+
+When user had 10% keywords, it ranked ahead of user with half keywords 0% of runs.
+
+When user had 15% keywords, it ranked ahead of user with half keywords 0% of runs.
+
+When user had 20% keywords, it ranked ahead of user with half keywords 0% of runs.
+
+When user had 25% keywords, it ranked ahead of user with half keywords 4% of runs.
+
+When user had 30% keywords, it ranked ahead of user with half keywords 6% of runs.
+
+When user had 35% keywords, it ranked ahead of user with half keywords 6% of runs.
+
+When user had 40% keywords, it ranked ahead of user with half keywords 16% of runs.
+
+When user had 45% keywords, it ranked ahead of user with half keywords 28% of runs.
+
+When user had 50% keywords, it ranked ahead of user with half keywords 56% of runs.
+
+When user had 55% keywords, it ranked ahead of user with half keywords 76% of runs.
+
+When user had 60% keywords, it ranked ahead of user with half keywords 86% of runs.
+
+When user had 65% keywords, it ranked ahead of user with half keywords 88% of runs.
+
+When user had 70% keywords, it ranked ahead of user with half keywords 92% of runs.
+
+When user had 75% keywords, it ranked ahead of user with half keywords 94% of runs.
+
+When user had 80% keywords, it ranked ahead of user with half keywords 100% of runs.
+
+When user had 85% keywords, it ranked ahead of user with half keywords 100% of runs.
+
+When user had 90% keywords, it ranked ahead of user with half keywords 100% of runs.
+
+When user had 95% keywords, it ranked ahead of user with half keywords 98% of runs.
+

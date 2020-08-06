@@ -2,6 +2,8 @@ package com.google.sps;
 
 import com.google.sps.algorithms.MatchRanking;
 import com.google.sps.data.User;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,6 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.*;
+import java.io.*;
 
 /** */
 @RunWith(JUnit4.class)
@@ -348,9 +353,9 @@ public final class MatchRankingTest {
     }
   }
 
-  //prints the percent keywords that pass with bio ranked at the top
+  //prints the percent keywords that pass against bio with 50% keywords to an output file and asserts that they meet a minimum benchmark
   @Test
-  public void testDifferentPercentKeywordBios() {
+  public void testDifferentPercentKeywordBios() throws FileNotFoundException, IOException {
     User currentUser = new User("");
     addNewBio(user_a.getBio(), currentUser);
     addNewBio(user_b.getBio(), currentUser);
@@ -361,18 +366,53 @@ public final class MatchRankingTest {
     User userBad = new User("");
     userBad.setId("123456");
 
-    //test different percentages of keywords against a 0% keyword bio
-    for(double i = 0.05; i <= 1.0; i += 0.05) {
-      userGood.setBio(generateRandomBio(50, i));
-      userBad.setBio(generateRandomBio(50, 0.0));
+    //put minimum benchmark checks in map (maps keyword percent to percent it should be ranked first)
+    Map<Integer, Double> expectedPerformance = new HashMap<Integer, Double>();
+    expectedPerformance.put(0, 0.0);
+    expectedPerformance.put(25, 0.0);
+    expectedPerformance.put(50, 0.2);
+    expectedPerformance.put(60, 0.65);
+    expectedPerformance.put(70, 0.85);
+    expectedPerformance.put(80, 0.9);
+    expectedPerformance.put(90, 0.95);
+    expectedPerformance.put(100, 0.99);
 
-      Collection<User> newMatches = new HashSet<User>();
-      newMatches.add(userGood);
-      newMatches.add(userBad);
+    FileWriter output = new FileWriter("src/test/java/com/google/sps/matchRankingBenchmark.txt");
 
-      List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
-      Assert.assertEquals(userGood, result.get(0));
+    //test different percentages of keywords against a 50% keyword bio
+    for(double i = 0.0; i <= 1.0; i += 0.05) {
+        int rankedFirstCount = 0;
+
+        //run test at each percent level 50 times to get accurate benchmark
+        for(int j = 0; j < 50; ++j) {
+            userGood.setBio(generateRandomBio(50, i));
+            userBad.setBio(generateRandomBio(50, 0.5));
+
+            Collection<User> newMatches = new HashSet<User>();
+            newMatches.add(userGood);
+            newMatches.add(userBad);
+
+            List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
+
+            if(result.get(0).equals(userGood)) {
+                rankedFirstCount++;
+            }
+        }
+
+        double percentRankedFirst = ((double)rankedFirstCount / 50.0);
+        int percentKeywords = (int)Math.round(i * 100);
+        int percentRankedFirstInt = (int)Math.round(percentRankedFirst * 100);
+
+        //assert performance meets minimum benchmark
+        if(expectedPerformance.containsKey(percentKeywords)) {
+            if(expectedPerformance.get(percentKeywords) > percentRankedFirst) {
+                Assert.fail("Benchmark test failed for i = " + i + " because expected was " + expectedPerformance.get(percentKeywords) + " and actual was " + percentRankedFirst);
+            }
+        }
+        //record exact percentages in output file
+        output.write("When user had " + percentKeywords + "% keywords, it ranked ahead of user with half keywords " + percentRankedFirstInt + "% of runs.\n\n");
     }
+    output.close();
   }
 
   //method for testing to directly add new bio to user
