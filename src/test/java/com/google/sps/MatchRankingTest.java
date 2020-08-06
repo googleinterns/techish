@@ -361,20 +361,17 @@ public final class MatchRankingTest {
     User userBad = new User("");
     userBad.setId("123456");
 
-    //test different percentages of keywords against a 50% keyword bio
-    for(double i = 0.0; i <= 1.0; i += 0.05) {
+    //test different percentages of keywords against a 0% keyword bio
+    for(double i = 0.05; i <= 1.0; i += 0.05) {
       userGood.setBio(generateRandomBio(50, i));
-      userBad.setBio(generateRandomBio(50, 0.5));
+      userBad.setBio(generateRandomBio(50, 0.0));
 
       Collection<User> newMatches = new HashSet<User>();
       newMatches.add(userGood);
       newMatches.add(userBad);
 
       List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
-
-      if(result.get(0).equals(userGood)) {
-        System.out.println("Bio was ranked first with " + i + " percent keywords.");
-      }
+      Assert.assertEquals(userGood, result.get(0));
     }
   }
 
