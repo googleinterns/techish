@@ -3,9 +3,12 @@ package com.google.sps;
 import com.google.sps.algorithms.MatchRanking;
 import com.google.sps.data.User;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.util.*;
-import java.io.*;
 
 /** */
 @RunWith(JUnit4.class)
