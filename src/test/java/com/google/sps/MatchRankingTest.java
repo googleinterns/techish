@@ -34,6 +34,10 @@ public final class MatchRankingTest {
   private User user_forward = new User("");
   private User user_forward_repeat = new User("");
   private User user_backward = new User("");
+  private String[] keywords = {"security", "engineer", "software", "Security", "data", "work", "secure", "engineering", "work", "google", "microsoft", "structures",
+      "working", "network", "securing", "endpoints", "cloud", "android", "app", "application"};
+  private String[] nonKeywords = {"giraffe", "beach", "tennis", "horse", "monkey", "english", "history", "bear", "hi", "asdf", "qwudfdsewff", "adslkfjasdf", "bored",
+       "latte", "coffee", "tired", "dont", "what", "boring", "cow", "moose", "lettuce", "blah"};
 
   @Before
   public void setup() {
@@ -84,8 +88,8 @@ public final class MatchRankingTest {
   @Test
   public void basicRanking() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
-    testOnlyAddNewBio(user_e.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_e.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_a);
@@ -103,9 +107,9 @@ public final class MatchRankingTest {
   @Test
   public void longBioTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_long);
@@ -123,9 +127,9 @@ public final class MatchRankingTest {
   @Test
   public void badBioTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_bad_format);
@@ -143,9 +147,9 @@ public final class MatchRankingTest {
   @Test
   public void wrongLanguageTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_spanish);
@@ -163,9 +167,9 @@ public final class MatchRankingTest {
   @Test
   public void shortBioTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_short);
@@ -183,9 +187,9 @@ public final class MatchRankingTest {
   @Test
   public void duplicateUserTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_e);
@@ -202,9 +206,9 @@ public final class MatchRankingTest {
   @Test
   public void emptyBioTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_e);
@@ -222,9 +226,9 @@ public final class MatchRankingTest {
   @Test
   public void numberBioTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_e);
@@ -242,9 +246,9 @@ public final class MatchRankingTest {
   @Test
   public void sameWordsInBiosTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_forward);
@@ -259,9 +263,9 @@ public final class MatchRankingTest {
   @Test
   public void equalBiosTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_forward);
@@ -276,10 +280,10 @@ public final class MatchRankingTest {
   @Test
   public void longBioWithKeywordTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
-    testOnlyAddNewBio(user_e.getBio(), currentUser);
-    testOnlyAddNewBio(user_forward.getBio(), currentUser);
-    testOnlyAddNewBio(user_backward.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_e.getBio(), currentUser);
+    addNewBio(user_forward.getBio(), currentUser);
+    addNewBio(user_backward.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_a);
@@ -297,8 +301,8 @@ public final class MatchRankingTest {
   @Test
   public void nthRootTest() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
-    testOnlyAddNewBio(user_e.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_e.getBio(), currentUser);
 
     Collection<User> newMatches = new HashSet<User>();
     newMatches.add(user_a);
@@ -317,39 +321,65 @@ public final class MatchRankingTest {
   @Test
   public void testDifferentLengthBios() {
     User currentUser = new User("");
-    testOnlyAddNewBio(user_a.getBio(), currentUser);
-    testOnlyAddNewBio(user_b.getBio(), currentUser);
-    testOnlyAddNewBio(user_d.getBio(), currentUser);
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
 
     User userGood = new User("");
     userGood.setId("09876");
     User userBad = new User("");
     userBad.setId("123456");
-    User userBadTwo = new User("");
-    userBadTwo.setId("23423");
 
     for(int i = 10; i < 5000; i += 50) {
       try {
-        userGood.setBio(getRandomGoodBio(i));
-        userBad.setBio(getRandomBadBio(i));
-        userBadTwo.setBio(getRandomBadBio(i));
+        userGood.setBio(generateRandomBio(i, 1.0));
+        userBad.setBio(generateRandomBio(i, 0.0));
 
         Collection<User> newMatches = new HashSet<User>();
         newMatches.add(userGood);
         newMatches.add(userBad);
-        newMatches.add(userBadTwo);
 
         List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
         Assert.assertEquals(userGood, result.get(0));
       } catch (Exception e) {
-          System.err.println("System could not handle bio of length " + i + ". See testDifferentLengthBios for more details.");
-          break;
+        System.err.println("System could not handle bio of length " + i + ". See testDifferentLengthBios for more details.");
+        break;
+      }
+    }
+  }
+
+  //prints the percent keywords that pass with bio ranked at the top
+  @Test
+  public void testDifferentPercentKeywordBios() {
+    User currentUser = new User("");
+    addNewBio(user_a.getBio(), currentUser);
+    addNewBio(user_b.getBio(), currentUser);
+    addNewBio(user_d.getBio(), currentUser);
+
+    User userGood = new User("");
+    userGood.setId("09876");
+    User userBad = new User("");
+    userBad.setId("123456");
+
+    //test different percentages of keywords against a 50% keyword bio
+    for(double i = 0.0; i <= 1.0; i += 0.05) {
+      userGood.setBio(generateRandomBio(50, i));
+      userBad.setBio(generateRandomBio(50, 0.5));
+
+      Collection<User> newMatches = new HashSet<User>();
+      newMatches.add(userGood);
+      newMatches.add(userBad);
+
+      List<User> result = MatchRanking.rankMatches(currentUser.getBioMap(), newMatches);
+
+      if(result.get(0).equals(userGood)) {
+        System.out.println("Bio was ranked first with " + i + " percent keywords.");
       }
     }
   }
 
   //method for testing to directly add new bio to user
-  private void testOnlyAddNewBio(String newBio, User user) {
+  private void addNewBio(String newBio, User user) {
     String[] bioWords = newBio.toLowerCase().split("\\W+");
     Map<String, Integer> savedMatchWordCount = user.getBioMap();
             
@@ -366,33 +396,28 @@ public final class MatchRankingTest {
     user.setBioMap(savedMatchWordCount);
   }
 
-  private String getRandomGoodBio(int bioLength) {
-      String[] possibleWords = {"security", "engineer", "software", "Security", "data", "work", "secure", "engineering", "work", "google", "microsoft", "structures",
-      "working", "network", "securing", "endpoints", "cloud", "android", "app", "application"};
+  private String generateRandomBio(int targetLength, double keywordPercentage) {
+    int numKeywords = (int)Math.ceil(keywordPercentage * targetLength);
+    int numNonKeyWords = targetLength - numKeywords;
 
-      Random random = new Random();
-      String toReturn = "";
-      for(int i = 0; i < bioLength; ++i) {
-          int randomNum = random.nextInt(possibleWords.length - 1);
-          String newWord = possibleWords[randomNum];
-          toReturn = toReturn.concat(newWord + " ");
-      }
+    Random random = new Random();
+    StringBuilder builder = new StringBuilder();
 
-      return toReturn;
+    //add keywords
+    for(int i = 0; i < numKeywords; ++i) {
+      int keywordIndex = random.nextInt(keywords.length - 1);
+      String newWord = keywords[keywordIndex];
+      builder.append(newWord + " ");
+    }
+
+    //add non-keywords
+    for(int i = 0; i < numNonKeyWords; ++i) {
+      int nonKeywordIndex = random.nextInt(nonKeywords.length - 1);
+      String newWord = nonKeywords[nonKeywordIndex];
+      builder.append(newWord + " ");
+    }
+
+    return builder.toString();
   }
 
-  private String getRandomBadBio(int bioLength) {
-      String[] possibleWords = {"giraffe", "beach", "tennis", "horse", "monkey", "english", "history", "bear", "hi", "asdf", "qwudfdsewff", "adslkfjasdf", "bored",
-       "latte", "coffee", "tired", "dont know", "what", "boring", "cow", "moose", "lettuce", "blah"};
-
-       Random random = new Random();
-      String toReturn = "";
-      for(int i = 0; i < bioLength; ++i) {
-          int randomNum = random.nextInt(possibleWords.length - 1);
-          String newWord = possibleWords[randomNum];
-          toReturn = toReturn.concat(newWord + " ");
-      }
-
-      return toReturn;
-  }
 }
