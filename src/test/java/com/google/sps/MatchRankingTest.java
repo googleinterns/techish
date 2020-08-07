@@ -356,6 +356,16 @@ public final class MatchRankingTest {
   //prints the percent keywords that pass against bio with 50% keywords to an output file and asserts that they meet a minimum benchmark
   @Test
   public void testDifferentPercentKeywordBios() throws FileNotFoundException, IOException {
+
+    //amount to increment percent keyword in loop
+    double percentIncrement = 0.05;
+    //number of times to repeat test at each percent level
+    int numRepeats = 50;
+    //number of words to generate in each bio
+    int numWordsPerBio = 50;
+    //percent keywords in user bio that is being compared
+    double percentKeywordBadUser = 0.5;
+    
     User currentUser = new User("");
     addNewBio(user_a.getBio(), currentUser);
     addNewBio(user_b.getBio(), currentUser);
@@ -380,13 +390,13 @@ public final class MatchRankingTest {
     FileWriter output = new FileWriter("src/test/java/com/google/sps/matchRankingBenchmark.txt");
 
     //test different percentages of keywords against a 50% keyword bio
-    for(double i = 0.0; i <= 1.0; i += 0.05) {
+    for(double i = 0.0; i <= 1.0; i += percentIncrement) {
         int rankedFirstCount = 0;
 
         //run test at each percent level 50 times to get accurate benchmark
-        for(int j = 0; j < 50; ++j) {
-            userGood.setBio(generateRandomBio(50, i));
-            userBad.setBio(generateRandomBio(50, 0.5));
+        for(int j = 0; j < numRepeats; ++j) {
+            userGood.setBio(generateRandomBio(numWordsPerBio, i));
+            userBad.setBio(generateRandomBio(numWordsPerBio, percentKeywordBadUser));
 
             Collection<User> newMatches = new HashSet<User>();
             newMatches.add(userGood);
@@ -399,7 +409,7 @@ public final class MatchRankingTest {
             }
         }
 
-        double percentRankedFirst = ((double)rankedFirstCount / 50.0);
+        double percentRankedFirst = ((double)rankedFirstCount / (double)numRepeats);
         int percentKeywords = (int)Math.round(i * 100);
         int percentRankedFirstInt = (int)Math.round(percentRankedFirst * 100);
 
@@ -410,7 +420,7 @@ public final class MatchRankingTest {
             }
         }
         //record exact percentages in output file
-        output.write("When user had " + percentKeywords + "% keywords, it ranked ahead of user with half keywords " + percentRankedFirstInt + "% of runs.\n\n");
+        output.write("When user had " + percentKeywords + "% keywords, it ranked ahead of user with " + (percentKeywordBadUser * 100) + "% keywords " + percentRankedFirstInt + "% of runs.\n\n");
     }
     output.close();
   }
